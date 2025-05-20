@@ -34,6 +34,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
       state = AuthState(error: e.toString());
     }
   }
+
+  void logout() {
+    state = AuthState();
+  }
 }
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {

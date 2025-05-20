@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ywar_talk_mobile/presentation/providers/auth/auth_provider.dart';
 import 'package:ywar_talk_mobile/presentation/widgets/profile/profile_menu_item_widget.dart';
 import 'package:ywar_talk_mobile/presentation/widgets/profile/profile_widget.dart';
 import '../../../style/theme/color.dart'; // AppColors
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends HookConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    void logout() {
+      ref.read(authProvider.notifier).logout();
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -46,16 +52,18 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            const ProfileMenuItemWidget(
+            ProfileMenuItemWidget(
               icon: Icons.fact_check,
               title: "Complete Personal Details",
               iconColor: AppColors.success,
               titleColor: AppColors.successDark,
+              onClick: () {},
             ),
 
-            const ProfileMenuItemWidget(
+            ProfileMenuItemWidget(
               icon: Icons.lock_outline,
               title: "Change Password",
+              onClick: () {},
             ),
             Divider(height: 30, color: AppColors.bubbleShadow),
 
@@ -69,18 +77,20 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            const ProfileMenuItemWidget(
+            ProfileMenuItemWidget(
               icon: Icons.brightness_6,
               title: "Theme",
+              onClick: () {},
             ),
             Divider(height: 30, color: AppColors.bubbleShadow),
 
             // Logout
-            const ProfileMenuItemWidget(
+            ProfileMenuItemWidget(
               icon: Icons.logout,
               title: "Log Out",
               iconColor: AppColors.danger,
               titleColor: AppColors.dangerDark,
+              onClick: logout,
             ),
             const SizedBox(height: 30),
           ],
