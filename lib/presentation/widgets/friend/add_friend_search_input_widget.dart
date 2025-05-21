@@ -19,6 +19,15 @@ class AddFriendSearchInputWidget extends StatelessWidget {
         decoration: InputDecoration(
           hintText: 'Enter User ID or Email',
           prefixIcon: Icon(Icons.search, color: AppColors.primary),
+          suffixIcon: controller.text.isEmpty
+              ? null
+              : IconButton(
+                  icon: Icon(Icons.clear, color: AppColors.primary),
+                  onPressed: () {
+                    controller.clear();
+                    FocusScope.of(context).unfocus();
+                  },
+                ),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(vertical: 14),
         ),

@@ -32,7 +32,7 @@ class ConversationNotifier extends StateNotifier<ConversationState> {
       final result = await conversationUsecase.getConversations(userID);
       state = ConversationState(conversationList: result);
     } catch (e) {
-      state = ConversationState(conversationList: []);
+      state = ConversationState(error: e.toString());
     }
   }
 }

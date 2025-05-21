@@ -31,18 +31,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       return LoginResponseModel.fromJson(data);
     } else if (response.statusCode == 401) {
       throw AppException(
-          "Oops! That email or password doesn’t match our records.");
+          "Oops! That email or password doesn’t match our records.", 401);
     } else if (response.statusCode == 400) {
       final error = jsonDecode(response.body);
 
       final String field = error['fields'][0]['field'];
       if (field == "email") {
-        throw AppException("Please enter a valid email address.");
+        throw AppException("Please enter a valid email address.", 400);
       } else {
-        throw AppException("Please enter a  email address.");
+        throw AppException("Please enter a  email address.", 400);
       }
     } else {
-      throw AppException("Something went wrong. Please try again.");
+      throw AppException("Something went wrong. Please try again.", 500);
     }
   }
 
@@ -64,12 +64,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final error = jsonDecode(response.body);
       final String field = error['fields'][0]['field'];
       if (field == "email") {
-        throw AppException("Please enter a valid email address.");
+        throw AppException("Please enter a valid email address.", 400);
       } else {
-        throw AppException("Please enter a  email address.");
+        throw AppException("Please enter a  email address.", 400);
       }
     } else {
-      throw AppException("Something went wrong. Please try again.");
+      throw AppException("Something went wrong. Please try again.", 500);
     }
   }
 }

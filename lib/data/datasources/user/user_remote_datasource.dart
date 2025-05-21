@@ -11,6 +11,7 @@ import '../../models/user/search_user_response_model.dart';
 abstract class UserRemoteDataSource {
   Future<CommonResponseModel> register(RegisterEvent register);
   Future<SearchUserResponseModel> searchUser(String searchInput);
+  Future<CommonResponseModel> sendFriendRequest(String reveicerID);
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -39,15 +40,15 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       final data = jsonDecode(response.body);
 
       if (data['fields'] != null && data['fields'] is List) {
-        throw AppException("Please enter a valid email address.");
+        throw AppException("Please enter a valid email address.", 400);
       } else if (data['error'] != null) {
         throw AppException(
-            "That email is already registered. Try logging in instead.");
+            "That email is already registered. Try logging in instead.", 400);
       } else {
-        throw AppException("Something went wrong. Please try again.");
+        throw AppException("Something went wrong. Please try again.", 400);
       }
     } else {
-      throw AppException("Something went wrong. Please try again.");
+      throw AppException("Something went wrong. Please try again.", 500);
     }
   }
 
@@ -65,8 +66,32 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       final data = jsonDecode(response.body);
       return SearchUserResponseModel.fromJson(data);
     } else if (response.statusCode == 404) {
-      throw AppException("User information not found.");
+      throw AppException("User information not found.", 404);
     }
-    throw AppException("Something went wrong. Please try again.");
+    throw AppException("Something went wrong. Please try again.", 500);
+  }
+
+  @override
+  Future<CommonResponseModel> sendFriendRequest(String receiverID) async {
+    final response = await http.post(
+      Uri.parse('$apiUrl/friend/requests'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({'receiverId': receiverID}),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return CommonResponseModel.fromJson(data);
+    } else if (response.statusCode == 400) {
+      throw AppException("You need to add receiver id.", 400);
+    } else if (response.statusCode == 409) {
+      final data = jsonDecode(response.body);
+      throw AppException(data['error'], 409);
+    } else {
+      throw AppException("Something went wrong. Please try again.", 500);
+    }
   }
 }

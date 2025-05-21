@@ -15,4 +15,8 @@ class UserUsercase {
   Future<SearchUserModel> searchUser(String searchInput) {
     return repository.searchUser(searchInput);
   }
+
+  Future<CommonResponseModel> sendFriendRequest(String receiverID) {
+    return repository.sendFriendRequest(receiverID);
+  }
 }

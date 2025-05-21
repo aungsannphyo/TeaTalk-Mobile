@@ -36,6 +36,7 @@ class SearchUserNotifier extends StateNotifier<SearchUserState> {
     } catch (e) {
       state = SearchUserState(
         isLoading: false,
+        user: null,
         error: e.toString(),
       );
     }

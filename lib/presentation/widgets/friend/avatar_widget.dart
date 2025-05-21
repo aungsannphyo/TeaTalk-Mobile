@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../../utils/avatar_background.dart';
 
-class AddFriendAvatarWidget extends StatelessWidget {
+class AvatarWidget extends StatelessWidget {
   final String? profileImage;
   final String username;
   final String? baseUrl;
   final double radius;
 
-  const AddFriendAvatarWidget({
+  const AvatarWidget({
     super.key,
     required this.username,
     this.profileImage,

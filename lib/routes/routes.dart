@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import "../presentation/screens/friend/add_friend_screen.dart";
+import "../presentation/screens/friend/friend_request_log_screen.dart";
 import "../presentation/screens/user/register_screen.dart";
 import "../routes/routes_name.dart";
 import "../presentation/providers/auth/login_provider.dart";
@@ -57,6 +58,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/add-friend',
         name: RouteName.addFriend,
         builder: (context, state) => const AddFriendScreen(),
+      ),
+      GoRoute(
+        path: '/friend-request-log',
+        name: RouteName.friendRequestLog,
+        builder: (context, state) => const FriendRequestLogScreen(),
       ),
     ],
   );

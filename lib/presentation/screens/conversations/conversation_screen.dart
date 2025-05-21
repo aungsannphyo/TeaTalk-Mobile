@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tea_talk_mobile/presentation/providers/friend/friend_request_log_provider.dart';
+import 'package:tea_talk_mobile/style/text_style.dart';
 
 import '../../../routes/routes_name.dart';
 import '../../drawer/app_drawer.dart';
@@ -18,16 +20,27 @@ class ConversationScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AuthState authState = ref.watch(authProvider);
     final ConversationState conversationState = ref.watch(conversationProvider);
+    final FriendRequestLogState friendRequestLogState =
+        ref.watch(friendRequestLogProvider);
+
+    final totalRequests = friendRequestLogState.friendRequestLogs?.length ?? 0;
 
     useEffect(() {
       final userId = authState.auth?.id;
       if (userId != null) {
         Future.microtask(() {
           ref.read(conversationProvider.notifier).getConversations(userId);
+          ref
+              .read(friendRequestLogProvider.notifier)
+              .getAllFriendRequestLog(userId);
         });
       }
       return null;
     }, [authState.auth]);
+
+    void navigateToFriendRequestLog() {
+      GoRouter.of(context).pushNamed(RouteName.friendRequestLog);
+    }
 
     void navigateToAddFriend() {
       GoRouter.of(context).pushNamed(RouteName.addFriend);
@@ -55,10 +68,40 @@ class ConversationScreen extends HookConsumerWidget {
         actions: [
           IconButton(
             onPressed: () {
-              navigateToAddFriend();
+              navigateToFriendRequestLog();
             },
-            icon: Icon(
-              Icons.person_add_alt_outlined,
+            icon: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                const Icon(
+                  Icons.notifications,
+                  size: 28,
+                ),
+                if (totalRequests > 0)
+                  Positioned(
+                    right: -2,
+                    top: -2,
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 18,
+                        minHeight: 18,
+                      ),
+                      child: Text(
+                        '$totalRequests',
+                        style: AppTextStyles.bold.copyWith(
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
         ],
@@ -74,8 +117,10 @@ class ConversationScreen extends HookConsumerWidget {
                     Expanded(
                       child: ListView.separated(
                         itemCount: conversationState.conversationList!.length,
-                        separatorBuilder: (_, __) =>
-                            Divider(height: 10, color: AppColors.bubbleShadow),
+                        separatorBuilder: (_, __) => Divider(
+                          height: 10,
+                          color: AppColors.bubbleShadow,
+                        ),
                         itemBuilder: (context, index) {
                           return ConversationItemWidget(
                               conversation:
@@ -85,6 +130,20 @@ class ConversationScreen extends HookConsumerWidget {
                     ),
                   ],
                 ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          navigateToAddFriend();
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            28,
+          ),
+        ),
+        tooltip: 'Add Friend',
+        child: Icon(
+          Icons.person_add_alt_1_rounded,
+        ),
+      ),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 String formatRelativeTime(String datetimeStr) {
-  DateTime dateTime = DateTime.parse(datetimeStr);
+  DateTime dateTime = DateTime.parse(datetimeStr).toLocal();
   DateTime now = DateTime.now();
   Duration diff = now.difference(dateTime);
 

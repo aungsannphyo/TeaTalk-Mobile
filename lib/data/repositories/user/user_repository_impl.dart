@@ -18,4 +18,9 @@ class UserRepositoryImpl implements UserRepository {
   Future<SearchUserModel> searchUser(String searchInput) {
     return remote.searchUser(searchInput);
   }
+
+  @override
+  Future<CommonResponseModel> sendFriendRequest(String receiverID) {
+    return remote.sendFriendRequest(receiverID);
+  }
 }

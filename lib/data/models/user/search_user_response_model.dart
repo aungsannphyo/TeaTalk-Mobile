@@ -12,12 +12,12 @@ class SearchUserResponseModel extends SearchUserModel {
 
   factory SearchUserResponseModel.fromJson(Map<String, dynamic> json) {
     return SearchUserResponseModel(
-      profileImage: json['profile_image'],
+      profileImage: json['profileImage'],
       id: json['id'],
       email: json['email'],
-      userIdentity: json['user_identity'],
+      userIdentity: json['userIdentity'],
       username: json['username'],
-      isFriend: json['is_friend'],
+      isFriend: json['isFriend'],
     );
   }
 }
