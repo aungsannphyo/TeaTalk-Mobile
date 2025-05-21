@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../utils/avatar_background.dart';
 
@@ -31,9 +32,11 @@ class AvatarWidget extends StatelessWidget {
           ? NetworkImage('$baseUrl$profileImage')
           : null,
       child: !hasValidImage
-          ? Text(
-              username.isNotEmpty ? username[0].toUpperCase() : '',
-              style: const TextStyle(fontSize: 24, color: Colors.white),
+          ? SvgPicture.asset(
+              getRandomDefaultAvatar(username),
+              width: radius * 2,
+              height: radius * 2,
+              fit: BoxFit.cover,
             )
           : null,
     );

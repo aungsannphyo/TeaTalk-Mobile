@@ -8,12 +8,12 @@ import '../auth/login_provider.dart';
 
 class SearchUserState {
   final bool isLoading;
-  final SearchUserModel? user;
+  final List<SearchUserModel> users;
   final String? error;
 
   SearchUserState({
     this.isLoading = false,
-    this.user,
+    required this.users,
     this.error,
   });
 }
@@ -23,20 +23,20 @@ class SearchUserNotifier extends StateNotifier<SearchUserState> {
 
   SearchUserNotifier({
     required this.userUsercase,
-  }) : super(SearchUserState());
+  }) : super(SearchUserState(users: []));
 
   Future<void> searchUser(String searchInput) async {
-    state = SearchUserState(isLoading: true);
+    state = SearchUserState(isLoading: true, users: []);
     try {
       final result = await userUsercase.searchUser(searchInput);
       state = SearchUserState(
-        user: result,
+        users: result,
         isLoading: false,
       );
     } catch (e) {
       state = SearchUserState(
         isLoading: false,
-        user: null,
+        users: [],
         error: e.toString(),
       );
     }

@@ -17,7 +17,7 @@ class AddFriendSearchInputWidget extends StatelessWidget {
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
-          hintText: 'Enter User ID or Email',
+          hintText: 'Enter Name, Email or ID',
           prefixIcon: Icon(Icons.search, color: AppColors.primary),
           suffixIcon: controller.text.isEmpty
               ? null

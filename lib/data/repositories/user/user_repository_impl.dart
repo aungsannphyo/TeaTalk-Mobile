@@ -15,7 +15,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<SearchUserModel> searchUser(String searchInput) {
+  Future<List<SearchUserModel>> searchUser(String searchInput) {
     return remote.searchUser(searchInput);
   }
 

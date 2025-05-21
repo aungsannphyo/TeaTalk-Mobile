@@ -1,7 +1,7 @@
-import '../../../domain/entities/friend/frient_request_log_model.dart';
+import '../../../domain/entities/friend/frient_request_model.dart';
 
-class FriendRequestLogResponseModel extends FrientRequestLogModel {
-  FriendRequestLogResponseModel({
+class FriendRequestResponseModel extends FrientRequestModel {
+  FriendRequestResponseModel({
     required super.requestId,
     required super.senderId,
     required super.email,
@@ -10,8 +10,8 @@ class FriendRequestLogResponseModel extends FrientRequestLogModel {
     super.profileImage,
   });
 
-  factory FriendRequestLogResponseModel.fromJson(Map<String, dynamic> json) {
-    return FriendRequestLogResponseModel(
+  factory FriendRequestResponseModel.fromJson(Map<String, dynamic> json) {
+    return FriendRequestResponseModel(
       requestId: json["requestId"],
       senderId: json["senderId"],
       email: json["email"],

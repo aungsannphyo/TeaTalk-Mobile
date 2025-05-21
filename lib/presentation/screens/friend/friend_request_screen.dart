@@ -4,35 +4,82 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tea_talk_mobile/utils/extensions.dart';
 
+import '../../../domain/events/decide_friend_request_event.dart';
 import '../../../style/text_style.dart';
 import '../../../style/theme/app_color.dart';
 import '../../../utils/date_time.dart';
 import '../../providers/auth/login_provider.dart';
-import '../../providers/friend/friend_request_log_provider.dart';
-import '../../widgets/common/common_elevate_button_widget.dart';
+import '../../providers/friend/decide_friend_request_provider.dart';
+import '../../providers/friend/friend_request_provider.dart';
+import '../../widgets/common/custom_elevate_button_widget.dart';
+import '../../widgets/common/custom_snack_bar_widget.dart';
+import '../../widgets/common/placeholder_widget.dart';
 import '../../widgets/friend/avatar_widget.dart';
 
-class FriendRequestLogScreen extends HookConsumerWidget {
-  const FriendRequestLogScreen({super.key});
+class FriendRequestScreen extends HookConsumerWidget {
+  const FriendRequestScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final imageUrl = dotenv.env['API_URL'];
     final authState = ref.watch(authProvider);
-    final requestState = ref.watch(friendRequestLogProvider);
-    final notifier = ref.read(friendRequestLogProvider.notifier);
+    final requestState = ref.watch(friendRequestProvider);
+    final requests = requestState.friendRequest ?? [];
 
     useEffect(() {
       final userId = authState.auth?.id;
       if (userId != null) {
         Future.microtask(() {
-          notifier.getAllFriendRequestLog(userId);
+          ref
+              .read(friendRequestProvider.notifier)
+              .getAllFriendRequestLog(userId);
         });
       }
       return null;
     }, [authState.auth]);
 
-    final requests = requestState.friendRequestLogs ?? [];
+    void decideFriendRequest(String friendRequestId, bool isReject) {
+      final DecideFriendRequestEvent event = DecideFriendRequestEvent(
+        status: isReject
+            ? FriendRequestStatus.rejected.value
+            : FriendRequestStatus.accepted.value,
+        friendRequestId: friendRequestId,
+      );
+      ref
+          .read(
+            decideFriendRequestProvider.notifier,
+          )
+          .decideFriendRequest(event);
+    }
+
+    ref.listen<DecideFriendRequestState>(
+      decideFriendRequestProvider,
+      (previous, next) {
+        if (next.isSuccess &&
+            next.lastHandledRequestId != null &&
+            next.lastAction != null) {
+          // Remove the accepted request from UI
+
+          final action = next.lastAction == FriendRequestStatus.accepted
+              ? "accepted"
+              : "rejected";
+
+          ref
+              .read(friendRequestProvider.notifier)
+              .removeRequestById(next.lastHandledRequestId!);
+          SnackbarUtil.showSuccess(
+            context,
+            "Friend request $action!",
+          );
+
+          Future.microtask(() {
+            ref.read(decideFriendRequestProvider.notifier).reset();
+          });
+        } else if (next.error != null && next.error!.isNotEmpty) {
+          SnackbarUtil.showError(context, next.error!);
+        }
+      },
+    );
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -50,7 +97,12 @@ class FriendRequestLogScreen extends HookConsumerWidget {
       body: requestState.isLoading
           ? const Center(child: CircularProgressIndicator.adaptive())
           : requests.isEmpty
-              ? const Center(child: Text("No pending friend requests."))
+              ? PlaceholderWidget(
+                  imagePath: 'assets/images/no_data.svg',
+                  text:
+                      'You have no pending friend requests.\nStart by connecting with people you know!',
+                  isSvg: true,
+                )
               : ListView.separated(
                   padding: const EdgeInsets.all(16),
                   itemCount: requests.length,
@@ -58,7 +110,6 @@ class FriendRequestLogScreen extends HookConsumerWidget {
                   itemBuilder: (context, index) {
                     final request = requests[index];
                     final sentTime = formatRelativeTime(request.createAt);
-
                     return Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
@@ -125,14 +176,24 @@ class FriendRequestLogScreen extends HookConsumerWidget {
                                 const SizedBox(height: 12),
                                 Row(
                                   children: [
-                                    CommonElevateButtonWidget(
+                                    CustomElevateButtonWidget(
                                       label: "Confirm",
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        decideFriendRequest(
+                                          request.requestId,
+                                          false,
+                                        );
+                                      },
                                     ),
                                     const SizedBox(width: 8),
-                                    CommonElevateButtonWidget(
+                                    CustomElevateButtonWidget(
                                       label: "Delete Request",
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        decideFriendRequest(
+                                          request.requestId,
+                                          true,
+                                        );
+                                      },
                                       backgroundColor: AppColors.bubbleShadow,
                                       textColor: Colors.black,
                                     ),

@@ -1,0 +1,56 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../../data/datasources/friend/friend_request_datasource.dart';
+import '../../../data/repositories/friend/friend_request_repository_impl.dart';
+import '../../../domain/entities/friend/frient_request_model.dart';
+import '../../../domain/usecases/friend/friend_request_usecase.dart';
+import '../auth/login_provider.dart';
+
+class FriendRequestState {
+  final bool isLoading;
+  final List<FrientRequestModel>? friendRequest;
+  final String? error;
+
+  FriendRequestState({
+    this.isLoading = false,
+    this.friendRequest,
+    this.error,
+  });
+}
+
+class FriendRequestNotifier extends StateNotifier<FriendRequestState> {
+  final FriendRequestUsecase friendRequestUsecase;
+
+  FriendRequestNotifier({
+    required this.friendRequestUsecase,
+  }) : super(FriendRequestState());
+
+  Future<void> getAllFriendRequestLog(String userId) async {
+    state = FriendRequestState(isLoading: true);
+    try {
+      final result = await friendRequestUsecase.getAllFriendRequestLog(userId);
+      state = FriendRequestState(friendRequest: result);
+    } catch (e) {
+      state = FriendRequestState(friendRequest: []);
+    }
+  }
+
+  void removeRequestById(String requestId) {
+    final updatedRequests = state.friendRequest
+        ?.where((req) => req.requestId != requestId)
+        .toList();
+    state = FriendRequestState(friendRequest: updatedRequests);
+  }
+}
+
+final friendRequestProvider =
+    StateNotifierProvider<FriendRequestNotifier, FriendRequestState>((ref) {
+  final authState = ref.watch(authProvider);
+  final token = authState.auth?.token;
+  final remote = FriendRequestDatasourceImpl(token: token);
+
+  final repository = FriendRequestRepositoryImpl(remote);
+  return FriendRequestNotifier(
+    friendRequestUsecase: FriendRequestUsecase(repository),
+  );
+});

@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:tea_talk_mobile/utils/extensions.dart';
 
-import '../../providers/user/search_user_provider.dart';
-import '../common/common_elevate_button_widget.dart';
+import '../../../domain/entities/user/search_user_model.dart';
 import 'avatar_widget.dart';
 import '../../../style/text_style.dart';
 import '../../../style/theme/app_color.dart';
 
 class AddFriendUserTileWidget extends StatelessWidget {
-  final SearchUserState searchState;
+  final SearchUserModel user;
   final String? imageUrl;
   final Function sendFriendRequest;
+  final bool isLoading;
 
   const AddFriendUserTileWidget({
     super.key,
-    required this.searchState,
     this.imageUrl,
     required this.sendFriendRequest,
+    required this.user,
+    required this.isLoading,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return Container(
+      color: AppColors.background,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: ListTile(
         leading: AnimatedCrossFade(
           duration: const Duration(milliseconds: 300),
           firstChild: CircleAvatar(
@@ -33,27 +37,23 @@ class AddFriendUserTileWidget extends StatelessWidget {
             ),
           ),
           secondChild: AvatarWidget(
-            username: searchState.user?.username ?? '',
-            profileImage: searchState.user?.profileImage,
+            username: user.username,
+            profileImage: user.profileImage,
             baseUrl: imageUrl,
           ),
-          crossFadeState: searchState.isLoading
-              ? CrossFadeState.showFirst
-              : CrossFadeState.showSecond,
+          crossFadeState:
+              isLoading ? CrossFadeState.showFirst : CrossFadeState.showSecond,
         ),
         title: Text(
-          (searchState.user?.username.isNotEmpty ?? false)
-              ? searchState.user!.username.toTitleCase()
-              : '',
-          style: TextStyle(color: AppColors.textDark),
+          user.username.toTitleCase(),
+          style: AppTextStyles.semiBold.copyWith(fontSize: 16),
         ),
-        trailing: CommonElevateButtonWidget(
-          onPressed: () {
-            searchState.isLoading
-                ? null
-                : sendFriendRequest(searchState.user!.id);
-          },
-          label: searchState.isLoading ? 'Loading...' : 'Add Friend',
-        ));
+        trailing: IconButton(
+          icon: Icon(Icons.person_add_alt_outlined, color: AppColors.primary),
+          iconSize: 33,
+          onPressed: isLoading ? null : () => sendFriendRequest(user.id),
+        ),
+      ),
+    );
   }
 }

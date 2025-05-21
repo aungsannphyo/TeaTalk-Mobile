@@ -10,7 +10,7 @@ import '../../models/user/search_user_response_model.dart';
 
 abstract class UserRemoteDataSource {
   Future<CommonResponseModel> register(RegisterEvent register);
-  Future<SearchUserResponseModel> searchUser(String searchInput);
+  Future<List<SearchUserResponseModel>> searchUser(String searchInput);
   Future<CommonResponseModel> sendFriendRequest(String reveicerID);
 }
 
@@ -33,12 +33,12 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         'username': register.username,
       }),
     );
+
+    final data = jsonDecode(response.body);
+
     if (response.statusCode == 201) {
-      final data = jsonDecode(response.body);
       return CommonResponseModel.fromJson(data);
     } else if (response.statusCode == 400) {
-      final data = jsonDecode(response.body);
-
       if (data['fields'] != null && data['fields'] is List) {
         throw AppException("Please enter a valid email address.", 400);
       } else if (data['error'] != null) {
@@ -53,7 +53,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<SearchUserResponseModel> searchUser(String searchInput) async {
+  Future<List<SearchUserResponseModel>> searchUser(String searchInput) async {
     final response = await http.get(
       Uri.parse('$apiUrl/user/search?q=$searchInput'),
       headers: {
@@ -64,7 +64,9 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      return SearchUserResponseModel.fromJson(data);
+      return (data as List)
+          .map((json) => SearchUserResponseModel.fromJson(json))
+          .toList();
     } else if (response.statusCode == 404) {
       throw AppException("User information not found.", 404);
     }
@@ -82,13 +84,12 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       body: jsonEncode({'receiverId': receiverID}),
     );
 
+    final data = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
       return CommonResponseModel.fromJson(data);
     } else if (response.statusCode == 400) {
       throw AppException("You need to add receiver id.", 400);
     } else if (response.statusCode == 409) {
-      final data = jsonDecode(response.body);
       throw AppException(data['error'], 409);
     } else {
       throw AppException("Something went wrong. Please try again.", 500);

@@ -4,6 +4,6 @@ import "../../../data/models/common_response_model.dart";
 
 abstract class UserRepository {
   Future<CommonResponseModel> register(RegisterEvent register);
-  Future<SearchUserModel> searchUser(String searchInput);
+  Future<List<SearchUserModel>> searchUser(String searchInput);
   Future<CommonResponseModel> sendFriendRequest(String reveicerID);
 }

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../style/text_style.dart';
 import '../../../style/theme/app_color.dart';
 
-class CommonElevateButtonWidget extends StatelessWidget {
+class CustomElevateButtonWidget extends StatelessWidget {
   final String label;
   final Function onPressed;
   final Color? backgroundColor;
   final Color? textColor;
-  const CommonElevateButtonWidget({
+  const CustomElevateButtonWidget({
     super.key,
     required this.label,
     required this.onPressed,

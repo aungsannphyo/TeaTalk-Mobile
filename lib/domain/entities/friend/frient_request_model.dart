@@ -1,4 +1,4 @@
-class FrientRequestLogModel {
+class FrientRequestModel {
   final String requestId;
   final String senderId;
   final String username;
@@ -6,7 +6,7 @@ class FrientRequestLogModel {
   final String? profileImage;
   final String createAt;
 
-  FrientRequestLogModel({
+  FrientRequestModel({
     required this.requestId,
     required this.senderId,
     required this.username,

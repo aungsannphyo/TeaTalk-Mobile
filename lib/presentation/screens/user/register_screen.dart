@@ -43,19 +43,10 @@ class RegisterScreen extends HookConsumerWidget {
     ref.listen<RegisterState>(
       registerProvider,
       (previous, next) {
-        if (next.error != null && next.error!.isNotEmpty) {
-          SnackbarUtil.showError(context, next.error!);
-        }
-      },
-    );
-
-    ref.listen<RegisterState>(
-      registerProvider,
-      (previous, next) {
         if (next.isSuccess) {
           SnackbarUtil.showSuccess(
             context,
-            "Registration successful! Welcome aboard — let's get started.",
+            "Registration successful!",
           );
 
           usernameController.clear();
@@ -68,6 +59,9 @@ class RegisterScreen extends HookConsumerWidget {
               GoRouter.of(context).pushReplacementNamed(RouteName.login);
             }
           });
+        }
+        if (next.error != null && next.error!.isNotEmpty) {
+          SnackbarUtil.showError(context, next.error!);
         }
       },
     );

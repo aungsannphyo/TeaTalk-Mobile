@@ -16,11 +16,4 @@ class LoginResponseModel extends LoginModel {
       token: json['token'],
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'name': username,
-      'email': email,
-    };
-  }
 }

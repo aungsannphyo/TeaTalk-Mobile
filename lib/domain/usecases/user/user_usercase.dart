@@ -12,7 +12,7 @@ class UserUsercase {
     return repository.register(register);
   }
 
-  Future<SearchUserModel> searchUser(String searchInput) {
+  Future<List<SearchUserModel>> searchUser(String searchInput) {
     return repository.searchUser(searchInput);
   }
 

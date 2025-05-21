@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tea_talk_mobile/presentation/providers/friend/friend_request_log_provider.dart';
+import 'package:tea_talk_mobile/presentation/providers/friend/friend_request_provider.dart';
 import 'package:tea_talk_mobile/style/text_style.dart';
 
 import '../../../routes/routes_name.dart';
@@ -11,7 +11,7 @@ import '../../providers/auth/login_provider.dart';
 import '../../providers/conversation/conversation_provider.dart';
 import "../../../style/theme/app_color.dart";
 import '../../widgets/conversation/conversation_item_widget.dart';
-import '../../widgets/conversation/no_conversation_widget.dart';
+import '../../widgets/common/placeholder_widget.dart';
 
 class ConversationScreen extends HookConsumerWidget {
   const ConversationScreen({super.key});
@@ -20,10 +20,10 @@ class ConversationScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AuthState authState = ref.watch(authProvider);
     final ConversationState conversationState = ref.watch(conversationProvider);
-    final FriendRequestLogState friendRequestLogState =
-        ref.watch(friendRequestLogProvider);
+    final FriendRequestState friendRequestLogState =
+        ref.watch(friendRequestProvider);
 
-    final totalRequests = friendRequestLogState.friendRequestLogs?.length ?? 0;
+    final totalRequests = friendRequestLogState.friendRequest?.length ?? 0;
 
     useEffect(() {
       final userId = authState.auth?.id;
@@ -31,7 +31,7 @@ class ConversationScreen extends HookConsumerWidget {
         Future.microtask(() {
           ref.read(conversationProvider.notifier).getConversations(userId);
           ref
-              .read(friendRequestLogProvider.notifier)
+              .read(friendRequestProvider.notifier)
               .getAllFriendRequestLog(userId);
         });
       }
@@ -111,7 +111,12 @@ class ConversationScreen extends HookConsumerWidget {
           ? const Center(child: CircularProgressIndicator())
           : conversationState.conversationList == null ||
                   conversationState.conversationList!.isEmpty
-              ? NoConversationWidget()
+              ? PlaceholderWidget(
+                  imagePath: 'assets/images/no-message.png',
+                  text:
+                      "You don’t have any conversations yet. Start chatting with your friends!",
+                  isSvg: false,
+                )
               : Column(
                   children: [
                     Expanded(
@@ -130,19 +135,37 @@ class ConversationScreen extends HookConsumerWidget {
                     ),
                   ],
                 ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          navigateToAddFriend();
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-            28,
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              navigateToAddFriend();
+            },
+            heroTag: 'addFriend',
+            mini: true,
+            backgroundColor: AppColors.complementary,
+            tooltip: 'Add Friend',
+            child: Icon(
+              Icons.person_add_alt_1_outlined,
+            ),
           ),
-        ),
-        tooltip: 'Add Friend',
-        child: Icon(
-          Icons.person_add_alt_1_rounded,
-        ),
+          const SizedBox(height: 12),
+          FloatingActionButton(
+            onPressed: () {},
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                28,
+              ),
+            ),
+            heroTag: 'startSendingAMessage',
+            tooltip: 'Sent a message',
+            child: Icon(
+              Icons.chat_bubble_outline,
+            ),
+          ),
+        ],
       ),
     );
   }

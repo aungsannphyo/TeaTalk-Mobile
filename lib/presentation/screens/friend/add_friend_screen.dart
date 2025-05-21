@@ -10,7 +10,7 @@ import '../../../style/theme/app_color.dart';
 import '../../providers/user/search_user_provider.dart';
 import '../../providers/user/send_friend_request_provider.dart';
 import '../../widgets/common/custom_snack_bar_widget.dart';
-import '../../widgets/friend/add_friend_not_found_widget.dart';
+import '../../widgets/common/placeholder_widget.dart';
 import '../../widgets/friend/add_friend_search_input_widget.dart';
 import '../../widgets/friend/add_friend_user_tile_widget.dart';
 
@@ -23,19 +23,22 @@ class AddFriendScreen extends HookConsumerWidget {
 
     final TextEditingController controller = useTextEditingController();
     final timer = useRef<Timer?>(null);
+
     final searchState = ref.watch(searchUserProvider);
     final searchUserNotifier = ref.read(searchUserProvider.notifier);
+
+    final friendReqState = ref.watch(sendFriendReqProvider);
     final friendReqNotifier = ref.read(sendFriendReqProvider.notifier);
 
     void sendFriendRequest(String receiverID) {
-      //make sure receiverID is not null or empty
-      if (receiverID != "") {
+      if (receiverID.isNotEmpty && !friendReqState.isLoading) {
         friendReqNotifier.sendFriendRequest(receiverID);
       }
     }
 
+    // Debounce search input
     useEffect(() {
-      controller.addListener(() {
+      void listener() {
         final input = controller.text.trim();
         if (timer.value?.isActive ?? false) timer.value?.cancel();
 
@@ -44,30 +47,26 @@ class AddFriendScreen extends HookConsumerWidget {
             searchUserNotifier.searchUser(input);
           }
         });
-      });
+      }
 
-      return () => timer.value?.cancel();
-    }, []);
+      controller.addListener(listener);
 
+      return () {
+        timer.value?.cancel();
+        controller.removeListener(listener);
+      };
+    }, [controller]);
+
+    // Listen for friend request errors and success
     ref.listen<SendFriendRequestState>(
       sendFriendReqProvider,
       (previous, next) {
         if (next.errorCode == 409) {
-          SnackbarUtil.showInfo(context, next.error!);
+          SnackbarUtil.showInfo(context, next.error ?? next.error.toString());
         } else if (next.error != null && next.error!.isNotEmpty) {
           SnackbarUtil.showError(context, next.error!);
-        }
-      },
-    );
-
-    ref.listen<SendFriendRequestState>(
-      sendFriendReqProvider,
-      (previous, next) {
-        if (next.isSuccess) {
-          SnackbarUtil.showSuccess(
-            context,
-            "Friend request sent!",
-          );
+        } else if (next.isSuccess) {
+          SnackbarUtil.showSuccess(context, 'Friend request sent!');
         }
       },
     );
@@ -75,7 +74,7 @@ class AddFriendScreen extends HookConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Add Friend',
           style: TextStyle(
             color: Colors.white,
@@ -86,54 +85,54 @@ class AddFriendScreen extends HookConsumerWidget {
         ),
         backgroundColor: AppColors.primary,
         elevation: 0,
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            AddFriendSearchInputWidget(
-              controller: controller,
-            ),
-            SizedBox(height: 20),
+            AddFriendSearchInputWidget(controller: controller),
+            const SizedBox(height: 20),
             Expanded(
               child: Builder(
                 builder: (context) {
                   final input = controller.text.trim();
 
-                  // Initial state - nothing typed yet
                   if (input.isEmpty) {
-                    return Center(
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: 280),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/images/searching.svg',
-                              height: 200,
-                            ),
-                            SizedBox(height: 16),
-                          ],
-                        ),
-                      ),
+                    return PlaceholderWidget(
+                      imagePath: 'assets/images/searching.svg',
+                      text: 'Start typing to search for friends',
+                      isSvg: true,
+                    );
+                  }
+                  if (searchState.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (searchState.users.isEmpty) {
+                    return PlaceholderWidget(
+                      imagePath: 'assets/images/404.svg',
+                      text:
+                          "Looks like nobody’s here yet. Try searching again!",
+                      isSvg: true,
                     );
                   }
 
-                  // If error or user not found
-                  if (searchState.error != null || searchState.user == null) {
-                    return AddFriendNotFoundWidget(
-                      error: searchState.error ?? "User information not found.",
-                    );
-                  }
-
-                  // User found
-                  return AddFriendUserTileWidget(
-                    imageUrl: imageUrl,
-                    searchState: searchState,
-                    sendFriendRequest: sendFriendRequest,
+                  return ListView.separated(
+                    itemCount: searchState.users.length,
+                    separatorBuilder: (_, __) => Divider(
+                      height: 10,
+                      color: AppColors.bubbleShadow,
+                    ),
+                    itemBuilder: (context, index) {
+                      final user = searchState.users[index];
+                      return AddFriendUserTileWidget(
+                        imageUrl: imageUrl,
+                        user: user,
+                        sendFriendRequest: sendFriendRequest,
+                        isLoading: friendReqState.isLoading,
+                      );
+                    },
                   );
                 },
               ),
