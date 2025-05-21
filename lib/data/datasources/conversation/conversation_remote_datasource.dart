@@ -20,7 +20,7 @@ class ConversationRemoteDataSourceImpl implements ConversationRemoteDatasource {
   Future<List<ConversationResponseModel>> getConversations(
       String userID) async {
     final response = await http.get(
-      Uri.parse('${dotenv.env['API_URL']}/user/$userID/chat-list'),
+      Uri.parse('$apiUrl/user/$userID/chat-list'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',

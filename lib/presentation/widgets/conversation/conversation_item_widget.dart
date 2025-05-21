@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../utils/avatar_background.dart';
 import '../../../utils/extensions.dart';
 import '../../../domain/entities/conversation/conversation_model.dart';
 import "../../../style/theme/app_color.dart";
@@ -7,16 +8,6 @@ import '../../../utils/date_time.dart';
 class ConversationItemWidget extends StatelessWidget {
   final ConversationModel conversation;
   const ConversationItemWidget({super.key, required this.conversation});
-
-  Color _avatarBackground(String name) {
-    final code = name.isNotEmpty ? name.codeUnitAt(0) : 65;
-    final colors = [
-      AppColors.primary,
-      AppColors.complementary,
-      AppColors.accent,
-    ];
-    return colors[code % colors.length];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +19,7 @@ class ConversationItemWidget extends StatelessWidget {
           // Profile Image with village color avatar background
           CircleAvatar(
             radius: 28,
-            backgroundColor: _avatarBackground(conversation.name),
+            backgroundColor: avatarBackground(conversation.name),
             child: Text(
               conversation.name.isNotEmpty
                   ? conversation.name[0].toUpperCase()

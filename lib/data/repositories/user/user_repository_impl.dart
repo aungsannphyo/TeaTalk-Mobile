@@ -1,4 +1,4 @@
-import "../../../domain/entities/user/user_model.dart";
+import "../../../domain/entities/user/search_user_model.dart";
 import '../../../domain/events/register_event.dart';
 import "../../../domain/repositories/user/user_repository.dart";
 import "../../datasources/user/user_remote_datasource.dart";
@@ -15,7 +15,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<UserModel> searchUser(String searchInput) {
+  Future<SearchUserModel> searchUser(String searchInput) {
     return remote.searchUser(searchInput);
   }
 }

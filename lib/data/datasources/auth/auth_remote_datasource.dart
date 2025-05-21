@@ -18,7 +18,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<LoginResponseModel> login(String email, String password) async {
     final response = await http.post(
-      Uri.parse('${dotenv.env['API_URL']}/login'),
+      Uri.parse('$apiUrl/login'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'email': email,
@@ -49,7 +49,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<CommonResponseModel> register(RegisterEvent register) async {
     final response = await http.post(
-      Uri.parse('${dotenv.env['API_URL']}/register'),
+      Uri.parse('$apiUrl/register'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'email': register.email,

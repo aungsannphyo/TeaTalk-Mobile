@@ -4,11 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../routes/routes_name.dart';
+import '../../drawer/app_drawer.dart';
 import '../../providers/auth/login_provider.dart';
 import '../../providers/conversation/conversation_provider.dart';
-import '../../widgets/conversation/conversation_item_widget.dart';
 import "../../../style/theme/app_color.dart";
-import '../../widgets/conversation/conversation_pop_up_menu_widget.dart';
+import '../../widgets/conversation/conversation_item_widget.dart';
 import '../../widgets/conversation/no_conversation_widget.dart';
 
 class ConversationScreen extends HookConsumerWidget {
@@ -29,20 +29,17 @@ class ConversationScreen extends HookConsumerWidget {
       return null;
     }, [authState.auth]);
 
-    void onMenuSelected(BuildContext context, String value) {
-      switch (value) {
-        case 'add_friend':
-          GoRouter.of(context).pushNamed(RouteName.addFriend);
-          break;
-        case 'friends_list':
-          break;
-        case 'create_group':
-          break;
-      }
+    void navigateToAddFriend() {
+      GoRouter.of(context).pushNamed(RouteName.addFriend);
     }
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      drawer: AppDrawer(
+        username: 'John Doe',
+        email: 'john@example.com',
+        profileImageUrl: null, // or provide a valid image URL
+      ),
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         elevation: 0,
@@ -56,9 +53,14 @@ class ConversationScreen extends HookConsumerWidget {
           ),
         ),
         actions: [
-          ConversationPopUpMenuWidget(
-            onMenuSelected: onMenuSelected,
-          )
+          IconButton(
+            onPressed: () {
+              navigateToAddFriend();
+            },
+            icon: Icon(
+              Icons.person_add_alt_outlined,
+            ),
+          ),
         ],
         centerTitle: true,
       ),

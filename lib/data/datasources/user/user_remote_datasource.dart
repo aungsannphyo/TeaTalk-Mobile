@@ -6,11 +6,11 @@ import 'package:http/http.dart' as http;
 import '../../models/common_response_model.dart';
 import "../../../exceptions/app_exception.dart";
 import "../../../domain/events/register_event.dart";
-import '../../models/user/user_response_model.dart';
+import '../../models/user/search_user_response_model.dart';
 
 abstract class UserRemoteDataSource {
   Future<CommonResponseModel> register(RegisterEvent register);
-  Future<UserResponseModel> searchUser(String searchInput);
+  Future<SearchUserResponseModel> searchUser(String searchInput);
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -24,7 +24,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<CommonResponseModel> register(RegisterEvent register) async {
     final response = await http.post(
-      Uri.parse('${dotenv.env['API_URL']}/register'),
+      Uri.parse('$apiUrl/register'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'email': register.email,
@@ -52,9 +52,9 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<UserResponseModel> searchUser(String searchInput) async {
+  Future<SearchUserResponseModel> searchUser(String searchInput) async {
     final response = await http.get(
-      Uri.parse('${dotenv.env['API_URL']}/user/search?q=$searchInput'),
+      Uri.parse('$apiUrl/user/search?q=$searchInput'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -63,9 +63,10 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-
-      print("RESULT $data");
+      return SearchUserResponseModel.fromJson(data);
+    } else if (response.statusCode == 404) {
+      throw AppException("User information not found.");
     }
-    throw UnimplementedError();
+    throw AppException("Something went wrong. Please try again.");
   }
 }

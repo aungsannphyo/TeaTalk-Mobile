@@ -2,13 +2,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../data/datasources/user/user_remote_datasource.dart';
 import '../../../data/repositories/user/user_repository_impl.dart';
-import '../../../domain/entities/user/user_model.dart';
+import '../../../domain/entities/user/search_user_model.dart';
 import '../../../domain/usecases/user/user_usercase.dart';
 import '../auth/login_provider.dart';
 
 class SearchUserState {
   final bool isLoading;
-  final UserModel? user;
+  final SearchUserModel? user;
   final String? error;
 
   SearchUserState({
@@ -28,7 +28,11 @@ class SearchUserNotifier extends StateNotifier<SearchUserState> {
   Future<void> searchUser(String searchInput) async {
     state = SearchUserState(isLoading: true);
     try {
-      await userUsercase.searchUser(searchInput);
+      final result = await userUsercase.searchUser(searchInput);
+      state = SearchUserState(
+        user: result,
+        isLoading: false,
+      );
     } catch (e) {
       state = SearchUserState(
         isLoading: false,
