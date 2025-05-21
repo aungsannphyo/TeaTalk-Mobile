@@ -1,8 +1,6 @@
 import "../../events/register_event.dart";
-import "../../entities/auth/login_model.dart";
 import "../../../data/models/common_response_model.dart";
 
-abstract class AuthRepository {
-  Future<LoginModel> login(String email, String password);
+abstract class UserRepository {
   Future<CommonResponseModel> register(RegisterEvent register);
 }

@@ -3,11 +3,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../../../routes/routes_name.dart';
-import '../../../style/text_style.dart';
-import '../../../style/theme/color.dart';
-import '../../widgets/common/custom_text_form_field.dart';
+import '../../domain/events/register_event.dart';
+import '../../routes/routes_name.dart';
+import '../../style/text_style.dart';
+import '../../style/theme/color.dart';
+import '../providers/user/register_provider.dart';
+import '../widgets/auth/auth_button_widget.dart';
+import '../widgets/common/custom_text_form_field_widget.dart';
+import '../widgets/common/custom_snack_bar_widget.dart';
 
 class RegisterScreen extends HookConsumerWidget {
   const RegisterScreen({super.key});
@@ -22,11 +25,52 @@ class RegisterScreen extends HookConsumerWidget {
     final obscurePassword = useState(true);
     final obscureConfirmPassword = useState(true);
 
+    final registerState = ref.watch(registerProvider);
+
+    // print("ERROR ${authState.error}");
+
     void onRegister() {
       if (formKey.currentState!.validate()) {
-        // Registration logic here
+        final RegisterEvent event = RegisterEvent(
+          username: usernameController.text,
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        ref.read(registerProvider.notifier).register(event);
       }
     }
+
+    ref.listen<RegisterState>(
+      registerProvider,
+      (previous, next) {
+        if (next.error != null && next.error!.isNotEmpty) {
+          SnackbarUtil.showError(context, next.error!);
+        }
+      },
+    );
+
+    ref.listen<RegisterState>(
+      registerProvider,
+      (previous, next) {
+        if (next.isSuccess) {
+          SnackbarUtil.showSuccess(
+            context,
+            "Registration successful! Welcome aboard — let's get started.",
+          );
+
+          usernameController.clear();
+          emailController.clear();
+          passwordController.clear();
+          confirmPasswordController.clear();
+
+          Future.delayed(const Duration(seconds: 2), () {
+            if (context.mounted) {
+              GoRouter.of(context).pushReplacementNamed(RouteName.login);
+            }
+          });
+        }
+      },
+    );
 
     void navigateToLogin() {
       GoRouter.of(context).pushNamed(RouteName.login);
@@ -75,9 +119,14 @@ class RegisterScreen extends HookConsumerWidget {
                     isPassword: true,
                     onToggleObscure: () =>
                         obscurePassword.value = !obscurePassword.value,
-                    validator: (val) => val == null || val.isEmpty
-                        ? "Please enter your password."
-                        : null,
+                    validator: (val) {
+                      if (val == null || val.isEmpty) {
+                        return "Please enter your password.";
+                      } else if (val.length < 6) {
+                        return "Password must be at least 7 characters long.";
+                      }
+                      return null;
+                    },
                     prefixIcon: Icons.lock_outline,
                   ),
                   const SizedBox(height: 16),
@@ -100,26 +149,16 @@ class RegisterScreen extends HookConsumerWidget {
                     prefixIcon: Icons.lock_outline,
                   ),
                   const SizedBox(height: 24),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: onRegister,
-                      label: Text(
-                        "Register",
-                        style: AppTextStyles.semiBold
-                            .copyWith(color: Colors.white),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
+                  AuthButtonWidget(
+                    isLoading: registerState.isLoading,
+                    label: 'Register',
+                    onPressed: onRegister,
                   ),
                   const SizedBox(height: 16),
                   TextButton(
-                    onPressed: navigateToLogin,
+                    onPressed: () {
+                      navigateToLogin();
+                    },
                     child: RichText(
                       text: TextSpan(
                         text: "Already have an account? ",

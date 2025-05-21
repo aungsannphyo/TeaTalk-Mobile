@@ -11,7 +11,7 @@ class BottonNavigation extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(bottomNavIndexProvider);
     final screens = const [
-      ConversationsScreen(),
+      ConversationScreen(),
       ProfileScreen(),
     ];
 
@@ -25,9 +25,14 @@ class BottonNavigation extends HookConsumerWidget {
         onTap: (index) =>
             ref.read(bottomNavIndexProvider.notifier).state = index,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Message'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline), label: 'Profile'),
+            icon: Icon(Icons.message),
+            label: 'Message',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            label: 'Profile',
+          ),
         ],
       ),
     );

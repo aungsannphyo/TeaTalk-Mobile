@@ -5,12 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../widgets/auth/auth_button_widget.dart';
-import '../../../presentation/widgets/common/error_snackbar.dart';
+import '../../widgets/common/custom_snack_bar_widget.dart';
 import '../../../routes/routes_name.dart';
-import '../../providers/auth/auth_provider.dart';
+import '../../providers/auth/login_provider.dart';
 import '../../../style/text_style.dart';
 import '../../../style/theme/color.dart';
-import '../../widgets/common/custom_text_form_field.dart';
+import '../../widgets/common/custom_text_form_field_widget.dart';
 
 class LoginScreen extends HookConsumerWidget {
   const LoginScreen({super.key});
@@ -31,11 +31,14 @@ class LoginScreen extends HookConsumerWidget {
       }
     }
 
-    ref.listen<AuthState>(authProvider, (previous, next) {
-      if (next.error != null && next.error!.isNotEmpty) {
-        SnackbarUtil.showError(context, next.error!);
-      }
-    });
+    ref.listen<AuthState>(
+      authProvider,
+      (previous, next) {
+        if (next.error != null && next.error!.isNotEmpty) {
+          SnackbarUtil.showError(context, next.error!);
+        }
+      },
+    );
 
     void navigateToRegister() {
       GoRouter.of(context).pushNamed(RouteName.register);

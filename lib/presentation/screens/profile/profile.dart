@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ywar_talk_mobile/presentation/providers/auth/auth_provider.dart';
+import 'package:ywar_talk_mobile/presentation/providers/auth/login_provider.dart';
 import 'package:ywar_talk_mobile/presentation/widgets/profile/profile_menu_item_widget.dart';
 import 'package:ywar_talk_mobile/presentation/widgets/profile/profile_widget.dart';
 import '../../../style/theme/color.dart'; // AppColors

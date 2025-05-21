@@ -2,9 +2,9 @@ import "package:flutter/material.dart";
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import "../../presentation/navigation/botton_nav.dart";
-import "../../presentation/screens/auth/register_screen.dart";
+import "../presentation/screens/register_screen.dart";
 import "../routes/routes_name.dart";
-import "../presentation/providers/auth/auth_provider.dart";
+import "../presentation/providers/auth/login_provider.dart";
 import "../presentation/screens/auth/login_screen.dart";
 import "../presentation/screens/conversations/conversation_screen.dart";
 import "../presentation/screens/profile/profile.dart";
@@ -52,7 +52,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/conversation',
         name: RouteName.conversation,
-        builder: (context, state) => const ConversationsScreen(),
+        builder: (context, state) => const ConversationScreen(),
       ),
       GoRoute(
         path: '/user',
