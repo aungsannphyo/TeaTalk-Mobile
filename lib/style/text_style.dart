@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './theme/color.dart';
+import 'theme/app_color.dart';
 
 class AppTextStyles {
   static const regular = TextStyle(

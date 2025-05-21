@@ -1,4 +1,4 @@
-import 'package:ywar_talk_mobile/domain/entities/auth/login_model.dart';
+import '../../../domain/entities/auth/login_model.dart';
 
 class LoginResponseModel extends LoginModel {
   LoginResponseModel({

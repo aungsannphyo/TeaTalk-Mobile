@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../utils/extensions.dart';
 import '../../../domain/entities/conversation/conversation_model.dart';
-import "../../../style/theme/color.dart";
+import "../../../style/theme/app_color.dart";
 import '../../../utils/date_time.dart';
 
 class ConversationItemWidget extends StatelessWidget {

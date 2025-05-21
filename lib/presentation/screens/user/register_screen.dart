@@ -3,14 +3,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../domain/events/register_event.dart';
-import '../../routes/routes_name.dart';
-import '../../style/text_style.dart';
-import '../../style/theme/color.dart';
-import '../providers/user/register_provider.dart';
-import '../widgets/auth/auth_button_widget.dart';
-import '../widgets/common/custom_text_form_field_widget.dart';
-import '../widgets/common/custom_snack_bar_widget.dart';
+import '../../../domain/events/register_event.dart';
+import '../../../routes/routes_name.dart';
+import '../../../style/text_style.dart';
+import '../../../style/theme/app_color.dart';
+import '../../providers/user/register_provider.dart';
+import '../../widgets/auth/auth_button_widget.dart';
+import '../../widgets/common/custom_text_form_field_widget.dart';
+import '../../widgets/common/custom_snack_bar_widget.dart';
 
 class RegisterScreen extends HookConsumerWidget {
   const RegisterScreen({super.key});
@@ -166,9 +166,10 @@ class RegisterScreen extends HookConsumerWidget {
                             .copyWith(color: AppColors.textDark),
                         children: [
                           TextSpan(
-                              text: "Login",
-                              style: AppTextStyles.semiBold
-                                  .copyWith(color: AppColors.accent)),
+                            text: "Login",
+                            style: AppTextStyles.semiBold
+                                .copyWith(color: AppColors.accent),
+                          ),
                         ],
                       ),
                     ),

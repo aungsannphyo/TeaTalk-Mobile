@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../style/theme/color.dart';
+import '../../../style/text_style.dart';
+import '../../../style/theme/app_color.dart';
 
 class NoConversationWidget extends StatelessWidget {
   const NoConversationWidget({super.key});
@@ -24,10 +25,8 @@ class NoConversationWidget extends StatelessWidget {
             Text(
               "You don’t have any conversations yet. Start chatting with your friends!",
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: AppTextStyles.regular.copyWith(
                 fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
                 height: 1.5,
               ),
             ),

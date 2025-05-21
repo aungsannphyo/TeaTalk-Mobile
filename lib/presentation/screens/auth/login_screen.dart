@@ -9,7 +9,7 @@ import '../../widgets/common/custom_snack_bar_widget.dart';
 import '../../../routes/routes_name.dart';
 import '../../providers/auth/login_provider.dart';
 import '../../../style/text_style.dart';
-import '../../../style/theme/color.dart';
+import '../../../style/theme/app_color.dart';
 import '../../widgets/common/custom_text_form_field_widget.dart';
 
 class LoginScreen extends HookConsumerWidget {
@@ -57,7 +57,7 @@ class LoginScreen extends HookConsumerWidget {
                 children: [
                   SvgPicture.asset('assets/images/login.svg', height: 180),
                   const SizedBox(height: 24),
-                  Text('Ywar Talk',
+                  Text('Tea Talk',
                       style: AppTextStyles.bold.copyWith(fontSize: 24)),
                   const SizedBox(height: 32),
                   CustomTextFormField(
@@ -117,9 +117,10 @@ class LoginScreen extends HookConsumerWidget {
                         style: AppTextStyles.regular,
                         children: [
                           TextSpan(
-                              text: "Sign up",
-                              style: AppTextStyles.semiBold
-                                  .copyWith(color: AppColors.accent)),
+                            text: "Sign up",
+                            style: AppTextStyles.semiBold
+                                .copyWith(color: AppColors.accent),
+                          ),
                         ],
                       ),
                     ),

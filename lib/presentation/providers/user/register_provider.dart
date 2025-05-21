@@ -47,7 +47,7 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
 
 final registerProvider =
     StateNotifierProvider<RegisterNotifier, RegisterState>((ref) {
-  final remote = UserRemoteDataSourceImpl();
+  final remote = UserRemoteDataSourceImpl(token: null);
   final repository = UserRepositoryImpl(remote);
   return RegisterNotifier(
     userUsercase: UserUsercase(repository),

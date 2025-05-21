@@ -1,13 +1,12 @@
 import "package:flutter/material.dart";
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import "../../presentation/navigation/botton_nav.dart";
-import "../presentation/screens/register_screen.dart";
+import "../presentation/screens/friend/add_friend_screen.dart";
+import "../presentation/screens/user/register_screen.dart";
 import "../routes/routes_name.dart";
 import "../presentation/providers/auth/login_provider.dart";
 import "../presentation/screens/auth/login_screen.dart";
 import "../presentation/screens/conversations/conversation_screen.dart";
-import "../presentation/screens/profile/profile.dart";
 
 class GoRouterRefreshNotifier extends ChangeNotifier {
   GoRouterRefreshNotifier(Stream stream) {
@@ -47,7 +46,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/',
         name: RouteName.root,
-        builder: (context, state) => const BottonNavigation(),
+        builder: (context, state) => const ConversationScreen(),
       ),
       GoRoute(
         path: '/conversation',
@@ -55,9 +54,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const ConversationScreen(),
       ),
       GoRoute(
-        path: '/user',
-        name: RouteName.user,
-        builder: (context, state) => const ProfileScreen(),
+        path: '/add-friend',
+        name: RouteName.addFriend,
+        builder: (context, state) => const AddFriendScreen(),
       ),
     ],
   );

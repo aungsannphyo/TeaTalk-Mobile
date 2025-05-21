@@ -4,5 +4,5 @@ class RouteName {
   static const root = "root";
   static const user = 'user';
   static const register = 'register';
-  static const friend = 'friend';
+  static const addFriend = 'add-friend';
 }

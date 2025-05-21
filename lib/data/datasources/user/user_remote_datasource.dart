@@ -6,13 +6,20 @@ import 'package:http/http.dart' as http;
 import '../../models/common_response_model.dart';
 import "../../../exceptions/app_exception.dart";
 import "../../../domain/events/register_event.dart";
+import '../../models/user/user_response_model.dart';
 
 abstract class UserRemoteDataSource {
   Future<CommonResponseModel> register(RegisterEvent register);
+  Future<UserResponseModel> searchUser(String searchInput);
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
+  final String? token;
   final apiUrl = dotenv.env['API_URL'];
+
+  UserRemoteDataSourceImpl({
+    required this.token,
+  });
 
   @override
   Future<CommonResponseModel> register(RegisterEvent register) async {
@@ -42,5 +49,23 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     } else {
       throw AppException("Something went wrong. Please try again.");
     }
+  }
+
+  @override
+  Future<UserResponseModel> searchUser(String searchInput) async {
+    final response = await http.get(
+      Uri.parse('${dotenv.env['API_URL']}/user/search?q=$searchInput'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+
+      print("RESULT $data");
+    }
+    throw UnimplementedError();
   }
 }

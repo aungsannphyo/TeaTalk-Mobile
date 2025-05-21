@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../style/theme/color.dart'; // Adjust path if needed
+import '../../../style/theme/app_color.dart'; // Adjust path if needed
 
 class SnackbarUtil {
   static void showError(BuildContext context, String message) {

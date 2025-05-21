@@ -20,8 +20,8 @@ class MyApp extends HookConsumerWidget {
     final router = ref.watch(routerProvider);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Auth Clean Arch',
-      theme: appTheme,
+      title: 'TeeTalk',
+      theme: teaTalkTheme,
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,
       routeInformationProvider: router.routeInformationProvider,

@@ -2,7 +2,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../data/datasources/auth/auth_remote_datasource.dart';
 import '../../../data/repositories/auth/auth_repository_impl.dart';
 import '../../../domain/entities/auth/login_model.dart';
-import "../../../domain/events/register_event.dart";
 import '../../../domain/usecases/auth/auth_usecase.dart';
 
 class AuthState {

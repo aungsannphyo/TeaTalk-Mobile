@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const background = Color(0xFFE8F5E9);
-  static const primary = Color(0xFF2E7D32);
-  static const complementary = Color(0xFF4FC3F7);
-  static const textDark = Color(0xFF333333);
-  static const accent = Color(0xFFFF7043);
+  static const background = Color(0xFFFFF8E1);
+
+  static const primary = Color(0xFF8B5E3C);
+
+  static const complementary = Color(0xFFC9A66B);
+
+  static const textDark = Color(0xFF3E2723);
+
+  static const accent = Color(0xFFD96C06);
+
   static const onlineStatus = Color(0xFF4CAF50);
+
   static const notifications = Color(0xFFD32F2F);
+
   static const bubbleShadow = Color(0xFFCFD8DC);
 
   static const dangerSoft = Color(0xFFFFEBEE);
