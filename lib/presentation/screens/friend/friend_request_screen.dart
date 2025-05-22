@@ -11,10 +11,10 @@ import '../../../utils/date_time.dart';
 import '../../providers/auth/login_provider.dart';
 import '../../providers/friend/decide_friend_request_provider.dart';
 import '../../providers/friend/friend_request_provider.dart';
-import '../../widgets/common/custom_elevate_button_widget.dart';
-import '../../widgets/common/custom_snack_bar_widget.dart';
-import '../../widgets/common/placeholder_widget.dart';
-import '../../widgets/friend/avatar_widget.dart';
+import '../../widgets/custom_elevate_button_widget.dart';
+import '../../widgets/custom_snack_bar_widget.dart';
+import '../../widgets/placeholder_widget.dart';
+import 'widget/avatar_widget.dart';
 
 class FriendRequestScreen extends HookConsumerWidget {
   const FriendRequestScreen({super.key});

@@ -4,13 +4,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../widgets/auth/auth_button_widget.dart';
-import '../../widgets/common/custom_snack_bar_widget.dart';
+import '../../widgets/common_button_widget.dart';
+import '../../widgets/custom_snack_bar_widget.dart';
 import '../../../routes/routes_name.dart';
 import '../../providers/auth/login_provider.dart';
 import '../../../style/text_style.dart';
 import '../../../style/theme/app_color.dart';
-import '../../widgets/common/custom_text_form_field_widget.dart';
+import '../../widgets/custom_text_form_field_widget.dart';
 
 class LoginScreen extends HookConsumerWidget {
   const LoginScreen({super.key});
@@ -92,7 +92,7 @@ class LoginScreen extends HookConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  AuthButtonWidget(
+                  CommonButtonWidget(
                     isLoading: authState.isLoading,
                     label: 'Login',
                     onPressed: onLogin,

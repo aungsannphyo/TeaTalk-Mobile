@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../utils/avatar_background.dart';
-import '../../../utils/extensions.dart';
-import '../../../domain/entities/conversation/conversation_model.dart';
-import "../../../style/theme/app_color.dart";
-import '../../../utils/date_time.dart';
+import '../../../../utils/avatar_background.dart';
+import '../../../../utils/extensions.dart';
+import '../../../../domain/entities/conversation/conversation_model.dart';
+import "../../../../style/theme/app_color.dart";
+import '../../../../utils/date_time.dart';
 
 class ConversationItemWidget extends StatelessWidget {
   final ConversationModel conversation;

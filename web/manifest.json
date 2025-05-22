@@ -1,6 +1,6 @@
 {
-    "name": "ywar_talk_mobile",
-    "short_name": "ywar_talk_mobile",
+    "name": "tea_talk_mobile",
+    "short_name": "tea_talk_mobile",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

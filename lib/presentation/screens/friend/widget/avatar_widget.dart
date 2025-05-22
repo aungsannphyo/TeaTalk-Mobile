@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../utils/avatar_background.dart';
+import '../../../../utils/avatar_background.dart';
 
 class AvatarWidget extends StatelessWidget {
   final String? profileImage;

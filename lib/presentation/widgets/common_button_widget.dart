@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../../style/theme/app_color.dart';
-import '../../../style/text_style.dart';
+import '../../style/theme/app_color.dart';
+import '../../style/text_style.dart';
 
-class AuthButtonWidget extends StatelessWidget {
+class CommonButtonWidget extends StatelessWidget {
   final bool isLoading;
   final String label;
   final VoidCallback onPressed;
 
-  const AuthButtonWidget({
+  const CommonButtonWidget({
     super.key,
     required this.isLoading,
     required this.label,

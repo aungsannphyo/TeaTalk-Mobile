@@ -5,6 +5,8 @@ class SearchUserModel {
   final String email;
   final bool isFriend;
   final String? profileImage;
+  final bool isOnline;
+  final String lastSeen;
 
   SearchUserModel({
     required this.id,
@@ -13,5 +15,7 @@ class SearchUserModel {
     required this.username,
     required this.isFriend,
     this.profileImage,
+    required this.isOnline,
+    required this.lastSeen,
   });
 }

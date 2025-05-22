@@ -8,6 +8,8 @@ class SearchUserResponseModel extends SearchUserModel {
     required super.username,
     required super.isFriend,
     super.profileImage,
+    required super.isOnline,
+    required super.lastSeen,
   });
 
   factory SearchUserResponseModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +20,8 @@ class SearchUserResponseModel extends SearchUserModel {
       userIdentity: json['userIdentity'],
       username: json['username'],
       isFriend: json['isFriend'],
+      isOnline: json["isOnline"],
+      lastSeen: json['lastSeen'],
     );
   }
 }

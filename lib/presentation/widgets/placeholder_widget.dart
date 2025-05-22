@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../style/text_style.dart';
-import '../../../style/theme/app_color.dart';
+import '../../style/text_style.dart';
+import '../../style/theme/app_color.dart';
 
 class PlaceholderWidget extends StatelessWidget {
   final String text;

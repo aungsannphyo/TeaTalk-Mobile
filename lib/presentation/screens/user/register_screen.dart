@@ -8,9 +8,9 @@ import '../../../routes/routes_name.dart';
 import '../../../style/text_style.dart';
 import '../../../style/theme/app_color.dart';
 import '../../providers/user/register_provider.dart';
-import '../../widgets/auth/auth_button_widget.dart';
-import '../../widgets/common/custom_text_form_field_widget.dart';
-import '../../widgets/common/custom_snack_bar_widget.dart';
+import '../../widgets/common_button_widget.dart';
+import '../../widgets/custom_text_form_field_widget.dart';
+import '../../widgets/custom_snack_bar_widget.dart';
 
 class RegisterScreen extends HookConsumerWidget {
   const RegisterScreen({super.key});
@@ -143,7 +143,7 @@ class RegisterScreen extends HookConsumerWidget {
                     prefixIcon: Icons.lock_outline,
                   ),
                   const SizedBox(height: 24),
-                  AuthButtonWidget(
+                  CommonButtonWidget(
                     isLoading: registerState.isLoading,
                     label: 'Register',
                     onPressed: onRegister,

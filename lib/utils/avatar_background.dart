@@ -14,11 +14,11 @@ Color avatarBackground(String name) {
 
 String getRandomDefaultAvatar(String username) {
   final avatars = [
-    'assets/images/businesswoman_avatar.svg',
     'assets/images/avatar_traveler.svg',
+    'assets/images/businesswoman_avatar.svg',
     'assets/images/developer_avatar.svg',
     'assets/images/finance_guy_avatar.svg',
-    'assets/images/girl_avata.svg',
+    'assets/images/girl_avatar.svg',
     'assets/images/professional_woman_avatar.svg',
     'assets/images/woman_avatar.svg',
   ];

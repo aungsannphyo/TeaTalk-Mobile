@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../style/theme/app_color.dart';
+import '../../../../../style/theme/app_color.dart';
 
 class AddFriendSearchInputWidget extends StatelessWidget {
   final TextEditingController controller;

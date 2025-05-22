@@ -6,4 +6,5 @@ class RouteName {
   static const register = 'register';
   static const addFriend = 'add-friend';
   static const friendRequestLog = 'friend-request-log';
+  static const friend = "friend";
 }

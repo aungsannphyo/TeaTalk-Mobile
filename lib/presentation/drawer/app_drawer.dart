@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../routes/routes_name.dart';
 import '../../style/text_style.dart';
 import '../../style/theme/app_color.dart';
 import '../providers/auth/login_provider.dart';
@@ -22,6 +24,10 @@ class AppDrawer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final initial = username.isNotEmpty ? username[0].toUpperCase() : '?';
 
+    void navigateToContact() {
+      GoRouter.of(context).pushNamed(RouteName.friend);
+    }
+
     return Drawer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -38,6 +44,46 @@ class AppDrawer extends HookConsumerWidget {
             ),
             title: Text(
               'My Profile',
+              style: AppTextStyles.semiBold,
+            ),
+            onTap: () {
+              // Navigate to profile or trigger action
+            },
+          ),
+          const Divider(color: AppColors.bubbleShadow),
+          ListTile(
+            leading: const Icon(
+              Icons.group_outlined,
+              color: AppColors.textDark,
+            ),
+            title: Text(
+              'New Group',
+              style: AppTextStyles.semiBold,
+            ),
+            onTap: () {
+              // Navigate to profile or trigger action
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.account_box_outlined,
+              color: AppColors.textDark,
+            ),
+            title: Text(
+              'Friends',
+              style: AppTextStyles.semiBold,
+            ),
+            onTap: () {
+              navigateToContact();
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.settings_outlined,
+              color: AppColors.textDark,
+            ),
+            title: Text(
+              'Settings',
               style: AppTextStyles.semiBold,
             ),
             onTap: () {

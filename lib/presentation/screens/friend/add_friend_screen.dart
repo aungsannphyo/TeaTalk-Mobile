@@ -9,10 +9,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../style/theme/app_color.dart';
 import '../../providers/user/search_user_provider.dart';
 import '../../providers/user/send_friend_request_provider.dart';
-import '../../widgets/common/custom_snack_bar_widget.dart';
-import '../../widgets/common/placeholder_widget.dart';
-import '../../widgets/friend/add_friend_search_input_widget.dart';
-import '../../widgets/friend/add_friend_user_tile_widget.dart';
+import '../../widgets/custom_snack_bar_widget.dart';
+import '../../widgets/placeholder_widget.dart';
+import 'widget/add_friend/add_friend_search_input_widget.dart';
+import 'widget/add_friend/add_friend_user_tile_widget.dart';
 
 class AddFriendScreen extends HookConsumerWidget {
   const AddFriendScreen({super.key});

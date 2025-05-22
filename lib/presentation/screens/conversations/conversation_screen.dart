@@ -10,8 +10,8 @@ import '../../drawer/app_drawer.dart';
 import '../../providers/auth/login_provider.dart';
 import '../../providers/conversation/conversation_provider.dart';
 import "../../../style/theme/app_color.dart";
-import '../../widgets/conversation/conversation_item_widget.dart';
-import '../../widgets/common/placeholder_widget.dart';
+import 'widget/conversation_item_widget.dart';
+import '../../widgets/placeholder_widget.dart';
 
 class ConversationScreen extends HookConsumerWidget {
   const ConversationScreen({super.key});
@@ -42,10 +42,6 @@ class ConversationScreen extends HookConsumerWidget {
       GoRouter.of(context).pushNamed(RouteName.friendRequestLog);
     }
 
-    void navigateToAddFriend() {
-      GoRouter.of(context).pushNamed(RouteName.addFriend);
-    }
-
     return Scaffold(
       backgroundColor: AppColors.background,
       drawer: AppDrawer(
@@ -65,46 +61,21 @@ class ConversationScreen extends HookConsumerWidget {
             letterSpacing: 0.8,
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              navigateToFriendRequestLog();
-            },
-            icon: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                const Icon(
-                  Icons.notifications,
-                  size: 28,
-                ),
-                if (totalRequests > 0)
-                  Positioned(
-                    right: -2,
-                    top: -2,
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                      constraints: const BoxConstraints(
-                        minWidth: 18,
-                        minHeight: 18,
-                      ),
-                      child: Text(
-                        '$totalRequests',
-                        style: AppTextStyles.bold.copyWith(
-                          fontSize: 15,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
+        actions: totalRequests > 0
+            ? [
+                IconButton(
+                  onPressed: () {
+                    navigateToFriendRequestLog();
+                  },
+                  icon: Badge(
+                    label: Text(
+                      totalRequests.toString(),
                     ),
+                    child: Icon(Icons.person_add),
                   ),
-              ],
-            ),
-          ),
-        ],
+                ),
+              ]
+            : null,
         centerTitle: true,
       ),
       body: conversationState.isLoading
@@ -135,37 +106,18 @@ class ConversationScreen extends HookConsumerWidget {
                     ),
                   ],
                 ),
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () {
-              navigateToAddFriend();
-            },
-            heroTag: 'addFriend',
-            mini: true,
-            backgroundColor: AppColors.complementary,
-            tooltip: 'Add Friend',
-            child: Icon(
-              Icons.person_add_alt_1_outlined,
-            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            28,
           ),
-          const SizedBox(height: 12),
-          FloatingActionButton(
-            onPressed: () {},
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                28,
-              ),
-            ),
-            heroTag: 'startSendingAMessage',
-            tooltip: 'Sent a message',
-            child: Icon(
-              Icons.chat_bubble_outline,
-            ),
-          ),
-        ],
+        ),
+        heroTag: 'startSendingAMessage',
+        tooltip: 'Sent a message',
+        child: Icon(
+          Icons.chat_bubble_outline,
+        ),
       ),
     );
   }
