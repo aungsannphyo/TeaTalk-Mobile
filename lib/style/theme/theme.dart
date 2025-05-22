@@ -12,11 +12,12 @@ final ThemeData teaTalkTheme = ThemeData(
   colorScheme: ColorScheme(
     brightness: Brightness.light,
     primary: AppColors.primary,
-    onPrimary: AppColors.background,
+    onPrimary: Colors.white, // Fix: onPrimary should be contrast to primary
     secondary: AppColors.accent,
-    onSecondary: AppColors.background,
+    onSecondary:
+        Colors.white, // Fix: onSecondary should be contrast to secondary
     error: AppColors.danger,
-    onError: AppColors.background,
+    onError: Colors.white, // Fix: onError should be contrast to error
     surface: AppColors.background,
     onSurface: AppColors.textDark,
   ),
@@ -35,7 +36,8 @@ final ThemeData teaTalkTheme = ThemeData(
   // AppBar
   appBarTheme: const AppBarTheme(
     backgroundColor: AppColors.primary,
-    foregroundColor: AppColors.background,
+    foregroundColor:
+        Colors.white, // Fix: foregroundColor should be contrast to background
     elevation: 1,
   ),
 
@@ -44,7 +46,7 @@ final ThemeData teaTalkTheme = ThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: AppColors.complementary,
       foregroundColor: AppColors.textDark,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
     ),
@@ -53,7 +55,8 @@ final ThemeData teaTalkTheme = ThemeData(
   // Floating Action Button
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: AppColors.accent,
-    foregroundColor: AppColors.background,
+    foregroundColor:
+        Colors.white, // Fix: foregroundColor should be contrast to background
   ),
 
   // Input Fields
@@ -62,11 +65,11 @@ final ThemeData teaTalkTheme = ThemeData(
     fillColor: AppColors.background,
     labelStyle: const TextStyle(color: AppColors.textDark),
     enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: AppColors.complementary),
+      borderSide: const BorderSide(color: AppColors.complementary),
       borderRadius: BorderRadius.circular(10),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: AppColors.accent, width: 2),
+      borderSide: const BorderSide(color: AppColors.accent, width: 2),
       borderRadius: BorderRadius.circular(10),
     ),
   ),
@@ -74,7 +77,9 @@ final ThemeData teaTalkTheme = ThemeData(
   // SnackBar
   snackBarTheme: const SnackBarThemeData(
     backgroundColor: AppColors.accent,
-    contentTextStyle: TextStyle(color: AppColors.background),
+    contentTextStyle: TextStyle(
+        color: Colors
+            .white), // Fix: contentTextStyle should be contrast to background
     behavior: SnackBarBehavior.floating,
   ),
 

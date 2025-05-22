@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../domain/entities/friend/friend_model.dart';
+import '../../../routes/routes_name.dart';
 import '../../../style/theme/app_color.dart';
 import '../../providers/user/search_user_provider.dart';
 import '../../providers/user/send_friend_request_provider.dart';
@@ -57,6 +60,19 @@ class AddFriendScreen extends HookConsumerWidget {
         controller.removeListener(listener);
       };
     }, [controller]);
+
+    void navigateToChat(FriendModel friend) {
+      GoRouter.of(context).pushNamed(
+        RouteName.chat,
+        extra: {
+          'id': friend.id,
+          'profileImage': friend.profileImage,
+          'lastSeen': friend.lastSeen.toString(),
+          'isOnline': friend.isOnline,
+          'username': friend.username,
+        },
+      );
+    }
 
     // Listen for friend request errors and success
     ref.listen<SendFriendRequestState>(
@@ -132,6 +148,7 @@ class AddFriendScreen extends HookConsumerWidget {
                       return UserTileWidget(
                         imageUrl: imageUrl,
                         user: user,
+                        navigateToChat: navigateToChat,
                         sendFriendRequest: sendFriendRequest,
                         isLoading: friendReqState.isLoading,
                       );

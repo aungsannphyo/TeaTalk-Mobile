@@ -8,4 +8,5 @@ class RouteName {
   static const friendRequestLog = 'friend-request-log';
   static const friend = "friend";
   static const profile = "profile";
+  static const chat = "chat";
 }

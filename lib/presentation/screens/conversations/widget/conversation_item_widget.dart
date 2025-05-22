@@ -19,7 +19,7 @@ class ConversationItemWidget extends StatelessWidget {
           // Profile Image with village color avatar background
           CircleAvatar(
             radius: 28,
-            backgroundColor: avatarBackground(conversation.name),
+            backgroundColor: Colors.white,
             child: Text(
               conversation.name.isNotEmpty
                   ? conversation.name[0].toUpperCase()

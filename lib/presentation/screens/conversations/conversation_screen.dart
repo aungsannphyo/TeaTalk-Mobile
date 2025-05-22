@@ -41,6 +41,10 @@ class ConversationScreen extends HookConsumerWidget {
       GoRouter.of(context).pushNamed(RouteName.friendRequestLog);
     }
 
+    void navigateToFriendScreen() {
+      GoRouter.of(context).pushNamed(RouteName.friend);
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
       drawer: AppDrawer(
@@ -106,7 +110,9 @@ class ConversationScreen extends HookConsumerWidget {
                   ],
                 ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          navigateToFriendScreen();
+        },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
             28,

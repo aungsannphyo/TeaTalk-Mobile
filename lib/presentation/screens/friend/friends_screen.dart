@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tea_talk_mobile/presentation/widgets/user_tile_widget.dart';
 
+import '../../../domain/entities/friend/friend_model.dart';
 import '../../../routes/routes_name.dart';
 import '../../../style/theme/app_color.dart';
 import '../../providers/friend/friend_provider.dart';
@@ -27,6 +28,19 @@ class FriendsScreen extends HookConsumerWidget {
 
     void navigateToAddFriend() {
       GoRouter.of(context).pushNamed(RouteName.addFriend);
+    }
+
+    void navigateToChat(FriendModel friend) {
+      GoRouter.of(context).pushNamed(
+        RouteName.chat,
+        extra: {
+          'id': friend.id,
+          'profileImage': friend.profileImage,
+          'lastSeen': friend.lastSeen.toString(),
+          'isOnline': friend.isOnline,
+          'username': friend.username,
+        },
+      );
     }
 
     return Scaffold(
@@ -92,10 +106,16 @@ class FriendsScreen extends HookConsumerWidget {
                           ),
                           itemBuilder: (context, index) {
                             final friend = friendState.friends![index];
-                            return UserTileWidget(
-                              sendFriendRequest: () {},
-                              user: friend,
-                              isLoading: friendState.isLoading,
+                            return GestureDetector(
+                              onTap: () {
+                                navigateToChat(friend);
+                              },
+                              child: UserTileWidget(
+                                sendFriendRequest: () {},
+                                navigateToChat: navigateToChat,
+                                user: friend,
+                                isLoading: friendState.isLoading,
+                              ),
                             );
                           },
                         ),

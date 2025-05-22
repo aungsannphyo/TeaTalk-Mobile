@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import "../presentation/screens/chat/chat_screen.dart";
 import "../presentation/screens/friend/add_friend_screen.dart";
 import "../presentation/screens/friend/friend_request_screen.dart";
 import "../presentation/screens/friend/friends_screen.dart";
@@ -76,6 +77,17 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/profile',
         name: RouteName.profile,
         builder: (context, state) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: '/chat',
+        name: RouteName.chat,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          return ChatScreen(
+            key: state.pageKey,
+            friendInfo: extra,
+          );
+        },
       ),
     ],
   );

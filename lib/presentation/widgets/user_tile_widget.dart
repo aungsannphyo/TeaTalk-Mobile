@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tea_talk_mobile/utils/extensions.dart';
 
 import '../../domain/entities/user/user_tile_model.dart';
+import '../../routes/routes_name.dart';
 import '../../utils/date_time.dart';
 import '../screens/friend/widget/avatar_widget.dart';
 import '../../style/text_style.dart';
@@ -11,6 +13,7 @@ class UserTileWidget extends StatelessWidget {
   final UserTileModel user;
   final String? imageUrl;
   final Function sendFriendRequest;
+  final Function navigateToChat;
   final bool isLoading;
 
   const UserTileWidget({
@@ -19,10 +22,15 @@ class UserTileWidget extends StatelessWidget {
     required this.sendFriendRequest,
     required this.user,
     required this.isLoading,
+    required this.navigateToChat,
   });
 
   @override
   Widget build(BuildContext context) {
+    void navigateToChatScreen(String userId) {
+      GoRouter.of(context).pushNamed(RouteName.chat);
+    }
+
     return Container(
       color: AppColors.background,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -83,7 +91,9 @@ class UserTileWidget extends StatelessWidget {
               ),
         trailing: user.isFriend
             ? IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  navigateToChat(user);
+                },
                 icon: Icon(
                   Icons.messenger_outline,
                   color: AppColors.primary,

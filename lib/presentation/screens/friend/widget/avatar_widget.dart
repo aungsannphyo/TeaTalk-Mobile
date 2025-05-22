@@ -26,8 +26,7 @@ class AvatarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       radius: radius,
-      backgroundColor:
-          hasValidImage ? Colors.grey[300] : avatarBackground(username),
+      backgroundColor: hasValidImage ? Colors.grey[300] : Colors.white,
       backgroundImage: hasValidImage && baseUrl != null
           ? NetworkImage('$baseUrl$profileImage')
           : null,
