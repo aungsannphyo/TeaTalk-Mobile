@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../data/datasources/friend/friend_request_datasource.dart';
+import '../../../data/datasources/friend/friend_request_remote_datasource.dart';
 import '../../../data/repositories/friend/friend_request_repository_impl.dart';
 import '../../../domain/events/decide_friend_request_event.dart';
 import '../../../domain/usecases/friend/friend_request_usecase.dart';
@@ -59,7 +59,7 @@ final decideFriendRequestProvider = StateNotifierProvider<
     DecideFriendRequestNotifier, DecideFriendRequestState>((ref) {
   final authState = ref.watch(authProvider);
   final token = authState.auth?.token;
-  final remote = FriendRequestDatasourceImpl(token: token);
+  final remote = FriendRequestRemoteDatasourceImpl(token: token);
 
   final repository = FriendRequestRepositoryImpl(remote);
   return DecideFriendRequestNotifier(

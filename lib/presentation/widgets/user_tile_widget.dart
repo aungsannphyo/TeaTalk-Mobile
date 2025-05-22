@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:tea_talk_mobile/utils/extensions.dart';
 
-import '../../../../../domain/entities/user/search_user_model.dart';
-import '../../../../../utils/date_time.dart';
-import '../avatar_widget.dart';
-import '../../../../../style/text_style.dart';
-import '../../../../../style/theme/app_color.dart';
+import '../../domain/entities/user/user_tile_model.dart';
+import '../../utils/date_time.dart';
+import '../screens/friend/widget/avatar_widget.dart';
+import '../../style/text_style.dart';
+import '../../style/theme/app_color.dart';
 
-class AddFriendUserTileWidget extends StatelessWidget {
-  final SearchUserModel user;
+class UserTileWidget extends StatelessWidget {
+  final UserTileModel user;
   final String? imageUrl;
   final Function sendFriendRequest;
   final bool isLoading;
 
-  const AddFriendUserTileWidget({
+  const UserTileWidget({
     super.key,
     this.imageUrl,
     required this.sendFriendRequest,
@@ -56,7 +56,7 @@ class AddFriendUserTileWidget extends StatelessWidget {
                   width: 12,
                   height: 12,
                   decoration: BoxDecoration(
-                    color: Colors.green,
+                    color: AppColors.onlineStatus,
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.white, width: 2),
                   ),
@@ -81,11 +81,22 @@ class AddFriendUserTileWidget extends StatelessWidget {
                   fontSize: 16,
                 ),
               ),
-        trailing: IconButton(
-          icon: Icon(Icons.person_add_alt_outlined, color: AppColors.primary),
-          iconSize: 33,
-          onPressed: isLoading ? null : () => sendFriendRequest(user.id),
-        ),
+        trailing: user.isFriend
+            ? IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.messenger_outline,
+                  color: AppColors.primary,
+                ),
+              )
+            : IconButton(
+                icon: Icon(
+                  Icons.person_add_alt_outlined,
+                  color: AppColors.primary,
+                ),
+                iconSize: 33,
+                onPressed: isLoading ? null : () => sendFriendRequest(user.id),
+              ),
       ),
     );
   }

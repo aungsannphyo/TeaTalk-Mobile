@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../style/theme/app_color.dart';
@@ -12,7 +11,7 @@ import '../../providers/user/send_friend_request_provider.dart';
 import '../../widgets/custom_snack_bar_widget.dart';
 import '../../widgets/placeholder_widget.dart';
 import 'widget/add_friend/add_friend_search_input_widget.dart';
-import 'widget/add_friend/add_friend_user_tile_widget.dart';
+import '../../widgets/user_tile_widget.dart';
 
 class AddFriendScreen extends HookConsumerWidget {
   const AddFriendScreen({super.key});
@@ -45,6 +44,8 @@ class AddFriendScreen extends HookConsumerWidget {
         timer.value = Timer(const Duration(milliseconds: 400), () {
           if (input.isNotEmpty) {
             searchUserNotifier.searchUser(input);
+          } else {
+            ref.read(searchUserProvider.notifier).reset();
           }
         });
       }
@@ -85,7 +86,9 @@ class AddFriendScreen extends HookConsumerWidget {
         ),
         backgroundColor: AppColors.primary,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -126,7 +129,7 @@ class AddFriendScreen extends HookConsumerWidget {
                     ),
                     itemBuilder: (context, index) {
                       final user = searchState.users[index];
-                      return AddFriendUserTileWidget(
+                      return UserTileWidget(
                         imageUrl: imageUrl,
                         user: user,
                         sendFriendRequest: sendFriendRequest,

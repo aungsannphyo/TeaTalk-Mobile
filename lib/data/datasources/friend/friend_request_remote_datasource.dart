@@ -8,18 +8,19 @@ import '../../../exceptions/app_exception.dart';
 import '../../models/common_response_model.dart';
 import '../../models/friend/friend_request_response_model.dart';
 
-abstract class FriendRequestDatasource {
+abstract class FriendRequestRemoteDatasource {
   Future<List<FriendRequestResponseModel>> getAllFriendRequestLog(
       String userId);
   Future<CommonResponseModel> decideFriendRequest(
       DecideFriendRequestEvent event);
 }
 
-class FriendRequestDatasourceImpl implements FriendRequestDatasource {
+class FriendRequestRemoteDatasourceImpl
+    implements FriendRequestRemoteDatasource {
   final String? token;
   final apiUrl = dotenv.env['API_URL'];
 
-  FriendRequestDatasourceImpl({
+  FriendRequestRemoteDatasourceImpl({
     required this.token,
   });
 
@@ -56,6 +57,7 @@ class FriendRequestDatasourceImpl implements FriendRequestDatasource {
           "status": event.status,
           "friendRequestId": event.friendRequestId,
         }));
+
     final data = jsonDecode(response.body);
     if (response.statusCode == 200) {
       return CommonResponseModel.fromJson(data);

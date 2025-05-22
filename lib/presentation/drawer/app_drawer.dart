@@ -28,6 +28,10 @@ class AppDrawer extends HookConsumerWidget {
       GoRouter.of(context).pushNamed(RouteName.friend);
     }
 
+    void navigateToMyProfile() {
+      GoRouter.of(context).pushNamed(RouteName.profile);
+    }
+
     return Drawer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -47,7 +51,7 @@ class AppDrawer extends HookConsumerWidget {
               style: AppTextStyles.semiBold,
             ),
             onTap: () {
-              // Navigate to profile or trigger action
+              navigateToMyProfile();
             },
           ),
           const Divider(color: AppColors.bubbleShadow),

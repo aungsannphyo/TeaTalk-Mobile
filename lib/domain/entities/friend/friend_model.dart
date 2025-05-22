@@ -1,6 +1,6 @@
-import 'user_tile_model.dart';
+import '../user/user_tile_model.dart';
 
-class SearchUserModel implements UserTileModel {
+class FriendModel implements UserTileModel {
   @override
   final String id;
   @override
@@ -10,22 +10,22 @@ class SearchUserModel implements UserTileModel {
   @override
   final String email;
   @override
-  final bool isFriend;
-  @override
   final String? profileImage;
   @override
   final bool isOnline;
   @override
   final String lastSeen;
 
-  SearchUserModel({
+  FriendModel({
     required this.id,
     required this.email,
     required this.userIdentity,
     required this.username,
-    required this.isFriend,
     this.profileImage,
     required this.isOnline,
     required this.lastSeen,
   });
+
+  @override
+  bool get isFriend => true;
 }

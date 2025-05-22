@@ -41,6 +41,10 @@ class SearchUserNotifier extends StateNotifier<SearchUserState> {
       );
     }
   }
+
+  void reset() {
+    state = SearchUserState(users: []);
+  }
 }
 
 final searchUserProvider =

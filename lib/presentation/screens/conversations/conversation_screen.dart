@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tea_talk_mobile/presentation/providers/friend/friend_request_provider.dart';
-import 'package:tea_talk_mobile/style/text_style.dart';
 
 import '../../../routes/routes_name.dart';
 import '../../drawer/app_drawer.dart';

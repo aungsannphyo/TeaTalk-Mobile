@@ -55,7 +55,10 @@ class LoginScreen extends HookConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset('assets/images/login.svg', height: 180),
+                  SvgPicture.asset(
+                    'assets/images/login.svg',
+                    height: 200,
+                  ),
                   const SizedBox(height: 24),
                   Text('Tea Talk',
                       style: AppTextStyles.bold.copyWith(fontSize: 24)),

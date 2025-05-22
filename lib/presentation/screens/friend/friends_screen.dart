@@ -1,35 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tea_talk_mobile/presentation/widgets/user_tile_widget.dart';
 
 import '../../../routes/routes_name.dart';
 import '../../../style/theme/app_color.dart';
+import '../../providers/friend/friend_provider.dart';
+import '../../widgets/placeholder_widget.dart';
 import 'widget/friend/friend_action_item_widget.dart';
 
 class FriendsScreen extends HookConsumerWidget {
   const FriendsScreen({super.key});
 
-  // Dummy data for example
-  final List<Map<String, dynamic>> friends = const [
-    {
-      'name': 'Alice Johnson',
-      'lastSeen': '5 mins ago',
-      'avatarUrl': 'https://i.pravatar.cc/150?img=1',
-    },
-    {
-      'name': 'Bob Smith',
-      'lastSeen': '2 hours ago',
-      'avatarUrl': 'https://i.pravatar.cc/150?img=2',
-    },
-    {
-      'name': 'Charlie Brown',
-      'lastSeen': 'Yesterday',
-      'avatarUrl': 'https://i.pravatar.cc/150?img=3',
-    },
-  ];
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final friendState = ref.watch(friendProvider);
+
+    useEffect(() {
+      Future.microtask(() {
+        ref.read(friendProvider.notifier).getFriends();
+      });
+
+      return null;
+    }, []);
+
     void navigateToAddFriend() {
       GoRouter.of(context).pushNamed(RouteName.addFriend);
     }
@@ -39,14 +34,6 @@ class FriendsScreen extends HookConsumerWidget {
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-          onPressed: () =>
-              GoRouter.of(context).pushNamed(RouteName.conversation),
-        ),
         title: const Text(
           'Friends',
           style: TextStyle(
@@ -88,39 +75,30 @@ class FriendsScreen extends HookConsumerWidget {
             ),
             // Friends list
             Expanded(
-              child: ListView.separated(
-                itemCount: friends.length,
-                separatorBuilder: (_, __) => const Divider(
-                  height: 10,
-                  color: AppColors.bubbleShadow,
-                ),
-                itemBuilder: (context, index) {
-                  final friend = friends[index];
-                  return ListTile(
-                    leading: CircleAvatar(
-                      radius: 24,
-                      backgroundImage: NetworkImage(friend['avatarUrl']),
-                    ),
-                    title: Text(
-                      friend['name'],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                    ),
-                    subtitle: Text(
-                      friend['lastSeen'],
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    onTap: () {
-                      // Navigate to chat or friend details
-                    },
-                  );
-                },
-              ),
+              child: friendState.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : friendState.friends == null || friendState.friends!.isEmpty
+                      ? PlaceholderWidget(
+                          imagePath: 'assets/images/no-message.png',
+                          text:
+                              "You don’t have any conversations yet. Start chatting with your friends!",
+                          isSvg: false,
+                        )
+                      : ListView.separated(
+                          itemCount: friendState.friends!.length,
+                          separatorBuilder: (_, __) => const Divider(
+                            height: 10,
+                            color: AppColors.bubbleShadow,
+                          ),
+                          itemBuilder: (context, index) {
+                            final friend = friendState.friends![index];
+                            return UserTileWidget(
+                              sendFriendRequest: () {},
+                              user: friend,
+                              isLoading: friendState.isLoading,
+                            );
+                          },
+                        ),
             ),
           ],
         ),
