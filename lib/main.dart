@@ -3,12 +3,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import './routes/routes.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import "./style/theme/theme.dart";
+import 'domain/websocket/lifecycle_binding.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
+
   runApp(
     const ProviderScope(
-      child: MyApp(),
+      child: LifecycleBinding(
+        child: MyApp(),
+      ),
     ),
   );
 }

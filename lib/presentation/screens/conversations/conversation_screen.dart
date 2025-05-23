@@ -17,7 +17,7 @@ class ConversationScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AuthState authState = ref.watch(authProvider);
+    final AuthState authState = ref.watch(loginProvider);
     final ConversationState conversationState = ref.watch(conversationProvider);
     final FriendRequestState friendRequestLogState =
         ref.watch(friendRequestProvider);

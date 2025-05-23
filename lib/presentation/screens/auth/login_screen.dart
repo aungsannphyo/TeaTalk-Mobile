@@ -21,18 +21,18 @@ class LoginScreen extends HookConsumerWidget {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final obscurePassword = useState(true);
-    final authState = ref.watch(authProvider);
+    final authState = ref.watch(loginProvider);
 
     void onLogin() {
       if (formKey.currentState!.validate()) {
         ref
-            .read(authProvider.notifier)
+            .read(loginProvider.notifier)
             .login(emailController.text, passwordController.text);
       }
     }
 
     ref.listen<AuthState>(
-      authProvider,
+      loginProvider,
       (previous, next) {
         if (next.error != null && next.error!.isNotEmpty) {
           SnackbarUtil.showError(context, next.error!);

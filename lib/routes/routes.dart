@@ -20,13 +20,13 @@ class GoRouterRefreshNotifier extends ChangeNotifier {
 }
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authProvider);
+  final authState = ref.watch(loginProvider);
   final isAuth = authState.isAuthenticated;
 
   return GoRouter(
     initialLocation: '/login',
     refreshListenable:
-        GoRouterRefreshNotifier(ref.watch(authProvider.notifier).stream),
+        GoRouterRefreshNotifier(ref.watch(loginProvider.notifier).stream),
     redirect: (context, state) {
       final goingToLogin = state.uri.toString() == '/login';
       final goingToRegister = state.uri.toString() == '/register';

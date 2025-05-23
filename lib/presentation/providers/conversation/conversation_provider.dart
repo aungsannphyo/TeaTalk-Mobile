@@ -39,7 +39,7 @@ class ConversationNotifier extends StateNotifier<ConversationState> {
 
 final conversationProvider =
     StateNotifierProvider<ConversationNotifier, ConversationState>((ref) {
-  final authState = ref.watch(authProvider);
+  final authState = ref.watch(loginProvider);
   final token = authState.auth?.token;
   final remote = ConversationRemoteDataSourceImpl(token: token);
 

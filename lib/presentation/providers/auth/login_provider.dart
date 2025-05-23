@@ -3,6 +3,7 @@ import '../../../data/datasources/auth/auth_remote_datasource.dart';
 import '../../../data/repositories/auth/auth_repository_impl.dart';
 import '../../../domain/entities/auth/login_model.dart';
 import '../../../domain/usecases/auth/auth_usecase.dart';
+import '../../../domain/websocket/auth_token_provider.dart';
 
 class AuthState {
   final bool isLoading;
@@ -20,8 +21,10 @@ class AuthState {
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthUseCase authUseCase;
+  final Ref ref;
 
-  AuthNotifier({
+  AuthNotifier(
+    this.ref, {
     required this.authUseCase,
   }) : super(AuthState());
 
@@ -33,6 +36,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
         auth: result,
         isLoading: false,
       );
+
+      ref.read(authTokenProvider.notifier).state = result.token;
     } catch (e) {
       state = AuthState(error: e.toString());
     }
@@ -43,10 +48,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 }
 
-final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+final loginProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final remote = AuthRemoteDataSourceImpl();
   final repository = AuthRepositoryImpl(remote);
   return AuthNotifier(
+    ref,
     authUseCase: AuthUseCase(repository),
   );
 });

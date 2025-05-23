@@ -60,7 +60,7 @@ class SendFriendRequestNotifier extends StateNotifier<SendFriendRequestState> {
 final sendFriendReqProvider =
     StateNotifierProvider<SendFriendRequestNotifier, SendFriendRequestState>(
         (ref) {
-  final authState = ref.watch(authProvider);
+  final authState = ref.watch(loginProvider);
   final token = authState.auth?.token;
   final remote = UserRemoteDataSourceImpl(token: token);
   final repository = UserRepositoryImpl(remote);

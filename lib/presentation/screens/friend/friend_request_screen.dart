@@ -22,7 +22,7 @@ class FriendRequestScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final imageUrl = dotenv.env['API_URL'];
-    final authState = ref.watch(authProvider);
+    final authState = ref.watch(loginProvider);
     final requestState = ref.watch(friendRequestProvider);
     final requests = requestState.friendRequest ?? [];
 

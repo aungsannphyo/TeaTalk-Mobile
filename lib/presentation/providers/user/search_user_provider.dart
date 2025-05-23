@@ -49,7 +49,7 @@ class SearchUserNotifier extends StateNotifier<SearchUserState> {
 
 final searchUserProvider =
     StateNotifierProvider<SearchUserNotifier, SearchUserState>((ref) {
-  final authState = ref.watch(authProvider);
+  final authState = ref.watch(loginProvider);
   final token = authState.auth?.token;
   final remote = UserRemoteDataSourceImpl(token: token);
   final repository = UserRepositoryImpl(remote);

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+
 import 'package:tea_talk_mobile/utils/extensions.dart';
 
 import '../../domain/entities/user/user_tile_model.dart';
-import '../../routes/routes_name.dart';
 import '../../utils/date_time.dart';
 import '../screens/friend/widget/avatar_widget.dart';
 import '../../style/text_style.dart';
@@ -27,10 +26,6 @@ class UserTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void navigateToChatScreen(String userId) {
-      GoRouter.of(context).pushNamed(RouteName.chat);
-    }
-
     return Container(
       color: AppColors.background,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

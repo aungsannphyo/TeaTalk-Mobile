@@ -4,6 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tea_talk_mobile/utils/date_time.dart';
 import 'package:tea_talk_mobile/utils/extensions.dart';
+
+import '../../../domain/websocket/chat_message_model.dart';
+import '../../../domain/websocket/websocket_provider.dart';
 import '../../../style/theme/app_color.dart';
 import '../../../style/text_style.dart';
 import '../friend/widget/avatar_widget.dart';
@@ -17,12 +20,10 @@ class ChatScreen extends HookConsumerWidget {
     // Get friend info from constructor
     final extra = friendInfo;
     final friendId = extra?['id'] ?? '';
-    final profileImage = extra?['profileImage'] ?? '';
+    // final profileImage = extra?['profileImage'] ?? '';
     final lastSeen = extra?['lastSeen'] ?? '';
     final isOnline = extra?['isOnline'] ?? false;
     final username = extra?['username'] ?? '';
-
-    print("EXTRA $extra");
 
     final textController = useTextEditingController();
     final showEmojiPicker = useState(false);
@@ -36,7 +37,7 @@ class ChatScreen extends HookConsumerWidget {
                 scrollController.position.minScrollExtent + 50 &&
             !isLoadingMore.value) {
           isLoadingMore.value = true;
-          // TODO: Load more messages here (e.g., call a provider or fetch from API)
+
           Future.delayed(const Duration(seconds: 1), () {
             isLoadingMore.value = false;
           });
@@ -58,6 +59,19 @@ class ChatScreen extends HookConsumerWidget {
     void toggleEmojiPicker() {
       showEmojiPicker.value = !showEmojiPicker.value;
     }
+
+    final privateWS = ref.watch(privateWebSocketProvider);
+    final groupWS = ref.watch(groupWebSocketProvider);
+
+    if (privateWS == null || groupWS == null) {
+      return const Scaffold(
+        body: Center(child: Text('Not connected. Please login.')),
+      );
+    }
+
+    final privateMessagesAsync = ref.watch(privateMessagesProvider);
+
+    print("PRIVATE ASYNC MESSAGE $privateMessagesAsync");
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -145,8 +159,8 @@ class ChatScreen extends HookConsumerWidget {
               padding: EdgeInsets.symmetric(vertical: 8),
               child: Center(child: CircularProgressIndicator()),
             ),
-          _buildInputBar(context, textController, message, showEmojiPicker,
-              toggleEmojiPicker, onEmojiSelected),
+          _buildInputBar(friendId, context, textController, message,
+              showEmojiPicker, toggleEmojiPicker, onEmojiSelected, ref),
           if (showEmojiPicker.value)
             SizedBox(
               height: 300,
@@ -253,12 +267,14 @@ class ChatScreen extends HookConsumerWidget {
   }
 
   Widget _buildInputBar(
+    String friendId,
     BuildContext context,
     TextEditingController textController,
     ValueNotifier<String> message,
     ValueNotifier<bool> showEmojiPicker,
     VoidCallback toggleEmojiPicker,
     void Function(Emoji) onEmojiSelected,
+    WidgetRef ref,
   ) {
     return SafeArea(
       child: Column(
@@ -319,9 +335,7 @@ class ChatScreen extends HookConsumerWidget {
                       Icons.send,
                       color: Colors.white,
                     ),
-                    onPressed: () {
-                      // You can use message.value here for sending
-                    },
+                    onPressed: () {},
                   ),
                 ),
               ],

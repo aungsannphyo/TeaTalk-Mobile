@@ -107,7 +107,7 @@ class AppDrawer extends HookConsumerWidget {
               ),
             ),
             onTap: () {
-              ref.read(authProvider.notifier).logout();
+              ref.read(loginProvider.notifier).logout();
             },
           ),
         ],

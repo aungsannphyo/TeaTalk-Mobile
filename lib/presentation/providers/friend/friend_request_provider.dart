@@ -45,7 +45,7 @@ class FriendRequestNotifier extends StateNotifier<FriendRequestState> {
 
 final friendRequestProvider =
     StateNotifierProvider<FriendRequestNotifier, FriendRequestState>((ref) {
-  final authState = ref.watch(authProvider);
+  final authState = ref.watch(loginProvider);
   final token = authState.auth?.token;
   final remote = FriendRequestRemoteDatasourceImpl(token: token);
 
