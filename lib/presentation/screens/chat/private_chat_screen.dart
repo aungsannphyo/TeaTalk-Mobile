@@ -3,16 +3,14 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tea_talk_mobile/presentation/screens/chat/chat_appbar_widget.dart';
-import 'package:tea_talk_mobile/presentation/screens/chat/message_bubble_widget.dart';
 
-import '../../../domain/websocket/chat_message_model.dart';
-import '../../../domain/websocket/websocket_provider.dart';
 import '../../../style/theme/app_color.dart';
 import 'chat_input_field_widget.dart';
+import 'chat_messages_render_widget.dart';
 
-class ChatScreen extends HookConsumerWidget {
+class PrivateChatScreen extends HookConsumerWidget {
   final Map<String, dynamic>? friendInfo;
-  const ChatScreen({super.key, this.friendInfo});
+  const PrivateChatScreen({super.key, this.friendInfo});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -59,20 +57,6 @@ class ChatScreen extends HookConsumerWidget {
       showEmojiPicker.value = !showEmojiPicker.value;
     }
 
-    final messagesProvider = MessageType.private == MessageType.private
-        ? privateMessagesProvider
-        : groupMessagesProvider;
-
-    final messagesAsync = ref.watch(messagesProvider);
-
-    messagesAsync.when(
-      data: (message) {
-        print("MESSAGE ${message?.content}");
-      },
-      error: (Object error, StackTrace stackTrace) {},
-      loading: () {},
-    );
-
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -89,32 +73,7 @@ class ChatScreen extends HookConsumerWidget {
       body: Column(
         children: [
           Expanded(
-            child: ListView(
-              controller: scrollController,
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-              reverse: true,
-              children: [
-                MessageBubbleWidget(
-                  text: 'Hello! How are you?',
-                  isMe: false,
-                  time: '09:00',
-                  isRead: false,
-                ),
-                MessageBubbleWidget(
-                  text: 'I am good, thanks! And you?',
-                  isMe: true,
-                  time: '09:01',
-                  isRead: true,
-                ),
-                MessageBubbleWidget(
-                  text: 'Doing well! Ready for our meeting?',
-                  isMe: false,
-                  time: '09:02',
-                  isRead: false,
-                ),
-                // ... more sample messages ...
-              ],
-            ),
+            child: ChatMessagesRenderWidget(scrollController: scrollController),
           ),
           if (isLoadingMore.value)
             const Padding(

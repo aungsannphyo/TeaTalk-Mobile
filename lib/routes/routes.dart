@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import "../presentation/screens/chat/chat_screen.dart";
+import "../presentation/screens/chat/private_chat_screen.dart";
 import "../presentation/screens/friend/add_friend_screen.dart";
 import "../presentation/screens/friend/friend_request_screen.dart";
 import "../presentation/screens/friend/friends_screen.dart";
@@ -124,7 +124,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: RouteName.chat,
         pageBuilder: (context, state) => buildTransitionPage(
           key: state.pageKey,
-          child: ChatScreen(
+          child: PrivateChatScreen(
             key: state.pageKey,
             friendInfo: state.extra as Map<String, dynamic>?,
           ),

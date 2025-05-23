@@ -103,9 +103,7 @@ class WebsocketManagerController {
 
   void _startHeartbeat() {
     _heartbeatTimer = Timer.periodic(const Duration(seconds: 20), (_) {
-      if (_channel != null) {
-        _channel!.sink.add(json.encode({'type': 'ping'}));
-      } else {
+      if (_channel == null) {
         _scheduleReconnect();
       }
     });

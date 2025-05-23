@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tea_talk_mobile/presentation/providers/friend/friend_request_provider.dart';
 
 import '../../../domain/entities/conversation/conversation_model.dart';
+import '../../../domain/websocket/chat_message_model.dart';
+import '../../../domain/websocket/websocket_provider.dart';
 import '../../../routes/routes_name.dart';
 import '../../drawer/app_drawer.dart';
 import '../../providers/auth/login_provider.dart';
@@ -64,6 +66,17 @@ class ConversationScreen extends HookConsumerWidget {
         );
       }
     }
+
+    ref.listen<AsyncValue<ChatMessage?>>(
+      privateMessagesProvider,
+      (previous, next) {
+        next.whenData((msg) {
+          if (msg != null) {
+            print('Received message: ${msg.toJson()}');
+          }
+        });
+      },
+    );
 
     return Scaffold(
       backgroundColor: AppColors.background,

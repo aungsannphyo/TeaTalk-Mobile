@@ -35,6 +35,7 @@ final groupWebSocketProvider = Provider<WebsocketManagerController?>((ref) {
 final privateMessagesProvider = StreamProvider.autoDispose<ChatMessage?>((ref) {
   final ws = ref.watch(privateWebSocketProvider);
   if (ws == null) return const Stream.empty();
+
   return ws.messages;
 });
 
@@ -42,4 +43,14 @@ final groupMessagesProvider = StreamProvider.autoDispose<ChatMessage?>((ref) {
   final ws = ref.watch(groupWebSocketProvider);
   if (ws == null) return const Stream.empty();
   return ws.messages;
+});
+
+final privateIsReconnectingProvider = Provider<bool>((ref) {
+  final ws = ref.watch(privateWebSocketProvider);
+  return ws?.status == ConnectionStatus.reconnecting;
+});
+
+final groupIsReconnectingProvider = Provider<bool>((ref) {
+  final ws = ref.watch(groupWebSocketProvider);
+  return ws?.status == ConnectionStatus.reconnecting;
 });
