@@ -29,7 +29,6 @@ class FriendRemoteDatasource implements FriendDatasource {
     );
 
     final data = jsonDecode(response.body);
-
     if (response.statusCode == 200) {
       return (data as List)
           .map((json) => FriendResponseModel.fromJson(json))

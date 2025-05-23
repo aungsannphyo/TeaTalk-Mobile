@@ -75,13 +75,13 @@ class UserTileWidget extends StatelessWidget {
             ? Text(
                 "online",
                 style: AppTextStyles.regular.copyWith(
-                  fontSize: 16,
+                  fontSize: 13,
                 ),
               )
             : Text(
                 "last seen at ${formatRelativeTime(user.lastSeen)}",
                 style: AppTextStyles.regular.copyWith(
-                  fontSize: 16,
+                  fontSize: 13,
                 ),
               ),
         trailing: user.isFriend

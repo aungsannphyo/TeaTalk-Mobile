@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tea_talk_mobile/utils/extensions.dart';
 
 import '../../../domain/events/decide_friend_request_event.dart';
 import '../../../style/text_style.dart';
 import '../../../style/theme/app_color.dart';
 import '../../../utils/date_time.dart';
+import '../../../routes/routes_name.dart';
 import '../../providers/auth/login_provider.dart';
 import '../../providers/friend/decide_friend_request_provider.dart';
 import '../../providers/friend/friend_request_provider.dart';
@@ -84,6 +86,12 @@ class FriendRequestScreen extends HookConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            GoRouter.of(context).goNamed(RouteName.conversation);
+          },
+        ),
         title: const Text(
           'Friend Requests',
           style: TextStyle(

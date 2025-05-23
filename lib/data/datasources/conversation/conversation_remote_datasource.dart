@@ -28,9 +28,9 @@ class ConversationRemoteDataSourceImpl implements ConversationRemoteDatasource {
         'Authorization': 'Bearer $token',
       },
     );
+    final data = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
       return (data as List)
           .map((json) => ConversationResponseModel.fromJson(json))
           .toList();

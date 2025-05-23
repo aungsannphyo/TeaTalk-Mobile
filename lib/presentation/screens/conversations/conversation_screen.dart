@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tea_talk_mobile/presentation/providers/friend/friend_request_provider.dart';
 
+import '../../../domain/entities/conversation/conversation_model.dart';
 import '../../../routes/routes_name.dart';
 import '../../drawer/app_drawer.dart';
 import '../../providers/auth/login_provider.dart';
@@ -43,6 +44,25 @@ class ConversationScreen extends HookConsumerWidget {
 
     void navigateToFriendScreen() {
       GoRouter.of(context).pushNamed(RouteName.friend);
+    }
+
+    void navigateToChat(ConversationModel conversation) {
+      //check private or group
+      if (conversation.isGroup) {
+        //for group
+      } else {
+        //for private
+        GoRouter.of(context).pushNamed(
+          RouteName.chat,
+          extra: {
+            'id': conversation.receiverId,
+            'profileImage': conversation.profileImage,
+            'lastSeen': conversation.lastSeen,
+            'isOnline': conversation.totalOnline > 0 ? true : false,
+            'username': conversation.name,
+          },
+        );
+      }
     }
 
     return Scaffold(
@@ -101,9 +121,16 @@ class ConversationScreen extends HookConsumerWidget {
                           color: AppColors.bubbleShadow,
                         ),
                         itemBuilder: (context, index) {
-                          return ConversationItemWidget(
-                              conversation:
-                                  conversationState.conversationList![index]);
+                          return GestureDetector(
+                            onTap: () {
+                              navigateToChat(
+                                conversationState.conversationList![index],
+                              );
+                            },
+                            child: ConversationItemWidget(
+                                conversation:
+                                    conversationState.conversationList![index]),
+                          );
                         },
                       ),
                     ),

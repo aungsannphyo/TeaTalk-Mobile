@@ -2,20 +2,28 @@ class ConversationModel {
   final String conversationId;
   final bool isGroup;
   final String name;
-  final String lastMessageId;
-  final String lastMessageContent;
-  final String lastMessageSender;
-  final String lastMessageCreatedAt;
+  final String? lastMessageId;
+  final String? lastMessageContent;
+  final String? lastMessageSender;
+  final String? lastMessageCreatedAt;
   final int unReadCount;
+  final String? receiverId;
+  final String? profileImage;
+  final int totalOnline;
+  final String? lastSeen;
 
   ConversationModel({
     required this.conversationId,
     required this.isGroup,
     required this.name,
-    required this.lastMessageId,
-    required this.lastMessageContent,
-    required this.lastMessageCreatedAt,
     required this.unReadCount,
-    required this.lastMessageSender,
+    required this.totalOnline,
+    this.lastSeen,
+    this.lastMessageSender,
+    this.receiverId,
+    this.profileImage,
+    this.lastMessageId,
+    this.lastMessageContent,
+    this.lastMessageCreatedAt,
   });
 }

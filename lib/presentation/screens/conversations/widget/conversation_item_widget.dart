@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+
 import '../../../../utils/extensions.dart';
 import '../../../../domain/entities/conversation/conversation_model.dart';
 import "../../../../style/theme/app_color.dart";
 import '../../../../utils/date_time.dart';
+import '../../friend/widget/avatar_widget.dart';
 
 class ConversationItemWidget extends StatelessWidget {
   final ConversationModel conversation;
@@ -16,23 +18,10 @@ class ConversationItemWidget extends StatelessWidget {
       child: Row(
         children: [
           // Profile Image with village color avatar background
-          CircleAvatar(
-            radius: 28,
-            backgroundColor: Colors.white,
-            child: Text(
-              conversation.name.isNotEmpty
-                  ? conversation.name[0].toUpperCase()
-                  : '',
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
+          AvatarWidget(
+            username: conversation.name,
           ),
-
           const SizedBox(width: 12),
-
           // Name & Last message
           Expanded(
             child: Column(
@@ -50,7 +39,9 @@ class ConversationItemWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  conversation.lastMessageContent,
+                  conversation.lastMessageContent != null
+                      ? conversation.lastMessageContent!
+                      : '',
                   style: TextStyle(
                     fontSize: 14,
                     color: AppColors.textDark.withAlpha((0.6 * 255).round()),
@@ -69,7 +60,9 @@ class ConversationItemWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                formatRelativeTime(conversation.lastMessageCreatedAt),
+                conversation.lastMessageCreatedAt != null
+                    ? formatRelativeTime(conversation.lastMessageCreatedAt!)
+                    : '',
                 style: TextStyle(
                   fontSize: 13,
                   color: AppColors.textDark.withAlpha((0.5 * 255).round()),

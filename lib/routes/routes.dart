@@ -13,6 +13,23 @@ import "../presentation/providers/auth/login_provider.dart";
 import "../presentation/screens/auth/login_screen.dart";
 import "../presentation/screens/conversations/conversation_screen.dart";
 
+// Helper for reusable custom transition page
+CustomTransitionPage<T> buildTransitionPage<T>({
+  required LocalKey key,
+  required Widget child,
+}) {
+  return CustomTransitionPage<T>(
+    key: key,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(
+        opacity: animation,
+        child: child,
+      );
+    },
+  );
+}
+
 class GoRouterRefreshNotifier extends ChangeNotifier {
   GoRouterRefreshNotifier(Stream stream) {
     stream.listen((_) => notifyListeners());
@@ -41,53 +58,77 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/login',
         name: RouteName.login,
-        builder: (context, state) => const LoginScreen(),
+        pageBuilder: (context, state) => buildTransitionPage(
+          key: state.pageKey,
+          child: const LoginScreen(),
+        ),
       ),
       GoRoute(
         path: '/register',
         name: RouteName.register,
-        builder: (context, state) => const RegisterScreen(),
+        pageBuilder: (context, state) => buildTransitionPage(
+          key: state.pageKey,
+          child: const RegisterScreen(),
+        ),
       ),
       GoRoute(
         path: '/',
         name: RouteName.root,
-        builder: (context, state) => const ConversationScreen(),
+        pageBuilder: (context, state) => buildTransitionPage(
+          key: state.pageKey,
+          child: const ConversationScreen(),
+        ),
       ),
       GoRoute(
         path: '/conversation',
         name: RouteName.conversation,
-        builder: (context, state) => const ConversationScreen(),
+        pageBuilder: (context, state) => buildTransitionPage(
+          key: state.pageKey,
+          child: const ConversationScreen(),
+        ),
       ),
       GoRoute(
         path: '/add-friend',
         name: RouteName.addFriend,
-        builder: (context, state) => const AddFriendScreen(),
+        pageBuilder: (context, state) => buildTransitionPage(
+          key: state.pageKey,
+          child: const AddFriendScreen(),
+        ),
       ),
       GoRoute(
         path: '/friend-request-log',
         name: RouteName.friendRequestLog,
-        builder: (context, state) => const FriendRequestScreen(),
+        pageBuilder: (context, state) => buildTransitionPage(
+          key: state.pageKey,
+          child: const FriendRequestScreen(),
+        ),
       ),
       GoRoute(
         path: '/friend',
         name: RouteName.friend,
-        builder: (context, state) => const FriendsScreen(),
+        pageBuilder: (context, state) => buildTransitionPage(
+          key: state.pageKey,
+          child: const FriendsScreen(),
+        ),
       ),
       GoRoute(
         path: '/profile',
         name: RouteName.profile,
-        builder: (context, state) => const ProfileScreen(),
+        pageBuilder: (context, state) => buildTransitionPage(
+          key: state.pageKey,
+          child: const ProfileScreen(),
+        ),
       ),
       GoRoute(
         path: '/chat',
         name: RouteName.chat,
-        builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>?;
-          return ChatScreen(
+        pageBuilder: (context, state) => buildTransitionPage(
+          key: state.pageKey,
+          child: ChatScreen(
             key: state.pageKey,
-            friendInfo: extra,
-          );
-        },
+            friendInfo: state.extra as Map<String, dynamic>?,
+          ),
+        ),
       ),
     ],
   );

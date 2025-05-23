@@ -7,7 +7,7 @@ class ConversationUsecase {
 
   ConversationUsecase(this.repository);
 
-  Future<List<ConversationModel>> getConversations(String userID) {
+  Future<List<ConversationModel>> getConversations(String userID) async {
     return repository.getConversations(userID);
   }
 }

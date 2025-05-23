@@ -10,11 +10,17 @@ void main() async {
 
   runApp(
     const ProviderScope(
-      child: LifecycleBinding(
-        child: MyApp(),
-      ),
+      child: MyApp(),
     ),
   );
+
+  //   runApp(
+  //   const ProviderScope(
+  //     child: LifecycleBinding(
+  //       child: MyApp(),
+  //     ),
+  //   ),
+  // );
 }
 
 class MyApp extends HookConsumerWidget {

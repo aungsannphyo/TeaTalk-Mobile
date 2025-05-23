@@ -46,6 +46,14 @@ class FriendsScreen extends HookConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            GoRouter.of(context).pushNamed(
+              RouteName.conversation,
+            );
+          },
+        ),
         backgroundColor: AppColors.primary,
         elevation: 0,
         title: const Text(

@@ -10,6 +10,10 @@ class ConversationResponseModel extends ConversationModel {
     required super.lastMessageSender,
     required super.name,
     required super.unReadCount,
+    required super.receiverId,
+    required super.profileImage,
+    required super.totalOnline,
+    required super.lastSeen,
   });
 
   factory ConversationResponseModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +26,10 @@ class ConversationResponseModel extends ConversationModel {
       lastMessageSender: json['last_message_sender'],
       lastMessageCreatedAt: json['last_message_created_at'],
       unReadCount: json['unread_count'],
+      receiverId: json['receiver_id'],
+      profileImage: json['profile_image'],
+      totalOnline: json['is_online'],
+      lastSeen: json['last_seen'],
     );
   }
 }
