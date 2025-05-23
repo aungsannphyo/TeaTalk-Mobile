@@ -60,18 +60,19 @@ class ChatScreen extends HookConsumerWidget {
       showEmojiPicker.value = !showEmojiPicker.value;
     }
 
-    final privateWS = ref.watch(privateWebSocketProvider);
-    final groupWS = ref.watch(groupWebSocketProvider);
+    final messagesProvider = MessageType.private == MessageType.private
+        ? privateMessagesProvider
+        : groupMessagesProvider;
 
-    if (privateWS == null || groupWS == null) {
-      return const Scaffold(
-        body: Center(child: Text('Not connected. Please login.')),
-      );
-    }
+    final messagesAsync = ref.watch(messagesProvider);
 
-    final privateMessagesAsync = ref.watch(privateMessagesProvider);
-
-    print("PRIVATE ASYNC MESSAGE $privateMessagesAsync");
+    messagesAsync.when(
+      data: (message) {
+        print("MESSAGE ${message?.content}");
+      },
+      error: (Object error, StackTrace stackTrace) {},
+      loading: () {},
+    );
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -335,7 +336,24 @@ class ChatScreen extends HookConsumerWidget {
                       Icons.send,
                       color: Colors.white,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      final content = textController.text.trim();
+                      if (content.isEmpty) return;
+
+                      final message = ChatMessage(
+                        content: content,
+                        targetId: friendId,
+                        type: MessageType.private,
+                      );
+
+                      final wsController =
+                          MessageType.private == MessageType.private
+                              ? ref.read(privateWebSocketProvider)
+                              : ref.read(groupWebSocketProvider);
+
+                      wsController?.send(message);
+                      textController.clear();
+                    },
                   ),
                 ),
               ],

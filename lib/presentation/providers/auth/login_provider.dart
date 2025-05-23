@@ -4,6 +4,7 @@ import '../../../data/repositories/auth/auth_repository_impl.dart';
 import '../../../domain/entities/auth/login_model.dart';
 import '../../../domain/usecases/auth/auth_usecase.dart';
 import '../../../domain/websocket/auth_token_provider.dart';
+import '../../../domain/websocket/websocket_provider.dart';
 
 class AuthState {
   final bool isLoading;
@@ -44,6 +45,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   void logout() {
+    final privateWS = ref.read(privateWebSocketProvider);
+    final groupWS = ref.read(groupWebSocketProvider);
+
+    privateWS?.disconnect();
+    groupWS?.disconnect();
+    ref.read(authTokenProvider.notifier).state = null;
     state = AuthState();
   }
 }
