@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../data/models/friend/friend_response_model.dart';
 import '../../../routes/routes_name.dart';
+import '../../../style/text_style.dart';
 import '../../../style/theme/app_color.dart';
 import '../../providers/user/search_user_provider.dart';
 import '../../providers/user/send_friend_request_provider.dart';
@@ -93,12 +94,7 @@ class AddFriendScreen extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text(
           'Add Friend',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            letterSpacing: 0.8,
-          ),
+          style: AppTextStyles.appBarTitle,
         ),
         backgroundColor: AppColors.primary,
         elevation: 0,

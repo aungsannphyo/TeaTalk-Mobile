@@ -5,7 +5,8 @@ class MessageUsecase {
   final MessageRepository repository;
   MessageUsecase(this.repository);
 
-  Future<List<MessageResponseModel>> getMessages() {
-    return repository.getMessages();
+  Future<List<MessageResponseModel>> getMessages(
+      String conversationID, DateTime? cursorTime) async {
+    return repository.getMessages(conversationID, cursorTime);
   }
 }

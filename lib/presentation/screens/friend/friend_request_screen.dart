@@ -94,11 +94,7 @@ class FriendRequestScreen extends HookConsumerWidget {
         ),
         title: const Text(
           'Friend Requests',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            letterSpacing: 0.8,
-          ),
+          style: AppTextStyles.appBarTitle,
         ),
         centerTitle: true,
       ),

@@ -63,14 +63,16 @@ class MessageBubbleWidget extends StatelessWidget {
                 Text(
                   time,
                   style: isMe
-                      ? AppTextStyles.semiBold
-                          .copyWith(color: Colors.white70, fontSize: 14)
-                      : AppTextStyles.semiBold.copyWith(
-                          color: Color.alphaBlend(
-                            AppColors.textDark.withAlpha((0.6 * 255).toInt()),
-                            Colors.transparent,
+                      ? AppTextStyles.timestamp.copyWith(
+                          color: AppColors.textLight,
+                          fontWeight: FontWeight.w500,
+                        )
+                      : AppTextStyles.timestamp.copyWith(
+                          color: AppColors.textDark.withAlpha(
+                            (0.6 * 255).toInt(),
                           ),
-                          fontSize: 14),
+                          fontWeight: FontWeight.w500,
+                        ),
                 ),
                 if (isMe)
                   Row(

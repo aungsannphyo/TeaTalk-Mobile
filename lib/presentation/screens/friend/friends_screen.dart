@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../data/models/friend/friend_response_model.dart';
 import '../../../routes/routes_name.dart';
+import '../../../style/text_style.dart';
 import '../../../style/theme/app_color.dart';
 import '../../providers/friend/friend_provider.dart';
 import '../../widgets/placeholder_widget.dart';
@@ -58,12 +59,7 @@ class FriendsScreen extends HookConsumerWidget {
         elevation: 0,
         title: const Text(
           'Friends',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            letterSpacing: 0.8,
-          ),
+          style: AppTextStyles.appBarTitle,
         ),
       ),
       body: Padding(

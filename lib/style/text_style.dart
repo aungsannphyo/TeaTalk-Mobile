@@ -38,11 +38,9 @@ class AppTextStyles {
   static const timestamp = TextStyle(
     fontFamily: 'Poppins',
     fontWeight: FontWeight.w400,
-    fontSize: 12,
+    fontSize: 13,
     color: AppColors.complementary,
   );
-
-  // ...existing code...
 
   static const button = TextStyle(
     fontFamily: 'Poppins',

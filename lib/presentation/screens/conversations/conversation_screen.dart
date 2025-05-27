@@ -56,7 +56,8 @@ class ConversationScreen extends HookConsumerWidget {
         GoRouter.of(context).pushNamed(
           RouteName.chat,
           extra: {
-            'id': conversation.receiverId,
+            'conversationId': conversation.conversationId,
+            'friendId': conversation.receiverId,
             'profileImage': conversation.profileImage,
             'lastSeen': conversation.lastSeen,
             'isOnline': conversation.totalOnline > 0 ? true : false,
