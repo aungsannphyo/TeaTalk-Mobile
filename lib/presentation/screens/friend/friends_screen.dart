@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tea_talk_mobile/presentation/widgets/user_tile_widget.dart';
 
-import '../../../domain/entities/friend/friend_model.dart';
+import '../../../data/models/friend/friend_response_model.dart';
 import '../../../routes/routes_name.dart';
 import '../../../style/theme/app_color.dart';
 import '../../providers/friend/friend_provider.dart';
 import '../../widgets/placeholder_widget.dart';
+import '../../widgets/user_tile_widget.dart';
 import 'widget/friend/friend_action_item_widget.dart';
 
 class FriendsScreen extends HookConsumerWidget {
@@ -30,7 +30,7 @@ class FriendsScreen extends HookConsumerWidget {
       GoRouter.of(context).pushNamed(RouteName.addFriend);
     }
 
-    void navigateToChat(FriendModel friend) {
+    void navigateToChat(FriendResponseModel friend) {
       GoRouter.of(context).pushNamed(
         RouteName.chat,
         extra: {
@@ -101,10 +101,10 @@ class FriendsScreen extends HookConsumerWidget {
                   ? const Center(child: CircularProgressIndicator())
                   : friendState.friends == null || friendState.friends!.isEmpty
                       ? PlaceholderWidget(
-                          imagePath: 'assets/images/no-message.png',
+                          imagePath: 'assets/images/add_friend.svg',
                           text:
-                              "You don’t have any conversations yet. Start chatting with your friends!",
-                          isSvg: false,
+                              "It's quiet here... add a friend to start a conversation.",
+                          isSvg: true,
                         )
                       : ListView.separated(
                           itemCount: friendState.friends!.length,

@@ -1,14 +1,14 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../data/datasources/friend/friend_remote_datasource.dart';
+import '../../../data/models/friend/friend_response_model.dart';
 import '../../../data/repositories/friend/friend_repository_impl.dart';
-import '../../../domain/entities/friend/friend_model.dart';
 import '../../../domain/usecases/friend/friend_usercase.dart';
 import '../auth/login_provider.dart';
 
 class FiendState {
   final bool isLoading;
-  final List<FriendModel>? friends;
+  final List<FriendResponseModel>? friends;
   final String? error;
 
   FiendState({

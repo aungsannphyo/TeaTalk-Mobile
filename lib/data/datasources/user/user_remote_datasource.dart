@@ -55,7 +55,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<List<SearchUserResponseModel>> searchUser(String searchInput) async {
     final response = await http.get(
-      Uri.parse('$apiUrl/user/search?q=$searchInput'),
+      Uri.parse('$apiUrl/users/search?q=$searchInput'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -76,7 +76,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<CommonResponseModel> sendFriendRequest(String receiverID) async {
     final response = await http.post(
-      Uri.parse('$apiUrl/friend/requests'),
+      Uri.parse('$apiUrl/friends/requests'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',

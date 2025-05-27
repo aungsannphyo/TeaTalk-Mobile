@@ -1,7 +1,6 @@
-import 'package:tea_talk_mobile/domain/entities/friend/friend_model.dart';
-
 import '../../../domain/repositories/friend/friend_repository.dart';
 import '../../datasources/friend/friend_remote_datasource.dart';
+import '../../models/friend/friend_response_model.dart';
 
 class FriendRepositoryImpl implements FriendRepository {
   final FriendDatasource remote;
@@ -9,7 +8,7 @@ class FriendRepositoryImpl implements FriendRepository {
   FriendRepositoryImpl(this.remote);
 
   @override
-  Future<List<FriendModel>> getFriends() {
+  Future<List<FriendResponseModel>> getFriends() {
     return remote.getFriends();
   }
 }

@@ -6,19 +6,18 @@ final ThemeData teaTalkTheme = ThemeData(
 
   // Base colors
   primaryColor: AppColors.primary,
-  scaffoldBackgroundColor: AppColors.background,
+  scaffoldBackgroundColor: Colors.white, // White background as requested
   hintColor: AppColors.complementary,
 
   colorScheme: ColorScheme(
     brightness: Brightness.light,
     primary: AppColors.primary,
-    onPrimary: Colors.white, // Fix: onPrimary should be contrast to primary
+    onPrimary: Colors.white, // Text/icons on primary colored elements
     secondary: AppColors.accent,
-    onSecondary:
-        Colors.white, // Fix: onSecondary should be contrast to secondary
+    onSecondary: Colors.white,
     error: AppColors.danger,
-    onError: Colors.white, // Fix: onError should be contrast to error
-    surface: AppColors.background,
+    onError: Colors.white,
+    surface: Colors.white,
     onSurface: AppColors.textDark,
   ),
 
@@ -33,36 +32,45 @@ final ThemeData teaTalkTheme = ThemeData(
     displayColor: AppColors.textDark,
   ),
 
-  // AppBar
+  // AppBar - white background, tea brown text/icons
   appBarTheme: const AppBarTheme(
     backgroundColor: AppColors.primary,
-    foregroundColor:
-        Colors.white, // Fix: foregroundColor should be contrast to background
+    foregroundColor: AppColors.background,
     elevation: 1,
+    iconTheme: IconThemeData(color: AppColors.background),
+    titleTextStyle: TextStyle(
+      color: AppColors.background,
+      fontSize: 20,
+      fontWeight: FontWeight.w600,
+      fontFamily: 'Poppins',
+    ),
   ),
 
-  // Elevated Buttons
+  // Elevated Buttons - tea brown background, white text
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.complementary,
-      foregroundColor: AppColors.textDark,
+      backgroundColor: AppColors.primary,
+      foregroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      textStyle: const TextStyle(
+        fontWeight: FontWeight.w600,
+        fontFamily: 'Poppins',
       ),
     ),
   ),
 
-  // Floating Action Button
+  // Floating Action Button - accent color background, white icons
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: AppColors.accent,
-    foregroundColor:
-        Colors.white, // Fix: foregroundColor should be contrast to background
+    foregroundColor: Colors.white,
   ),
 
   // Input Fields
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
-    fillColor: AppColors.background,
+    fillColor: Colors.white,
     labelStyle: const TextStyle(color: AppColors.textDark),
     enabledBorder: OutlineInputBorder(
       borderSide: const BorderSide(color: AppColors.complementary),
@@ -74,15 +82,13 @@ final ThemeData teaTalkTheme = ThemeData(
     ),
   ),
 
-  // SnackBar
+  // SnackBar - accent color background, white text
   snackBarTheme: const SnackBarThemeData(
     backgroundColor: AppColors.accent,
-    contentTextStyle: TextStyle(
-        color: Colors
-            .white), // Fix: contentTextStyle should be contrast to background
+    contentTextStyle: TextStyle(color: Colors.white),
     behavior: SnackBarBehavior.floating,
   ),
 
-  // Icons
+  // Icons default color in the app (e.g., buttons, navigation)
   iconTheme: const IconThemeData(color: AppColors.primary),
 );

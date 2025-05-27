@@ -4,10 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tea_talk_mobile/presentation/providers/friend/friend_request_provider.dart';
 
-import '../../../domain/entities/conversation/conversation_model.dart';
-import '../../../domain/websocket/chat_message_model.dart';
-import '../../../domain/websocket/websocket_provider.dart';
+import '../../../data/models/conversation/conversation_model_response.dart';
 import '../../../routes/routes_name.dart';
+import '../../../style/text_style.dart';
 import '../../drawer/app_drawer.dart';
 import '../../providers/auth/login_provider.dart';
 import '../../providers/conversation/conversation_provider.dart';
@@ -48,7 +47,7 @@ class ConversationScreen extends HookConsumerWidget {
       GoRouter.of(context).pushNamed(RouteName.friend);
     }
 
-    void navigateToChat(ConversationModel conversation) {
+    void navigateToChat(ConversationResponseModel conversation) {
       //check private or group
       if (conversation.isGroup) {
         //for group
@@ -67,17 +66,6 @@ class ConversationScreen extends HookConsumerWidget {
       }
     }
 
-    ref.listen<AsyncValue<ChatMessage?>>(
-      privateMessagesProvider,
-      (previous, next) {
-        next.whenData((msg) {
-          if (msg != null) {
-            print('Received message: ${msg.toJson()}');
-          }
-        });
-      },
-    );
-
     return Scaffold(
       backgroundColor: AppColors.background,
       drawer: AppDrawer(
@@ -90,12 +78,7 @@ class ConversationScreen extends HookConsumerWidget {
         elevation: 0,
         title: Text(
           'Messages',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            letterSpacing: 0.8,
-          ),
+          style: AppTextStyles.appBarTitle,
         ),
         actions: totalRequests > 0
             ? [
@@ -107,7 +90,10 @@ class ConversationScreen extends HookConsumerWidget {
                     label: Text(
                       totalRequests.toString(),
                     ),
-                    child: Icon(Icons.person_add),
+                    child: Icon(
+                      Icons.person_add,
+                      size: 25,
+                    ),
                   ),
                 ),
               ]

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../style/text_style.dart';
-import '../../../style/theme/app_color.dart';
+import '../../../../style/text_style.dart';
+import '../../../../style/theme/app_color.dart';
 
 class MessageBubbleWidget extends StatelessWidget {
   final String text;

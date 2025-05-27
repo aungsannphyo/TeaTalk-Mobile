@@ -36,8 +36,10 @@ class CommonButtonWidget extends StatelessWidget {
                   valueColor: AlwaysStoppedAnimation<Color>(AppColors.accent),
                 ),
               )
-            : Text(label,
-                style: AppTextStyles.semiBold.copyWith(color: Colors.white)),
+            : Text(
+                label,
+                style: AppTextStyles.button,
+              ),
       ),
     );
   }

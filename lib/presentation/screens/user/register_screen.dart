@@ -83,7 +83,7 @@ class RegisterScreen extends HookConsumerWidget {
                   SvgPicture.asset('assets/images/register.svg', height: 180),
                   const SizedBox(height: 24),
                   Text(
-                    "Let’s Talk on YwarTalk",
+                    "Let’s Talk on TeaTalk",
                     style: AppTextStyles.bold
                         .copyWith(fontSize: 24, color: AppColors.primary),
                   ),

@@ -1,10 +1,13 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../style/text_style.dart';
-import '../../../style/theme/app_color.dart';
+import '../../../../domain/websocket/chat_message_model.dart';
+import '../../../../domain/websocket/websocket_provider.dart';
+import '../../../../style/text_style.dart';
+import '../../../../style/theme/app_color.dart';
 
-class ChatInputFieldWidget extends StatelessWidget {
+class ChatInputFieldWidget extends HookConsumerWidget {
   final String friendId;
   final TextEditingController textController;
   final ValueNotifier<String> message;
@@ -23,7 +26,27 @@ class ChatInputFieldWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    void sendMessage(ValueNotifier<String> message) {
+      if (message.value.isNotEmpty) {
+        final content = textController.text.trim();
+        if (content.isEmpty) return;
+
+        final message = ChatMessage(
+          content: content,
+          targetId: friendId,
+          type: MessageType.private,
+        );
+
+        final wsController = MessageType.private == MessageType.private
+            ? ref.read(privateWebSocketProvider)
+            : ref.read(groupWebSocketProvider);
+
+        wsController?.send(message);
+        textController.clear();
+      }
+    }
+
     return SafeArea(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -84,22 +107,7 @@ class ChatInputFieldWidget extends StatelessWidget {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      // final content = textController.text.trim();
-                      // if (content.isEmpty) return;
-
-                      // final message = ChatMessage(
-                      //   content: content,
-                      //   targetId: friendId,
-                      //   type: MessageType.private,
-                      // );
-
-                      // final wsController =
-                      //     MessageType.private == MessageType.private
-                      //         ? ref.read(privateWebSocketProvider)
-                      //         : ref.read(groupWebSocketProvider);
-
-                      // wsController?.send(message);
-                      // textController.clear();
+                      sendMessage(message);
                     },
                   ),
                 ),

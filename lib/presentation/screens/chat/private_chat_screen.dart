@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tea_talk_mobile/presentation/screens/chat/chat_appbar_widget.dart';
+import 'package:tea_talk_mobile/presentation/screens/chat/widget/chat_appbar_widget.dart';
 
 import '../../../style/theme/app_color.dart';
-import 'chat_input_field_widget.dart';
-import 'chat_messages_render_widget.dart';
+import 'widget/chat_input_field_widget.dart';
+import 'widget/chat_messages_render_widget.dart';
 
 class PrivateChatScreen extends HookConsumerWidget {
   final Map<String, dynamic>? friendInfo;
@@ -24,7 +24,7 @@ class PrivateChatScreen extends HookConsumerWidget {
 
     final textController = useTextEditingController();
     final showEmojiPicker = useState(false);
-    final message = useState('');
+    final ValueNotifier<String> message = useState('');
     final scrollController = useScrollController();
     final isLoadingMore = useState(false);
 

@@ -1,14 +1,14 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../data/datasources/conversation/conversation_remote_datasource.dart';
+import '../../../data/models/conversation/conversation_model_response.dart';
 import '../../../data/repositories/conversation/conversation_repository_impl.dart';
-import '../../../domain/entities/conversation/conversation_model.dart';
 import '../../../domain/usecases/conversation/conversation_usecase.dart';
 import '../auth/login_provider.dart';
 
 class ConversationState {
   final bool isLoading;
-  final List<ConversationModel>? conversationList;
+  final List<ConversationResponseModel>? conversationList;
   final String? error;
 
   ConversationState({

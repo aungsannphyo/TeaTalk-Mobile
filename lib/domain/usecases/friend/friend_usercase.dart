@@ -1,4 +1,4 @@
-import '../../entities/friend/friend_model.dart';
+import '../../../data/models/friend/friend_response_model.dart';
 import '../../repositories/friend/friend_repository.dart';
 
 class FriendUsercase {
@@ -6,7 +6,7 @@ class FriendUsercase {
 
   FriendUsercase(this.repository);
 
-  Future<List<FriendModel>> getFriends() {
+  Future<List<FriendResponseModel>> getFriends() {
     return repository.getFriends();
   }
 }

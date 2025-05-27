@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../style/text_style.dart';
+
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
@@ -28,6 +30,7 @@ class CustomTextFormField extends StatelessWidget {
       obscureText: obscureText,
       decoration: InputDecoration(
         labelText: labelText,
+        labelStyle: AppTextStyles.regular,
         prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
         suffixIcon: isPassword
             ? IconButton(

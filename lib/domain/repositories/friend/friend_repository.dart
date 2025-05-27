@@ -1,5 +1,5 @@
-import '../../entities/friend/friend_model.dart';
+import '../../../data/models/friend/friend_response_model.dart';
 
 abstract class FriendRepository {
-  Future<List<FriendModel>> getFriends();
+  Future<List<FriendResponseModel>> getFriends();
 }

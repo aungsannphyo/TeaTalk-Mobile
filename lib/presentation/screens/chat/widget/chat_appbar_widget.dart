@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tea_talk_mobile/utils/extensions.dart';
 
-import '../../../style/text_style.dart';
-import '../../../style/theme/app_color.dart';
-import '../../../utils/date_time.dart';
-import '../friend/widget/avatar_widget.dart';
+import '../../../../style/text_style.dart';
+import '../../../../style/theme/app_color.dart';
+import '../../../../utils/date_time.dart';
+import '../../friend/widget/avatar_widget.dart';
 
 class ChatAppbarWidget extends StatelessWidget {
   final String username;

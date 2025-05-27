@@ -1,14 +1,14 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../data/datasources/user/user_remote_datasource.dart';
+import '../../../data/models/user/search_user_response_model.dart';
 import '../../../data/repositories/user/user_repository_impl.dart';
-import '../../../domain/entities/user/search_user_model.dart';
 import '../../../domain/usecases/user/user_usercase.dart';
 import '../auth/login_provider.dart';
 
 class SearchUserState {
   final bool isLoading;
-  final List<SearchUserModel> users;
+  final List<SearchUserResponseModel> users;
   final String? error;
 
   SearchUserState({

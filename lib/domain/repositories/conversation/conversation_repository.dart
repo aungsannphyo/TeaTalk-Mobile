@@ -1,5 +1,5 @@
-import '../../entities/conversation/conversation_model.dart';
+import '../../../data/models/conversation/conversation_model_response.dart';
 
 abstract class ConversationRepository {
-  Future<List<ConversationModel>> getConversations(String userID);
+  Future<List<ConversationResponseModel>> getConversations(String userID);
 }

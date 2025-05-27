@@ -6,7 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../domain/entities/friend/friend_model.dart';
+import '../../../data/models/friend/friend_response_model.dart';
 import '../../../routes/routes_name.dart';
 import '../../../style/theme/app_color.dart';
 import '../../providers/user/search_user_provider.dart';
@@ -61,7 +61,7 @@ class AddFriendScreen extends HookConsumerWidget {
       };
     }, [controller]);
 
-    void navigateToChat(FriendModel friend) {
+    void navigateToChat(FriendResponseModel friend) {
       GoRouter.of(context).pushNamed(
         RouteName.chat,
         extra: {

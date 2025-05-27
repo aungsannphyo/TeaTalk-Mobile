@@ -1,7 +1,7 @@
 import '../../../domain/events/register_event.dart';
-import '../../../domain/entities/auth/login_model.dart';
 import '../../../domain/repositories/auth/auth_repository.dart';
 import "../../datasources/auth/auth_remote_datasource.dart";
+import '../../models/auth/login_response_model.dart';
 import "../../models/common_response_model.dart";
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -10,7 +10,7 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.remote);
 
   @override
-  Future<LoginModel> login(String email, String password) {
+  Future<LoginResponseModel> login(String email, String password) {
     return remote.login(email, password);
   }
 

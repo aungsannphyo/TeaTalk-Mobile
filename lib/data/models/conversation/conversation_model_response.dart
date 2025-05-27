@@ -18,18 +18,18 @@ class ConversationResponseModel extends ConversationModel {
 
   factory ConversationResponseModel.fromJson(Map<String, dynamic> json) {
     return ConversationResponseModel(
-      conversationId: json['conversation_id'],
-      isGroup: json['is_group'],
+      conversationId: json['conversationId'],
+      isGroup: json['isGroup'],
       name: json['name'],
-      lastMessageId: json['last_message_id'],
-      lastMessageContent: json['last_message_content'],
-      lastMessageSender: json['last_message_sender'],
-      lastMessageCreatedAt: json['last_message_created_at'],
-      unReadCount: json['unread_count'],
-      receiverId: json['receiver_id'],
-      profileImage: json['profile_image'],
-      totalOnline: json['is_online'],
-      lastSeen: json['last_seen'],
+      lastMessageId: json['lastMessageId'],
+      lastMessageContent: json['lastMessageContent'],
+      lastMessageSender: json['lastMessageSender'],
+      lastMessageCreatedAt: json['lastMessageCreatedAt'],
+      unReadCount: json['unreadCount'],
+      receiverId: json['receiverId'],
+      profileImage: json['image'],
+      totalOnline: json['totalOnline'],
+      lastSeen: json['lastSeen'],
     );
   }
 }

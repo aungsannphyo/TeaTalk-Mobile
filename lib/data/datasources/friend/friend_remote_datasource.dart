@@ -21,7 +21,7 @@ class FriendRemoteDatasource implements FriendDatasource {
   @override
   Future<List<FriendResponseModel>> getFriends() async {
     final response = await http.get(
-      Uri.parse('$apiUrl/user/friend'),
+      Uri.parse('$apiUrl/users/friend'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',

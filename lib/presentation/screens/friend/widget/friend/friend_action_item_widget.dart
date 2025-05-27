@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../style/text_style.dart';
 import '../../../../../style/theme/app_color.dart';
 
 class FriendActionItemWidget extends StatelessWidget {
@@ -26,10 +27,9 @@ class FriendActionItemWidget extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               label,
-              style: TextStyle(
-                fontSize: 16,
+              style: AppTextStyles.semiBold.copyWith(
                 color: AppColors.primary,
-                fontWeight: FontWeight.w600,
+                fontSize: 17,
               ),
             ),
           ],

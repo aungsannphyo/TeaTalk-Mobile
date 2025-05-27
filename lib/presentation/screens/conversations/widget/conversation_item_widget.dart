@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../../../data/models/conversation/conversation_model_response.dart';
+import '../../../../style/text_style.dart';
 import '../../../../utils/extensions.dart';
-import '../../../../domain/entities/conversation/conversation_model.dart';
 import "../../../../style/theme/app_color.dart";
 import '../../../../utils/date_time.dart';
 import '../../friend/widget/avatar_widget.dart';
 
 class ConversationItemWidget extends StatelessWidget {
-  final ConversationModel conversation;
+  final ConversationResponseModel conversation;
   const ConversationItemWidget({super.key, required this.conversation});
 
   @override
@@ -29,10 +30,9 @@ class ConversationItemWidget extends StatelessWidget {
               children: [
                 Text(
                   conversation.name.toTitleCase(),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textDark,
+                  style: AppTextStyles.semiBold.copyWith(
+                    fontSize: 18,
+                    color: AppColors.textDark.withAlpha((0.8 * 255).round()),
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -42,8 +42,8 @@ class ConversationItemWidget extends StatelessWidget {
                   conversation.lastMessageContent != null
                       ? conversation.lastMessageContent!
                       : '',
-                  style: TextStyle(
-                    fontSize: 14,
+                  style: AppTextStyles.regular.copyWith(
+                    fontSize: 15,
                     color: AppColors.textDark.withAlpha((0.6 * 255).round()),
                   ),
                   maxLines: 1,
@@ -63,10 +63,11 @@ class ConversationItemWidget extends StatelessWidget {
                 conversation.lastMessageCreatedAt != null
                     ? formatRelativeTime(conversation.lastMessageCreatedAt!)
                     : '',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: AppColors.textDark.withAlpha((0.5 * 255).round()),
-                  fontWeight: FontWeight.w400,
+                style: AppTextStyles.regular.copyWith(
+                  fontSize: 15,
+                  color: AppColors.textDark.withAlpha(
+                    (0.6 * 255).round(),
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
@@ -80,10 +81,9 @@ class ConversationItemWidget extends StatelessWidget {
                   ),
                   child: Text(
                     '${conversation.unReadCount}',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                    style: AppTextStyles.semiBold.copyWith(
+                      fontSize: 14,
+                      color: AppColors.textLight,
                     ),
                   ),
                 ),

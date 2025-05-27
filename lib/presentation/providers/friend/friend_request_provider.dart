@@ -1,14 +1,14 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../data/datasources/friend/friend_request_remote_datasource.dart';
+import '../../../data/models/friend/friend_request_response_model.dart';
 import '../../../data/repositories/friend/friend_request_repository_impl.dart';
-import '../../../domain/entities/friend/frient_request_model.dart';
 import '../../../domain/usecases/friend/friend_request_usecase.dart';
 import '../auth/login_provider.dart';
 
 class FriendRequestState {
   final bool isLoading;
-  final List<FrientRequestModel>? friendRequest;
+  final List<FriendRequestResponseModel>? friendRequest;
   final String? error;
 
   FriendRequestState({

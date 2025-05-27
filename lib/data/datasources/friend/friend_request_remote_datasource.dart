@@ -28,7 +28,7 @@ class FriendRequestRemoteDatasourceImpl
   Future<List<FriendRequestResponseModel>> getAllFriendRequestLog(
       String userId) async {
     final response = await http.get(
-      Uri.parse('$apiUrl/friend/requests'),
+      Uri.parse('$apiUrl/friends/requests'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -48,15 +48,16 @@ class FriendRequestRemoteDatasourceImpl
   @override
   Future<CommonResponseModel> decideFriendRequest(
       DecideFriendRequestEvent event) async {
-    final response = await http.post(Uri.parse('$apiUrl/friend/decide-request'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode({
-          "status": event.status,
-          "friendRequestId": event.friendRequestId,
-        }));
+    final response =
+        await http.post(Uri.parse('$apiUrl/friends/decide-request'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: jsonEncode({
+              "status": event.status,
+              "friendRequestId": event.friendRequestId,
+            }));
 
     final data = jsonDecode(response.body);
     if (response.statusCode == 200) {
