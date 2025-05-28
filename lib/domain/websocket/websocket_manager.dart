@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'chat_message_model.dart';
+import 'online_status_model.dart';
 
 enum ConnectionStatus {
   disconnected,
@@ -15,8 +16,11 @@ enum ConnectionStatus {
 
 class WebsocketManagerController {
   WebSocketChannel? _channel;
-  final _incomingController = StreamController<ChatMessage>.broadcast();
-  final _outbox = <ChatMessage>[];
+  final _chatStreamController = StreamController<ChatMessageModel>.broadcast();
+  final _statusStreamController =
+      StreamController<OnlineStatusModel>.broadcast();
+
+  final _outbox = <ChatMessageModel>[];
   Timer? _reconnectTimer;
   Timer? _heartbeatTimer;
   int _reconnectAttempts = 0;
@@ -32,7 +36,8 @@ class WebsocketManagerController {
       : _baseUrl = baseUrl,
         _token = token;
 
-  Stream<ChatMessage> get messages => _incomingController.stream;
+  Stream<ChatMessageModel> get messagesStream => _chatStreamController.stream;
+  Stream<OnlineStatusModel> get statusStream => _statusStreamController.stream;
 
   Future<void> connect() async {
     if (_channel != null) return;
@@ -59,7 +64,7 @@ class WebsocketManagerController {
     }
   }
 
-  void send(ChatMessage msg) {
+  void send(ChatMessageModel msg) {
     if (_channel != null && _status == ConnectionStatus.connected) {
       _channel!.sink.add(json.encode(msg.toJson()));
     } else {
@@ -77,8 +82,30 @@ class WebsocketManagerController {
   void _onData(dynamic data) {
     try {
       final decoded = json.decode(data);
-      final message = ChatMessage.fromJson(decoded);
-      _incomingController.add(message);
+
+      if (decoded is Map<String, dynamic>) {
+        // Single user status update
+        if (decoded.containsKey('userId') && decoded.containsKey('status')) {
+          final status = OnlineStatusModel.fromJson(decoded);
+          _statusStreamController.add(status);
+        }
+        // Chat message
+        else if (decoded.containsKey('senderId') &&
+            decoded.containsKey('receiverId')) {
+          final chatMessage = ChatMessageModel.fromJson(decoded);
+          _chatStreamController.add(chatMessage);
+        }
+      } else if (decoded is List) {
+        // Bulk user status update
+        for (var item in decoded) {
+          if (item is Map<String, dynamic> &&
+              item.containsKey('userId') &&
+              item.containsKey('status')) {
+            final status = OnlineStatusModel.fromJson(item);
+            _statusStreamController.add(status);
+          }
+        }
+      }
     } catch (_) {}
   }
 
@@ -103,7 +130,13 @@ class WebsocketManagerController {
 
   void _startHeartbeat() {
     _heartbeatTimer = Timer.periodic(const Duration(seconds: 20), (_) {
-      if (_channel == null) {
+      if (_channel != null) {
+        try {
+          _channel!.sink.add(json.encode({'type': 'ping'}));
+        } catch (_) {
+          _scheduleReconnect();
+        }
+      } else {
         _scheduleReconnect();
       }
     });
@@ -129,6 +162,7 @@ class WebsocketManagerController {
 
   void dispose() {
     disconnect();
-    _incomingController.close();
+    _statusStreamController.close();
+    _chatStreamController.close();
   }
 }

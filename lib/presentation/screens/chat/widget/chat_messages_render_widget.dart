@@ -19,50 +19,42 @@ class ChatMessagesRenderWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final MessagesState messagesState = ref.watch(messagesProvider);
-    final AuthState authState = ref.watch(loginProvider);
+    final messagesState = ref.watch(messagesProvider);
+    final authState = ref.watch(loginProvider);
+    final currentUserId = authState.auth?.id;
 
     useEffect(() {
       Future.microtask(() {
         ref.read(messagesProvider.notifier).getMessages(conversationId, null);
       });
-
       return null;
-    }, [authState.auth]);
+    }, [authState.auth?.id]);
 
-    bool isMe(String userId) {
-      final currentUserId = authState.auth?.id;
-      return currentUserId == userId;
-    }
-
-    // Check if messages are being fetched
-    if (messagesState.isLoading) {
+    if (messagesState.isLoading &&
+        (messagesState.messageList == null ||
+            messagesState.messageList!.isEmpty)) {
       return const Center(child: CircularProgressIndicator());
     }
 
+    final messages = (messagesState.messageList ?? [])
+      ..sort(
+        (a, b) => b.messageCreatedAt.compareTo(a.messageCreatedAt),
+      );
+
     return ListView(
+      key: ValueKey(messages.length),
       controller: scrollController,
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
       reverse: true,
       children: [
-        // Display loading indicator if messages are being fetched
-        if (messagesState.isLoading)
-          const Center(child: CircularProgressIndicator()),
-        ...(messagesState.messageList ?? [])
-            .where((message) =>
-                // ignore: unnecessary_null_comparison
-                message.isRead != null)
-            .map((message) {
-          return MessageBubbleWidget(
+        for (final message in messages)
+          MessageBubbleWidget(
             text: message.content,
-            isMe: isMe(message.senderId),
-            // ignore: unnecessary_null_comparison
-            time: message.messageCreatedAt != null
-                ? DateFormat('h:mma').format(message.messageCreatedAt.toLocal())
-                : '',
+            isMe: message.senderId == currentUserId,
+            time:
+                DateFormat('h:mma').format(message.messageCreatedAt.toLocal()),
             isRead: message.isRead,
-          );
-        }),
+          ),
       ],
     );
   }

@@ -16,24 +16,56 @@ class MessagesState {
     this.messageList,
     this.error,
   });
+
+  MessagesState copyWith({
+    bool? isLoading,
+    List<MessageResponseModel>? messageList,
+    String? error,
+  }) {
+    return MessagesState(
+      isLoading: isLoading ?? this.isLoading,
+      messageList: messageList ?? this.messageList,
+      error: error ?? this.error,
+    );
+  }
 }
 
 class MessageNotifier extends StateNotifier<MessagesState> {
   final MessageUsecase messageUsecase;
 
-  MessageNotifier({
-    required this.messageUsecase,
-  }) : super(MessagesState());
+  MessageNotifier({required this.messageUsecase}) : super(MessagesState());
 
   Future<void> getMessages(String conversationID, DateTime? cursorTime) async {
-    state = MessagesState(isLoading: true);
+    state = state.copyWith(isLoading: true);
 
     try {
-      final result =
+      final List<MessageResponseModel> result =
           await messageUsecase.getMessages(conversationID, cursorTime);
-      state = MessagesState(messageList: result);
+
+      final List<MessageResponseModel> mergedList = (cursorTime == null)
+          ? result
+          : [...(state.messageList ?? []), ...result];
+
+      state = state.copyWith(
+        messageList: mergedList,
+        isLoading: false,
+        error: null,
+      );
     } catch (e) {
-      state = MessagesState(error: e.toString());
+      state = state.copyWith(
+        isLoading: false,
+        error: e.toString(),
+      );
+    }
+  }
+
+  void addMessage(MessageResponseModel message) {
+    final currentList = state.messageList ?? [];
+
+    if (!currentList.any((m) => m.messageId == message.messageId)) {
+      state = state.copyWith(
+        messageList: [...currentList, message],
+      );
     }
   }
 }
@@ -43,9 +75,6 @@ final messagesProvider =
   final authState = ref.watch(loginProvider);
   final token = authState.auth?.token;
   final remote = MessageRemoteDatasourceImpl(token: token);
-
   final repository = MessageRepositoryImpl(remote);
-  return MessageNotifier(
-    messageUsecase: MessageUsecase(repository),
-  );
+  return MessageNotifier(messageUsecase: MessageUsecase(repository));
 });

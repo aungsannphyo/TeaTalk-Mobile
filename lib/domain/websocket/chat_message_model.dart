@@ -1,11 +1,13 @@
 enum MessageType { private, group }
 
-class ChatMessage {
+class ChatMessageModel {
+  final String senderId;
   final String content;
   final String targetId; // receiverId or groupId
   final MessageType type;
 
-  ChatMessage({
+  ChatMessageModel({
+    required this.senderId,
     required this.content,
     required this.targetId,
     required this.type,
@@ -14,21 +16,31 @@ class ChatMessage {
   Map<String, dynamic> toJson() {
     switch (type) {
       case MessageType.private:
-        return {'receiverId': targetId, 'content': content};
+        return {
+          'receiverId': targetId,
+          'content': content,
+          'senderId': senderId
+        };
       case MessageType.group:
-        return {'groupId': targetId, 'content': content};
+        return {
+          'groupId': targetId,
+          'content': content,
+          'senderId': senderId,
+        };
     }
   }
 
-  factory ChatMessage.fromJson(Map<String, dynamic> json) {
+  factory ChatMessageModel.fromJson(Map<String, dynamic> json) {
     if (json.containsKey('receiverId')) {
-      return ChatMessage(
+      return ChatMessageModel(
+        senderId: json['senderId'],
         content: json['content'],
         targetId: json['receiverId'],
         type: MessageType.private,
       );
     } else if (json.containsKey('groupId')) {
-      return ChatMessage(
+      return ChatMessageModel(
+        senderId: json['senderId'],
         content: json['content'],
         targetId: json['groupId'],
         type: MessageType.group,

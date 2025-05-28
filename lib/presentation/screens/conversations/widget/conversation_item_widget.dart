@@ -9,7 +9,13 @@ import '../../friend/widget/avatar_widget.dart';
 
 class ConversationItemWidget extends StatelessWidget {
   final ConversationResponseModel conversation;
-  const ConversationItemWidget({super.key, required this.conversation});
+  final bool isOnline;
+
+  const ConversationItemWidget({
+    super.key,
+    required this.conversation,
+    required this.isOnline,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +25,29 @@ class ConversationItemWidget extends StatelessWidget {
       child: Row(
         children: [
           // Profile Image with village color avatar background
-          AvatarWidget(
-            username: conversation.name,
+          Stack(
+            children: [
+              // Profile Avatar
+              AvatarWidget(username: conversation.name),
+
+              if (!conversation.isGroup)
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: isOnline ? AppColors.onlineStatus : Colors.grey,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
           const SizedBox(width: 12),
           // Name & Last message

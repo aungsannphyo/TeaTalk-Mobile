@@ -126,7 +126,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           key: state.pageKey,
           child: PrivateChatScreen(
             key: state.pageKey,
-            friendInfo: state.extra as Map<String, dynamic>?,
+            chatInfo: state.extra as Map<String, dynamic>?,
           ),
         ),
       ),

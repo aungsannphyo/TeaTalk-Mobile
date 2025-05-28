@@ -48,13 +48,13 @@ class MessageBubbleWidget extends StatelessWidget {
               text,
               style: isMe
                   ? AppTextStyles.semiBold
-                      .copyWith(color: Colors.white, fontSize: 17)
+                      .copyWith(color: Colors.white, fontSize: 16)
                   : AppTextStyles.semiBold.copyWith(
                       color: Color.alphaBlend(
                         AppColors.textDark.withAlpha((0.85 * 255).toInt()),
                         Colors.transparent,
                       ),
-                      fontSize: 17),
+                      fontSize: 16),
             ),
             const SizedBox(height: 4),
             Row(
@@ -78,7 +78,7 @@ class MessageBubbleWidget extends StatelessWidget {
                   Row(
                     children: [
                       Icon(
-                        isRead ? Icons.remove_red_eye : Icons.check,
+                        isRead ? Icons.done_all_outlined : Icons.check_outlined,
                         size: 18,
                         color: Colors.white, // Always white for both icons
                       ),

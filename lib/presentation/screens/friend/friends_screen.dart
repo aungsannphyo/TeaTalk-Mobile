@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../data/models/friend/friend_response_model.dart';
 import '../../../routes/routes_name.dart';
 import '../../../style/text_style.dart';
 import '../../../style/theme/app_color.dart';
@@ -29,19 +28,6 @@ class FriendsScreen extends HookConsumerWidget {
 
     void navigateToAddFriend() {
       GoRouter.of(context).pushNamed(RouteName.addFriend);
-    }
-
-    void navigateToChat(FriendResponseModel friend) {
-      GoRouter.of(context).pushNamed(
-        RouteName.chat,
-        extra: {
-          'id': friend.id,
-          'profileImage': friend.profileImage,
-          'lastSeen': friend.lastSeen.toString(),
-          'isOnline': friend.isOnline,
-          'username': friend.username,
-        },
-      );
     }
 
     return Scaffold(
@@ -110,16 +96,11 @@ class FriendsScreen extends HookConsumerWidget {
                           ),
                           itemBuilder: (context, index) {
                             final friend = friendState.friends![index];
-                            return GestureDetector(
-                              onTap: () {
-                                navigateToChat(friend);
-                              },
-                              child: UserTileWidget(
-                                sendFriendRequest: () {},
-                                navigateToChat: navigateToChat,
-                                user: friend,
-                                isLoading: friendState.isLoading,
-                              ),
+                            return UserTileWidget(
+                              sendFriendRequest: () {},
+                              navigateToChat: () {},
+                              user: friend,
+                              isLoading: friendState.isLoading,
                             );
                           },
                         ),

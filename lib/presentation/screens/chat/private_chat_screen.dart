@@ -2,20 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:uuid/uuid.dart';
 
+import '../../../data/models/message/message_model_response.dart';
+import '../../../domain/websocket/chat_message_model.dart';
+import '../../../domain/websocket/websocket_provider.dart';
 import '../../../style/theme/app_color.dart';
+import '../../providers/message/message_provider.dart';
 import 'widget/chat_appbar_widget.dart';
 import 'widget/chat_input_field_widget.dart';
 import 'widget/chat_messages_render_widget.dart';
 
 class PrivateChatScreen extends HookConsumerWidget {
-  final Map<String, dynamic>? friendInfo;
-  const PrivateChatScreen({super.key, this.friendInfo});
+  final Map<String, dynamic>? chatInfo;
+  const PrivateChatScreen({super.key, this.chatInfo});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Get friend info from constructor
-    final extra = friendInfo;
+    final extra = chatInfo;
     final conversationId = extra?['conversationId'] ?? '';
     final friendId = extra?['friendId'] ?? '';
     // final profileImage = extra?['profileImage'] ?? '';
@@ -29,23 +34,6 @@ class PrivateChatScreen extends HookConsumerWidget {
     final scrollController = useScrollController();
     final isLoadingMore = useState(false);
 
-    useEffect(() {
-      void onScroll() {
-        if (scrollController.position.pixels <=
-                scrollController.position.minScrollExtent + 50 &&
-            !isLoadingMore.value) {
-          isLoadingMore.value = true;
-
-          Future.delayed(const Duration(seconds: 1), () {
-            isLoadingMore.value = false;
-          });
-        }
-      }
-
-      scrollController.addListener(onScroll);
-      return () => scrollController.removeListener(onScroll);
-    }, [scrollController]);
-
     void onEmojiSelected(Emoji emoji) {
       textController.text += emoji.emoji;
       textController.selection = TextSelection.fromPosition(
@@ -57,6 +45,39 @@ class PrivateChatScreen extends HookConsumerWidget {
     void toggleEmojiPicker() {
       showEmojiPicker.value = !showEmojiPicker.value;
     }
+
+    void onMessageSent(MessageResponseModel messageModel) {
+      // Add the new message to the messages state
+      ref.read(messagesProvider.notifier).addMessage(messageModel);
+
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (scrollController.hasClients) {
+          scrollController.animateTo(
+            0.0,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      });
+    }
+
+    //Listen for new incoming WebSocket messages and merge them
+    final incomingMessage = ref.watch(privateMessagesProvider(friendId));
+    incomingMessage.whenData((chatMessage) {
+      if (chatMessage != null && chatMessage.targetId == friendId) {
+        // Convert ChatMessage to MessageResponseModel
+        final messageModel = MessageResponseModel(
+          messageId: Uuid().v4(),
+          senderId: chatMessage.senderId,
+          targetId: chatMessage.targetId,
+          content: chatMessage.content,
+          isRead: false,
+          messageCreatedAt: DateTime.now(),
+        );
+
+        onMessageSent(messageModel);
+      }
+    });
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -85,7 +106,9 @@ class PrivateChatScreen extends HookConsumerWidget {
               child: Center(child: CircularProgressIndicator()),
             ),
           ChatInputFieldWidget(
-            friendId: friendId,
+            onMessageSent: onMessageSent,
+            targetId: friendId,
+            messageType: MessageType.private,
             textController: textController,
             message: message,
             showEmojiPicker: showEmojiPicker,

@@ -54,7 +54,7 @@ class RegisterScreen extends HookConsumerWidget {
           passwordController.clear();
           confirmPasswordController.clear();
 
-          Future.delayed(const Duration(seconds: 2), () {
+          Future.delayed(const Duration(seconds: 1), () {
             if (context.mounted) {
               GoRouter.of(context).pushReplacementNamed(RouteName.login);
             }

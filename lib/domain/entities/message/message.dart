@@ -1,16 +1,16 @@
 class MessageModel {
-  final String conversationId;
+  final String messageId;
+  final String targetId;
   final String senderId;
-  final String receiverId;
   final String content;
   final bool isRead;
   final String? seenByName;
   final DateTime messageCreatedAt;
 
   MessageModel({
-    required this.conversationId,
+    required this.messageId,
     required this.senderId,
-    required this.receiverId,
+    required this.targetId,
     required this.content,
     this.isRead = false,
     this.seenByName,

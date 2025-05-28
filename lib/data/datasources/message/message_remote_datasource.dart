@@ -37,6 +37,7 @@ class MessageRemoteDatasourceImpl extends MessageRemoteDatasource {
         'Authorization': 'Bearer $token',
       },
     );
+
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       return data.map((e) => MessageResponseModel.fromJson(e)).toList();

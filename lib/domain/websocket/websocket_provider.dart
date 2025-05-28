@@ -1,8 +1,10 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tea_talk_mobile/domain/websocket/websocket_manager.dart';
+
 import 'auth_token_provider.dart';
 import 'chat_message_model.dart';
+import 'online_status_model.dart';
+import 'websocket_manager.dart';
 
 final privateWebSocketProvider = Provider<WebsocketManagerController?>((ref) {
   final wsUrl = dotenv.env['WS_URL'];
@@ -32,25 +34,27 @@ final groupWebSocketProvider = Provider<WebsocketManagerController?>((ref) {
   return controller;
 });
 
-final privateMessagesProvider = StreamProvider.autoDispose<ChatMessage?>((ref) {
+final privateMessagesProvider =
+    StreamProvider.family<ChatMessageModel?, String>((ref, targetId) {
   final ws = ref.watch(privateWebSocketProvider);
   if (ws == null) return const Stream.empty();
-
-  return ws.messages;
+  return ws.messagesStream.where((msg) => msg.targetId == targetId);
 });
 
-final groupMessagesProvider = StreamProvider.autoDispose<ChatMessage?>((ref) {
+final groupMessagesProvider = StreamProvider<ChatMessageModel?>((ref) {
   final ws = ref.watch(groupWebSocketProvider);
   if (ws == null) return const Stream.empty();
-  return ws.messages;
+  return ws.messagesStream;
 });
 
-final privateIsReconnectingProvider = Provider<bool>((ref) {
+final privateStatusProvider = StreamProvider<OnlineStatusModel?>((ref) {
   final ws = ref.watch(privateWebSocketProvider);
-  return ws?.status == ConnectionStatus.reconnecting;
+  if (ws == null) return const Stream.empty();
+  return ws.statusStream;
 });
 
-final groupIsReconnectingProvider = Provider<bool>((ref) {
+final groupStatusProvider = StreamProvider<OnlineStatusModel?>((ref) {
   final ws = ref.watch(groupWebSocketProvider);
-  return ws?.status == ConnectionStatus.reconnecting;
+  if (ws == null) return const Stream.empty();
+  return ws.statusStream;
 });

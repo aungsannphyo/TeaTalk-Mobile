@@ -2,9 +2,9 @@ import '../../../domain/entities/message/message.dart';
 
 class MessageResponseModel extends MessageModel {
   MessageResponseModel({
-    required super.conversationId,
+    required super.targetId,
     required super.senderId,
-    required super.receiverId,
+    required super.messageId,
     required super.content,
     super.isRead = false,
     super.seenByName,
@@ -13,13 +13,15 @@ class MessageResponseModel extends MessageModel {
 
   factory MessageResponseModel.fromJson(Map<String, dynamic> json) {
     return MessageResponseModel(
-      conversationId: json['conversationId'],
+      messageId: json['messageId'],
       senderId: json['senderId'],
-      receiverId: json['receiverId'],
+      targetId: json['targetId'],
       content: json['content'],
       isRead: json['isRead'] ?? false,
-      seenByName: json['seenByName'],
-      messageCreatedAt: DateTime.parse(json['messageCreatedAt']),
+      seenByName: json['seenByName'] ?? '',
+      messageCreatedAt: DateTime.parse(
+        json['messageCreatedAt'],
+      ),
     );
   }
 }

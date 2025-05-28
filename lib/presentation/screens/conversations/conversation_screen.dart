@@ -5,6 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tea_talk_mobile/presentation/providers/friend/friend_request_provider.dart';
 
 import '../../../data/models/conversation/conversation_model_response.dart';
+import '../../../domain/websocket/listener/online_status_listener.dart';
+import '../../../domain/websocket/online_status_map_provider.dart';
+import '../../../domain/websocket/online_status_model.dart';
+import '../../../domain/websocket/websocket_provider.dart';
 import '../../../routes/routes_name.dart';
 import '../../../style/text_style.dart';
 import '../../drawer/app_drawer.dart';
@@ -19,11 +23,11 @@ class ConversationScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(onlineStatusListenerProvider);
     final AuthState authState = ref.watch(loginProvider);
     final ConversationState conversationState = ref.watch(conversationProvider);
     final FriendRequestState friendRequestLogState =
         ref.watch(friendRequestProvider);
-
     final totalRequests = friendRequestLogState.friendRequest?.length ?? 0;
 
     useEffect(() {
@@ -121,6 +125,13 @@ class ConversationScreen extends HookConsumerWidget {
                           color: AppColors.bubbleShadow,
                         ),
                         itemBuilder: (context, index) {
+                          final conversation =
+                              conversationState.conversationList![index];
+                          final onlineMap = ref.watch(onlineStatusMapProvider);
+                          final isOnline = conversation.isGroup
+                              ? (conversation.totalOnline > 0)
+                              : (onlineMap[conversation.receiverId] ?? false);
+
                           return GestureDetector(
                             onTap: () {
                               navigateToChat(
@@ -128,8 +139,9 @@ class ConversationScreen extends HookConsumerWidget {
                               );
                             },
                             child: ConversationItemWidget(
-                                conversation:
-                                    conversationState.conversationList![index]),
+                              conversation: conversation,
+                              isOnline: isOnline,
+                            ),
                           );
                         },
                       ),
