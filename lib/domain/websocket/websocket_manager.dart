@@ -82,7 +82,6 @@ class WebsocketManagerController {
   void _onData(dynamic data) {
     try {
       final decoded = json.decode(data);
-
       if (decoded is Map<String, dynamic>) {
         // Single user status update
         if (decoded.containsKey('userId') && decoded.containsKey('status')) {

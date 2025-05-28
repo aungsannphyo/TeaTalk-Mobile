@@ -1,14 +1,15 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'auth_token_provider.dart';
+import '../../presentation/providers/auth/login_provider.dart';
 import 'chat_message_model.dart';
 import 'online_status_model.dart';
 import 'websocket_manager.dart';
 
 final privateWebSocketProvider = Provider<WebsocketManagerController?>((ref) {
   final wsUrl = dotenv.env['WS_URL'];
-  final token = ref.watch(authTokenProvider);
+  final authState = ref.watch(loginProvider);
+  final token = authState.auth?.token;
   if (token == null) return null;
 
   final controller = WebsocketManagerController(
@@ -22,7 +23,8 @@ final privateWebSocketProvider = Provider<WebsocketManagerController?>((ref) {
 
 final groupWebSocketProvider = Provider<WebsocketManagerController?>((ref) {
   final wsUrl = dotenv.env['WS_URL'];
-  final token = ref.watch(authTokenProvider);
+  final authState = ref.watch(loginProvider);
+  final token = authState.auth?.token;
   if (token == null) return null;
 
   final controller = WebsocketManagerController(
@@ -38,7 +40,11 @@ final privateMessagesProvider =
     StreamProvider.family<ChatMessageModel?, String>((ref, targetId) {
   final ws = ref.watch(privateWebSocketProvider);
   if (ws == null) return const Stream.empty();
-  return ws.messagesStream.where((msg) => msg.targetId == targetId);
+  final authState = ref.watch(loginProvider);
+  final currentUserId = authState.auth?.id;
+  return ws.messagesStream.where(
+    (msg) => msg.senderId == targetId && msg.targetId == currentUserId,
+  );
 });
 
 final groupMessagesProvider = StreamProvider<ChatMessageModel?>((ref) {

@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'auth_token_provider.dart';
+import '../../presentation/providers/auth/login_provider.dart';
 import 'websocket_provider.dart';
 
 class LifecycleBinding extends StatefulWidget {
@@ -28,7 +28,8 @@ class _LifecycleBindingState extends State<LifecycleBinding>
   }
 
   void _handleLifecycle(AppLifecycleState state) {
-    final token = _ref.read(authTokenProvider);
+    final authState = _ref.watch(loginProvider);
+    final token = authState.auth?.token;
     if (token == null) return;
 
     final privateWS = _ref.read(privateWebSocketProvider);
@@ -54,7 +55,8 @@ class _LifecycleBindingState extends State<LifecycleBinding>
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
       _ref = ref;
-      final token = ref.watch(authTokenProvider);
+      final authState = ref.watch(loginProvider);
+      final token = authState.auth?.token;
 
       // Initial connection after login
       if (token != null) {

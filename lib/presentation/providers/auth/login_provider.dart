@@ -4,7 +4,6 @@ import '../../../data/datasources/auth/auth_remote_datasource.dart';
 import '../../../data/models/auth/login_response_model.dart';
 import '../../../data/repositories/auth/auth_repository_impl.dart';
 import '../../../domain/usecases/auth/auth_usecase.dart';
-import '../../../domain/websocket/auth_token_provider.dart';
 import '../../../domain/websocket/websocket_provider.dart';
 
 class AuthState {
@@ -38,8 +37,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
         auth: result,
         isLoading: false,
       );
-
-      ref.read(authTokenProvider.notifier).state = result.token;
     } catch (e) {
       state = AuthState(error: e.toString());
     }
@@ -51,7 +48,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
     privateWS?.disconnect();
     groupWS?.disconnect();
-    ref.read(authTokenProvider.notifier).state = null;
     state = AuthState();
   }
 }

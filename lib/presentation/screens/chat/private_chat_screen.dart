@@ -6,6 +6,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../../data/models/message/message_model_response.dart';
 import '../../../domain/websocket/chat_message_model.dart';
+import '../../../domain/websocket/online_status_map_provider.dart';
 import '../../../domain/websocket/websocket_provider.dart';
 import '../../../style/theme/app_color.dart';
 import '../../providers/message/message_provider.dart';
@@ -25,8 +26,15 @@ class PrivateChatScreen extends HookConsumerWidget {
     final friendId = extra?['friendId'] ?? '';
     // final profileImage = extra?['profileImage'] ?? '';
     final lastSeen = extra?['lastSeen'] ?? '';
-    final isOnline = extra?['isOnline'] ?? false;
     final username = extra?['username'] ?? '';
+
+    // Listen to live online status map
+    final onlineMap = ref.watch(onlineStatusMapProvider);
+    final isOnlineLive = onlineMap[friendId] ?? false;
+
+    // Use live online status if available, else fallback to backend last seen
+    final isOnlineToShow = isOnlineLive;
+    final lastSeenToShow = isOnlineLive ? '' : lastSeen;
 
     final textController = useTextEditingController();
     final showEmojiPicker = useState(false);
@@ -62,22 +70,24 @@ class PrivateChatScreen extends HookConsumerWidget {
     }
 
     //Listen for new incoming WebSocket messages and merge them
-    final incomingMessage = ref.watch(privateMessagesProvider(friendId));
-    incomingMessage.whenData((chatMessage) {
-      if (chatMessage != null && chatMessage.targetId == friendId) {
-        // Convert ChatMessage to MessageResponseModel
-        final messageModel = MessageResponseModel(
-          messageId: Uuid().v4(),
-          senderId: chatMessage.senderId,
-          targetId: chatMessage.targetId,
-          content: chatMessage.content,
-          isRead: false,
-          messageCreatedAt: DateTime.now(),
-        );
-
-        onMessageSent(messageModel);
-      }
-    });
+    ref.listen<AsyncValue<ChatMessageModel?>>(
+      privateMessagesProvider(friendId),
+      (previous, next) {
+        next.whenData((chatMessage) {
+          if (chatMessage != null) {
+            final messageModel = MessageResponseModel(
+              messageId: Uuid().v4(),
+              senderId: chatMessage.senderId,
+              targetId: chatMessage.targetId,
+              content: chatMessage.content,
+              isRead: false,
+              messageCreatedAt: DateTime.now(),
+            );
+            onMessageSent(messageModel);
+          }
+        });
+      },
+    );
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -88,8 +98,8 @@ class PrivateChatScreen extends HookConsumerWidget {
         titleSpacing: 0,
         title: ChatAppbarWidget(
           username: username,
-          isOnline: isOnline,
-          lastSeen: lastSeen,
+          isOnline: isOnlineToShow,
+          lastSeen: lastSeenToShow,
         ),
       ),
       body: Column(

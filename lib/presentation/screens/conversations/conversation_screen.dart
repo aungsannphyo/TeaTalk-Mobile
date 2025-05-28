@@ -7,8 +7,6 @@ import 'package:tea_talk_mobile/presentation/providers/friend/friend_request_pro
 import '../../../data/models/conversation/conversation_model_response.dart';
 import '../../../domain/websocket/listener/online_status_listener.dart';
 import '../../../domain/websocket/online_status_map_provider.dart';
-import '../../../domain/websocket/online_status_model.dart';
-import '../../../domain/websocket/websocket_provider.dart';
 import '../../../routes/routes_name.dart';
 import '../../../style/text_style.dart';
 import '../../drawer/app_drawer.dart';
@@ -64,7 +62,6 @@ class ConversationScreen extends HookConsumerWidget {
             'friendId': conversation.receiverId,
             'profileImage': conversation.profileImage,
             'lastSeen': conversation.lastSeen,
-            'isOnline': conversation.totalOnline > 0 ? true : false,
             'username': conversation.name,
           },
         );
