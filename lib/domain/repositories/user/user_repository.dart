@@ -1,6 +1,7 @@
 import "dart:io";
 
 import "../../../data/models/user/search_user_response_model.dart";
+import "../../../data/models/user/user_response_model.dart";
 import "../../events/register_event.dart";
 import "../../../data/models/common_response_model.dart";
 import "../../events/update_personal_details_event.dart";
@@ -12,4 +13,5 @@ abstract class UserRepository {
   Future<CommonResponseModel> uploadProfileImage(File imageFile);
   Future<CommonResponseModel> updateUserPersonalDetails(
       UpdatePersonalDetailsEvent event);
+  Future<UserResponseModel> getUser();
 }

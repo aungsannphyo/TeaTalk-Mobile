@@ -12,6 +12,7 @@ import '../../../style/text_style.dart';
 import '../../drawer/app_drawer.dart';
 import '../../providers/conversation/chat_list_provider.dart';
 import "../../../style/theme/app_color.dart";
+import '../../providers/user/get_user_provider.dart';
 import 'widget/conversation_item_widget.dart';
 import '../../widgets/placeholder_widget.dart';
 
@@ -21,6 +22,7 @@ class ConversationScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(onlineStatusListenerProvider);
+    final UserState userAsync = ref.watch(getUserProvider);
     final ChatListState conversationState = ref.watch(chatListProvider);
     final FriendRequestState friendRequestLogState =
         ref.watch(friendRequestProvider);
@@ -30,6 +32,7 @@ class ConversationScreen extends HookConsumerWidget {
       Future.microtask(() {
         ref.read(chatListProvider.notifier).getChatList();
         ref.read(friendRequestProvider.notifier).getAllFriendRequestLog();
+        ref.read(getUserProvider.notifier).getUser();
       });
       return null;
     }, []);
@@ -64,9 +67,10 @@ class ConversationScreen extends HookConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       drawer: AppDrawer(
-        username: 'John Doe',
-        email: 'john@example.com',
-        profileImageUrl: null, // or provide a valid image URL
+        username: userAsync.user != null ? userAsync.user!.username : "",
+        email: userAsync.user != null ? userAsync.user!.email : "",
+        profileImageUrl:
+            userAsync.details != null ? userAsync.details!.profileImage : "",
       ),
       appBar: AppBar(
         backgroundColor: AppColors.primary,

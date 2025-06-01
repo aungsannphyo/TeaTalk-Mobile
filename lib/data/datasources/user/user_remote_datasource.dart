@@ -11,6 +11,7 @@ import '../../models/common_response_model.dart';
 import "../../../exceptions/app_exception.dart";
 import "../../../domain/events/register_event.dart";
 import '../../models/user/search_user_response_model.dart';
+import '../../models/user/user_response_model.dart';
 
 abstract class UserRemoteDataSource {
   Future<CommonResponseModel> register(RegisterEvent register);
@@ -19,6 +20,7 @@ abstract class UserRemoteDataSource {
   Future<CommonResponseModel> uploadProfileImage(File imageFile);
   Future<CommonResponseModel> updateUserPersonalDetails(
       UpdatePersonalDetailsEvent event);
+  Future<UserResponseModel> getUser();
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -142,6 +144,24 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     final data = jsonDecode(response.body);
     if (response.statusCode == 201) {
       return CommonResponseModel.fromJson(data);
+    } else {
+      throw AppException("Something went wrong. Please try again.", 500);
+    }
+  }
+
+  @override
+  Future<UserResponseModel> getUser() async {
+    final response = await http.get(
+      Uri.parse('$apiUrl/users'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return UserResponseModel.fromJson(data);
     } else {
       throw AppException("Something went wrong. Please try again.", 500);
     }

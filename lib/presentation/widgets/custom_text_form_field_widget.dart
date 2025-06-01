@@ -13,8 +13,6 @@ class CustomTextFormField extends StatelessWidget {
   final int? maxLength;
   final String? counterText;
   final TextInputType? keyboardType;
-
-  // New parameters for multiline support
   final int? maxLines; // max lines for input
   final int? minLines; // min lines for input
 
@@ -43,9 +41,10 @@ class CustomTextFormField extends StatelessWidget {
       maxLength: maxLength,
       maxLines: maxLines ?? 1, // Default to 1 line if not specified
       minLines: minLines,
-      keyboardType: maxLines != null && maxLines! > 1
-          ? TextInputType.multiline
-          : TextInputType.text,
+      keyboardType: keyboardType ??
+          (maxLines != null && maxLines! > 1
+              ? TextInputType.multiline
+              : TextInputType.text),
       textInputAction: (keyboardType == TextInputType.multiline ||
               (maxLines != null && maxLines! > 1))
           ? TextInputAction.newline

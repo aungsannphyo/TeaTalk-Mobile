@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -37,22 +36,9 @@ class PrivateChatScreen extends HookConsumerWidget {
     final lastSeenToShow = isOnlineLive ? '' : lastSeen;
 
     final textController = useTextEditingController();
-    final showEmojiPicker = useState(false);
     final ValueNotifier<String> message = useState('');
     final scrollController = useScrollController();
     final isLoadingMore = useState(false);
-
-    void onEmojiSelected(Emoji emoji) {
-      textController.text += emoji.emoji;
-      textController.selection = TextSelection.fromPosition(
-        TextPosition(offset: textController.text.length),
-      );
-      message.value = textController.text;
-    }
-
-    void toggleEmojiPicker() {
-      showEmojiPicker.value = !showEmojiPicker.value;
-    }
 
     void onMessageSent(MessageResponseModel messageModel) {
       // Add the new message to the messages state
@@ -121,27 +107,7 @@ class PrivateChatScreen extends HookConsumerWidget {
             messageType: MessageType.private,
             textController: textController,
             message: message,
-            showEmojiPicker: showEmojiPicker,
-            toggleEmojiPicker: toggleEmojiPicker,
-            onEmojiSelected: onEmojiSelected,
           ),
-          if (showEmojiPicker.value)
-            SizedBox(
-              height: 300,
-              child: EmojiPicker(
-                onEmojiSelected: (category, emoji) => onEmojiSelected(emoji),
-                config: Config(
-                  height: 300,
-                  emojiViewConfig: EmojiViewConfig(
-                    columns: 7,
-                    emojiSizeMax: 28,
-                  ),
-                  bottomActionBarConfig: BottomActionBarConfig(
-                    backgroundColor: AppColors.background,
-                  ),
-                ),
-              ),
-            ),
         ],
       ),
     );

@@ -84,7 +84,6 @@ class PersonalDetailsScreen extends HookConsumerWidget {
 
     void onUploadImage(File file) {
       imageFile.value = file;
-      print("IMAGE ${file.path}");
       ref.read(userProfileUploadProvider.notifier).uploadProfileImage(file);
     }
 

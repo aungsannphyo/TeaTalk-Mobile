@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
 import '../../style/text_style.dart';
 import '../../style/theme/app_color.dart';
+import '../screens/friend/widget/avatar_widget.dart';
 
 class AppDrawerHeader extends StatelessWidget {
   final String username;
@@ -26,20 +26,10 @@ class AppDrawerHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
+          AvatarWidget(
+            username: username,
+            profileImage: profileImageUrl,
             radius: 35,
-            backgroundColor: AppColors.complementary,
-            backgroundImage:
-                profileImageUrl != null ? NetworkImage(profileImageUrl!) : null,
-            child: profileImageUrl == null
-                ? Text(
-                    initial,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      color: Colors.white,
-                    ),
-                  )
-                : null,
           ),
           const SizedBox(height: 10),
           Text(

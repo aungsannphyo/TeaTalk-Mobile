@@ -1,4 +1,3 @@
-import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -15,18 +14,12 @@ class ChatInputFieldWidget extends HookConsumerWidget {
   final MessageType messageType;
   final TextEditingController textController;
   final ValueNotifier<String> message;
-  final ValueNotifier<bool> showEmojiPicker;
-  final VoidCallback toggleEmojiPicker;
-  final void Function(Emoji) onEmojiSelected;
   final void Function(MessageResponseModel) onMessageSent;
 
   const ChatInputFieldWidget({
     super.key,
     required this.textController,
     required this.message,
-    required this.showEmojiPicker,
-    required this.toggleEmojiPicker,
-    required this.onEmojiSelected,
     required this.targetId,
     required this.messageType,
     required this.onMessageSent,
@@ -66,6 +59,12 @@ class ChatInputFieldWidget extends HookConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Divider(
+            height: 1,
+            thickness: 1,
+            color:
+                AppColors.bubbleShadow, // or any color you want for the divider
+          ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             color: AppColors.background,
@@ -77,50 +76,47 @@ class ChatInputFieldWidget extends HookConsumerWidget {
                     style: AppTextStyles.regular,
                     onChanged: (val) => message.value = val,
                     decoration: InputDecoration(
-                      hintText: 'Type a message...',
+                      hintText: 'Message...',
                       hintStyle: AppTextStyles.semiBold.copyWith(
                           color: AppColors.textDark
                               .withAlpha((0.5 * 255).toInt())),
-                      border: InputBorder.none,
                       isCollapsed: true,
                       contentPadding: const EdgeInsets.symmetric(
-                          vertical: 16, horizontal: 12),
-                      prefixIcon: IconButton(
-                        icon: const Icon(
-                          Icons.emoji_emotions_outlined,
-                          color: Colors.grey,
-                          size: 30,
-                        ),
-                        onPressed: toggleEmojiPicker,
+                        vertical: 16,
+                        horizontal: 12,
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
                       ),
                     ),
                     cursorColor: AppColors.primary,
                     minLines: 1,
                     maxLines: 5,
-                    onTap: () {
-                      if (showEmojiPicker.value) {
-                        showEmojiPicker.value = false;
-                      }
-                    },
                   ),
                 ),
                 const SizedBox(width: 8),
-                Container(
-                  decoration: BoxDecoration(
+                IconButton(
+                  icon: const Icon(
+                    Icons.send,
                     color: AppColors.primary,
-                    shape: BoxShape.circle,
+                    size: 32,
                   ),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.send,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      MessageType.private == messageType
-                          ? sendPrivateMessage(message)
-                          : sendGroupMessage(message);
-                    },
-                  ),
+                  onPressed: () {
+                    MessageType.private == messageType
+                        ? sendPrivateMessage(message)
+                        : sendGroupMessage(message);
+                  },
                 ),
               ],
             ),

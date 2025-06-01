@@ -44,6 +44,7 @@ class AppDrawer extends HookConsumerWidget {
             username: username,
             email: email,
             initial: initial,
+            profileImageUrl: profileImageUrl,
           ),
           ListTile(
             leading: const Icon(

@@ -6,6 +6,7 @@ import "../../../domain/repositories/user/user_repository.dart";
 import "../../datasources/user/user_remote_datasource.dart";
 import "../../models/common_response_model.dart";
 import "../../models/user/search_user_response_model.dart";
+import "../../models/user/user_response_model.dart";
 
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource remote;
@@ -36,5 +37,10 @@ class UserRepositoryImpl implements UserRepository {
   Future<CommonResponseModel> updateUserPersonalDetails(
       UpdatePersonalDetailsEvent event) {
     return remote.updateUserPersonalDetails(event);
+  }
+
+  @override
+  Future<UserResponseModel> getUser() {
+    return remote.getUser();
   }
 }
