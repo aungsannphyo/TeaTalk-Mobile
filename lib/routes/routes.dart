@@ -10,6 +10,7 @@ import "../presentation/screens/group/new_new_group_screen.dart";
 import "../presentation/screens/user/profile.dart";
 import "../presentation/screens/user/personal_details_screen.dart";
 import "../presentation/screens/user/register_screen.dart";
+import "../presentation/screens/user/user_qr_screen.dart";
 import "../routes/routes_name.dart";
 import "../presentation/providers/auth/login_provider.dart";
 import "../presentation/screens/auth/login_screen.dart";
@@ -138,6 +139,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) => buildTransitionPage(
           key: state.pageKey,
           child: const PersonalDetailsScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/user-qr',
+        name: RouteName.userQr,
+        pageBuilder: (context, state) => buildTransitionPage(
+          key: state.pageKey,
+          child: const UserQrScreen(),
         ),
       ),
     ],

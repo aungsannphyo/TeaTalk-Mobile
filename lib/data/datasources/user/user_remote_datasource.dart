@@ -154,7 +154,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<UserResponseModel> getUser() async {
     final response = await http.get(
-      Uri.parse('$apiUrl/users'),
+      Uri.parse('$apiUrl/users/user'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -179,9 +179,8 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       },
       body: jsonEncode(event.toJson()),
     );
-
     final data = jsonDecode(response.body);
-    print("DATA $data");
+
     if (response.statusCode == 200) {
       return CommonResponseModel.fromJson(data);
     } else if (response.statusCode == 400) {

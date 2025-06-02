@@ -5,7 +5,7 @@ import '../../../../style/text_style.dart';
 import '../../../../utils/extensions.dart';
 import "../../../../style/theme/app_color.dart";
 import '../../../../utils/date_time.dart';
-import '../../friend/widget/avatar_widget.dart';
+import '../../../widgets/common_avatar_widget.dart';
 
 class ConversationItemWidget extends StatelessWidget {
   final ChatListResponseModel conversation;
@@ -28,7 +28,7 @@ class ConversationItemWidget extends StatelessWidget {
           Stack(
             children: [
               // Profile Avatar
-              AvatarWidget(
+              CommonAvatarWidget(
                 username: conversation.name,
                 profileImage: conversation.profileImage,
               ),

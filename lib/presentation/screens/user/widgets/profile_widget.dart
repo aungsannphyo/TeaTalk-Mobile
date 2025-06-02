@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tea_talk_mobile/presentation/widgets/common_avatar_widget.dart';
 import 'package:tea_talk_mobile/utils/extensions.dart';
 
+import '../../../../routes/routes_name.dart';
 import '../../../../style/text_style.dart';
 import "../../../../style/theme/app_color.dart";
 import '../../../providers/user/get_user_provider.dart';
-import 'profile_avatar_widget.dart';
 
 class ProfileWidget extends HookConsumerWidget {
   const ProfileWidget({
@@ -14,16 +16,45 @@ class ProfileWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final UserState userAsync = ref.watch(getUserProvider);
+    final UserState userState = ref.watch(getUserProvider);
+
+    void navigateToPersonalDetails() {
+      GoRouter.of(context).pushNamed(RouteName.personalDetails);
+    }
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        ProfileAvatarWidget(
-          username: userAsync.user != null
-              ? userAsync.user!.username.toTitleCase()
-              : "",
-          profileImageUrl:
-              userAsync.details != null ? userAsync.details!.profileImage : "",
+        Stack(
+          children: [
+            CommonAvatarWidget(
+              radius: 50,
+              username: userState.user != null
+                  ? userState.user!.username.toTitleCase()
+                  : "",
+              profileImage: userState.details != null
+                  ? userState.details!.profileImage
+                  : "",
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Container(
+                width: 12,
+                height: 12,
+                decoration: BoxDecoration(
+                  color: userState.details!.isOnline
+                      ? AppColors.onlineStatus
+                      : Colors.grey,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 2,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
         const SizedBox(width: 25),
         Expanded(
@@ -31,8 +62,8 @@ class ProfileWidget extends HookConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                userAsync.user != null
-                    ? userAsync.user!.username.toTitleCase()
+                userState.user != null
+                    ? userState.user!.username.toTitleCase()
                     : "",
                 style: AppTextStyles.semiBold.copyWith(
                   fontSize: 20,
@@ -40,7 +71,7 @@ class ProfileWidget extends HookConsumerWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                userAsync.user != null ? userAsync.user!.email : "",
+                userState.user != null ? userState.user!.email : "",
                 style: AppTextStyles.regular.copyWith(
                   color: Colors.grey,
                   fontSize: 16,
@@ -50,7 +81,9 @@ class ProfileWidget extends HookConsumerWidget {
               SizedBox(
                 height: 40,
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    navigateToPersonalDetails();
+                  },
                   icon: const Icon(
                     Icons.manage_accounts,
                     size: 18,

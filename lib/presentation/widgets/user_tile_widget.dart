@@ -3,7 +3,7 @@ import 'package:tea_talk_mobile/utils/extensions.dart';
 
 import '../../domain/entities/user/user_tile_model.dart';
 import '../../utils/date_time.dart';
-import '../screens/friend/widget/avatar_widget.dart';
+import 'common_avatar_widget.dart';
 import '../../style/text_style.dart';
 import '../../style/theme/app_color.dart';
 import 'user_tile_trailing_action.dart';
@@ -39,7 +39,7 @@ class UserTileWidget extends StatelessWidget {
                 child: CircularProgressIndicator(strokeWidth: 2),
               ),
             ),
-            secondChild: AvatarWidget(
+            secondChild: CommonAvatarWidget(
               username: user.username,
               profileImage: user.profileImage,
             ),

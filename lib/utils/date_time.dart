@@ -6,7 +6,7 @@ String formatRelativeTime(String datetimeStr) {
   final diff = now.difference(dateTime);
 
   if (diff.inSeconds < 60) {
-    return 'last seen just now';
+    return 'last seen recently';
   } else if (diff.inMinutes < 60) {
     return 'last seen ${diff.inMinutes} minute${diff.inMinutes == 1 ? '' : 's'} ago';
   } else if (diff.inHours < 24) {

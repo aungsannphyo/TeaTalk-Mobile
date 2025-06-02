@@ -8,7 +8,7 @@ import '../../../style/theme/app_color.dart';
 import '../../providers/friend/friend_provider.dart';
 import '../../widgets/placeholder_widget.dart';
 import '../../widgets/user_tile_widget.dart';
-import '../friend/widget/avatar_widget.dart';
+import '../../widgets/common_avatar_widget.dart';
 
 class NewGroupScreen extends HookConsumerWidget {
   const NewGroupScreen({super.key});
@@ -65,7 +65,7 @@ class NewGroupScreen extends HookConsumerWidget {
         children: memberList.value
             .map((member) => Chip(
                   avatar: SizedBox(
-                    child: AvatarWidget(
+                    child: CommonAvatarWidget(
                       username: member.username,
                       radius: 15,
                       profileImage: member.profileImage,

@@ -28,20 +28,25 @@ class Details {
   final String? dateOfBirth;
   final String? bio;
   final String? profileImage;
+  final bool isOnline;
 
   Details({
     this.gender,
     this.dateOfBirth,
     this.bio,
     this.profileImage,
+    required this.isOnline,
   });
 
   factory Details.fromJson(Map<String, dynamic> json) {
     return Details(
-      gender: genderFromApiString(json['gender']),
+      gender: json['gender'] != null
+          ? genderFromApiString(json['gender'])
+          : json['gender'],
       dateOfBirth: json['dateOfBirth'],
       bio: json['bio'],
       profileImage: json['profileImage'],
+      isOnline: json['isOnline'],
     );
   }
 }

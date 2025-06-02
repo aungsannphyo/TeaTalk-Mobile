@@ -1,20 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../style/text_style.dart';
+import '../../providers/user/get_user_provider.dart';
 import 'widgets/profile_menu_item_widget.dart';
 import 'widgets/profile_widget.dart';
 import '../../../routes/routes_name.dart';
 import '../../../style/theme/app_color.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends HookConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final UserState userState = ref.watch(getUserProvider);
+
     void navigateToPersonalDetails() {
       GoRouter.of(context).pushNamed(RouteName.personalDetails);
     }
+
+    void navigateToQrScreen() {
+      GoRouter.of(context).pushNamed(RouteName.userQr);
+    }
+
+    final details = userState.details;
+    final isComplete = details?.bio != null &&
+        details?.dateOfBirth != null &&
+        details?.gender != null;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -26,6 +39,16 @@ class ProfileScreen extends StatelessWidget {
           'My Profile',
           style: AppTextStyles.appBarTitle,
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              navigateToQrScreen();
+            },
+            icon: Icon(
+              Icons.qr_code_outlined,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -50,8 +73,9 @@ class ProfileScreen extends StatelessWidget {
             ProfileMenuItemWidget(
               icon: Icons.fact_check,
               title: "Complete Personal Details",
-              iconColor: AppColors.success,
-              titleColor: AppColors.successDark,
+              iconColor: isComplete ? AppColors.success : AppColors.warning,
+              titleColor:
+                  isComplete ? AppColors.successDark : AppColors.warningDark,
               onClick: () {
                 navigateToPersonalDetails();
               },

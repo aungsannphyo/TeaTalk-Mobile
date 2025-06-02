@@ -29,4 +29,9 @@ class AppColors {
   static const infoSoft = Color(0xFFE1F5FE);
   static const info = Color(0xFF29B6F6);
   static const infoDark = Color(0xFF0288D1);
+
+// Warning colors
+  static const warningSoft = Color(0xFFFFF3E0);
+  static const warning = Color(0xFFFFA726);
+  static const warningDark = Color(0xFFF57C00);
 }

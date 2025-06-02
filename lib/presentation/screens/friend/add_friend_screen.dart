@@ -96,9 +96,9 @@ class AddFriendScreen extends HookConsumerWidget {
 
                   if (input.isEmpty) {
                     return PlaceholderWidget(
-                      imagePath: 'assets/images/searching.svg',
+                      imagePath: 'assets/images/searching.png',
                       text: 'Start typing to search for friends',
-                      isSvg: true,
+                      isSvg: false,
                     );
                   }
                   if (searchState.isLoading) {
@@ -107,10 +107,10 @@ class AddFriendScreen extends HookConsumerWidget {
 
                   if (searchState.users.isEmpty) {
                     return PlaceholderWidget(
-                      imagePath: 'assets/images/404.svg',
+                      imagePath: 'assets/images/not_found.png',
                       text:
                           "Looks like nobody’s here yet. Try searching again!",
-                      isSvg: true,
+                      isSvg: false,
                     );
                   }
 

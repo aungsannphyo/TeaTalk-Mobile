@@ -91,7 +91,12 @@ class RegisterScreen extends HookConsumerWidget {
               key: formKey,
               child: Column(
                 children: [
-                  SvgPicture.asset('assets/images/register.svg', height: 180),
+                  Image.asset(
+                    'assets/images/register.png',
+                    width: 180,
+                    height: 180,
+                    fit: BoxFit.contain,
+                  ),
                   const SizedBox(height: 24),
                   Text(
                     "Let’s Talk on TeaTalk",

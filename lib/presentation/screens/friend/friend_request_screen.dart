@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import 'package:tea_talk_mobile/utils/extensions.dart';
 
 import '../../../domain/events/decide_friend_request_event.dart';
 import '../../../style/text_style.dart';
 import '../../../style/theme/app_color.dart';
 import '../../../utils/date_time.dart';
+import '../../providers/conversation/chat_list_provider.dart';
 import '../../providers/friend/decide_friend_request_provider.dart';
 import '../../providers/friend/friend_request_provider.dart';
 import '../../widgets/custom_elevate_button_widget.dart';
 import '../../widgets/custom_snack_bar_widget.dart';
 import '../../widgets/placeholder_widget.dart';
-import 'widget/avatar_widget.dart';
+import '../../widgets/common_avatar_widget.dart';
 
 class FriendRequestScreen extends HookConsumerWidget {
   const FriendRequestScreen({super.key});
@@ -52,6 +52,7 @@ class FriendRequestScreen extends HookConsumerWidget {
           ref
               .read(friendRequestProvider.notifier)
               .removeRequestById(next.lastHandledRequestId!);
+          ref.read(chatListProvider.notifier).getChatList();
           SnackbarUtil.showSuccess(context, "Friend request $action!");
 
           Future.microtask(() {
@@ -107,7 +108,7 @@ class FriendRequestScreen extends HookConsumerWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AvatarWidget(
+                      CommonAvatarWidget(
                         username: request.username,
                         profileImage: request.profileImage,
                       ),

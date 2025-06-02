@@ -11,4 +11,5 @@ class RouteName {
   static const chat = "chat";
   static const newGroup = "new-group";
   static const personalDetails = "personal-details";
+  static const userQr = 'user-qr';
 }

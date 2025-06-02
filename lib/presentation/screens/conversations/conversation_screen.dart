@@ -13,6 +13,7 @@ import '../../providers/conversation/chat_list_provider.dart';
 import "../../../style/theme/app_color.dart";
 import '../../providers/friend/friend_request_provider.dart';
 import '../../providers/user/get_user_provider.dart';
+import '../../widgets/loading/common_loading_widget.dart';
 import 'widget/conversation_item_widget.dart';
 import '../../widgets/placeholder_widget.dart';
 
@@ -63,39 +64,39 @@ class ConversationScreen extends HookConsumerWidget {
       }
     }
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      drawer: const AppDrawer(),
-      appBar: AppBar(
-        backgroundColor: AppColors.primary,
-        elevation: 0,
-        title: Text(
-          'Messages',
-          style: AppTextStyles.appBarTitle,
-        ),
-        actions: totalRequests > 0
-            ? [
-                IconButton(
-                  onPressed: () {
-                    navigateToFriendRequestLog();
-                  },
-                  icon: Badge(
-                    label: Text(
-                      totalRequests.toString(),
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: AppColors.background,
+          drawer: const AppDrawer(),
+          appBar: AppBar(
+            backgroundColor: AppColors.primary,
+            elevation: 0,
+            title: Text(
+              'Messages',
+              style: AppTextStyles.appBarTitle,
+            ),
+            actions: totalRequests > 0
+                ? [
+                    IconButton(
+                      onPressed: () {
+                        navigateToFriendRequestLog();
+                      },
+                      icon: Badge(
+                        label: Text(
+                          totalRequests.toString(),
+                        ),
+                        child: Icon(
+                          Icons.person_add,
+                          size: 25,
+                        ),
+                      ),
                     ),
-                    child: Icon(
-                      Icons.person_add,
-                      size: 25,
-                    ),
-                  ),
-                ),
-              ]
-            : null,
-        centerTitle: true,
-      ),
-      body: conversationState.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : conversationState.conversationList == null ||
+                  ]
+                : null,
+            centerTitle: true,
+          ),
+          body: conversationState.conversationList == null ||
                   conversationState.conversationList!.isEmpty
               ? PlaceholderWidget(
                   imagePath: 'assets/images/no-message.png',
@@ -136,21 +137,24 @@ class ConversationScreen extends HookConsumerWidget {
                     ),
                   ],
                 ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          navigateToFriendScreen();
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-            28,
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              navigateToFriendScreen();
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                28,
+              ),
+            ),
+            heroTag: 'startSendingAMessage',
+            tooltip: 'Sent a message',
+            child: Icon(
+              Icons.chat_bubble_outline,
+            ),
           ),
         ),
-        heroTag: 'startSendingAMessage',
-        tooltip: 'Sent a message',
-        child: Icon(
-          Icons.chat_bubble_outline,
-        ),
-      ),
+        if (conversationState.isLoading) CommonLoadingWidget(),
+      ],
     );
   }
 }

@@ -31,8 +31,8 @@ class PlaceholderWidget extends StatelessWidget {
                   )
                 : Image.asset(
                     imagePath,
-                    width: 80,
-                    height: 80,
+                    width: 120,
+                    height: 120,
                     fit: BoxFit.contain,
                     color: AppColors.accent,
                   ),

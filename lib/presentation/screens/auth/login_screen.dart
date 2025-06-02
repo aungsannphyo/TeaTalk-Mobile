@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -55,9 +54,11 @@ class LoginScreen extends HookConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(
-                    'assets/images/login.svg',
-                    height: 200,
+                  Image.asset(
+                    'assets/images/login.png',
+                    width: 170,
+                    height: 170,
+                    fit: BoxFit.contain,
                   ),
                   const SizedBox(height: 24),
                   Text('Tea Talk',
