@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '../../../domain/entities/auth/login_model.dart';
 
 class LoginResponseModel extends LoginModel {
@@ -8,9 +6,6 @@ class LoginResponseModel extends LoginModel {
     required super.email,
     required super.username,
     required super.token,
-    required super.pdk,
-    required super.encryptedUserKey,
-    required super.userKeyNonce,
   });
 
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
@@ -19,9 +14,6 @@ class LoginResponseModel extends LoginModel {
       email: json['email'],
       username: json['username'],
       token: json['token'],
-      pdk: base64Decode(json['pdk']),
-      encryptedUserKey: base64Decode(json['encryptedUserKey']),
-      userKeyNonce: base64Decode(json['userKeyNonce']),
     );
   }
 }

@@ -41,13 +41,8 @@ class FriendsScreen extends HookConsumerWidget {
     void navigateToChat(FriendResponseModel friend) {
       final AuthState authState = ref.read(loginProvider);
       final senderId = authState.auth?.id;
-      final pdk = authState.auth?.pdk;
-      final encryptUserKey = authState.auth?.encryptedUserKey;
-      final userKeyNonce = authState.auth?.userKeyNonce;
-      if (senderId == null ||
-          pdk == null ||
-          encryptUserKey == null ||
-          userKeyNonce == null) {
+
+      if (senderId == null) {
         return;
       }
       final getEvent =

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../domain/entities/key/encrypt_model.dart';
 import '../../../domain/events/register_event.dart';
 import '../../../routes/routes_name.dart';
 import '../../../style/text_style.dart';
 import '../../../style/theme/app_color.dart';
-import '../../../utils/key.dart';
 import '../../providers/user/register_provider.dart';
 import '../../widgets/common_button_widget.dart';
 import '../../widgets/custom_text_form_field_widget.dart';
@@ -32,20 +29,10 @@ class RegisterScreen extends HookConsumerWidget {
 
     void onRegister() {
       if (formKey.currentState!.validate()) {
-        final salt = CryptoHelper.generateRandomBytes(CryptoHelper.sortLength);
-        final pdk = CryptoHelper.deriveKey(passwordController.text, salt);
-        final userEncryptedKey =
-            CryptoHelper.generateRandomBytes(CryptoHelper.keyLength);
-        final EncryptModel encryptModel = CryptoHelper.encrypt(
-            userEncryptedKey, pdk, CryptoHelper.nonceLength);
-
         final RegisterEvent event = RegisterEvent(
           username: usernameController.text,
           email: emailController.text,
           password: passwordController.text,
-          salt: salt,
-          userKeyNonce: encryptModel.cipherText,
-          encryptedUserKey: encryptModel.nonce,
         );
         ref.read(registerProvider.notifier).register(event);
       }

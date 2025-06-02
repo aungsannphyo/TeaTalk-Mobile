@@ -43,7 +43,7 @@ class ProfileWidget extends HookConsumerWidget {
                 width: 12,
                 height: 12,
                 decoration: BoxDecoration(
-                  color: userState.details!.isOnline
+                  color: (userState.details?.isOnline ?? false)
                       ? AppColors.onlineStatus
                       : Colors.grey,
                   shape: BoxShape.circle,

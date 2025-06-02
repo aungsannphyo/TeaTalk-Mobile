@@ -25,9 +25,10 @@ class ProfileScreen extends HookConsumerWidget {
     }
 
     final details = userState.details;
-    final isComplete = details?.bio != null &&
-        details?.dateOfBirth != null &&
-        details?.gender != null;
+    final isComplete = details != null &&
+        details.bio != null &&
+        details.dateOfBirth != null &&
+        details.gender != null;
 
     return Scaffold(
       backgroundColor: AppColors.background,
