@@ -1,36 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tea_talk_mobile/utils/extensions.dart';
 
+import '../../../../style/text_style.dart';
 import "../../../../style/theme/app_color.dart";
+import '../../../providers/user/get_user_provider.dart';
 import 'profile_avatar_widget.dart';
 
-class ProfileWidget extends StatelessWidget {
-  const ProfileWidget({super.key});
+class ProfileWidget extends HookConsumerWidget {
+  const ProfileWidget({
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final UserState userAsync = ref.watch(getUserProvider);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        ProfileAvatarWidget(),
+        ProfileAvatarWidget(
+          username: userAsync.user != null
+              ? userAsync.user!.username.toTitleCase()
+              : "",
+          profileImageUrl:
+              userAsync.details != null ? userAsync.details!.profileImage : "",
+        ),
         const SizedBox(width: 25),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Charlotte King',
-                style: TextStyle(
+              Text(
+                userAsync.user != null
+                    ? userAsync.user!.username.toTitleCase()
+                    : "",
+                style: AppTextStyles.semiBold.copyWith(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textDark,
                 ),
               ),
               const SizedBox(height: 4),
-              const Text(
-                'batman@gmail.com',
-                style: TextStyle(
-                  fontSize: 16,
+              Text(
+                userAsync.user != null ? userAsync.user!.email : "",
+                style: AppTextStyles.regular.copyWith(
                   color: Colors.grey,
+                  fontSize: 16,
                 ),
               ),
               const SizedBox(height: 10),
@@ -43,11 +56,11 @@ class ProfileWidget extends StatelessWidget {
                     size: 18,
                     color: Colors.white,
                   ),
-                  label: const Text(
+                  label: Text(
                     'Edit Profile',
-                    style: TextStyle(
+                    style: AppTextStyles.semiBold.copyWith(
                       fontSize: 14,
-                      fontWeight: FontWeight.bold,
+                      color: AppColors.background,
                     ),
                   ),
                   style: ElevatedButton.styleFrom(

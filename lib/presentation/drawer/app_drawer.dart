@@ -9,21 +9,12 @@ import '../providers/auth/login_provider.dart';
 import 'app_drawer_header.dart';
 
 class AppDrawer extends HookConsumerWidget {
-  final String username;
-  final String email;
-  final String? profileImageUrl;
-
   const AppDrawer({
     super.key,
-    required this.username,
-    required this.email,
-    this.profileImageUrl,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final initial = username.isNotEmpty ? username[0].toUpperCase() : '?';
-
     void navigateToContact() {
       GoRouter.of(context).pushNamed(RouteName.friend);
     }
@@ -40,12 +31,7 @@ class AppDrawer extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          AppDrawerHeader(
-            username: username,
-            email: email,
-            initial: initial,
-            profileImageUrl: profileImageUrl,
-          ),
+          const AppDrawerHeader(),
           ListTile(
             leading: const Icon(
               Icons.person_outline,

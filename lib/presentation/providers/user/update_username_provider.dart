@@ -2,18 +2,18 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../data/datasources/user/user_remote_datasource.dart';
 import '../../../data/repositories/user/user_repository_impl.dart';
-import '../../../domain/events/user/update_personal_details_event.dart';
+import '../../../domain/events/user/update_user_name_event.dart';
 import '../../../domain/usecases/user/user_usercase.dart';
 import '../../../exceptions/app_exception.dart';
 import '../auth/login_provider.dart';
 
-class UpdatePersonalDetailsState {
+class UpdateUserNameState {
   final bool isLoading;
   final bool isSuccess;
   final String? error;
   final int? errorCode;
 
-  UpdatePersonalDetailsState({
+  UpdateUserNameState({
     this.isLoading = false,
     this.isSuccess = false,
     this.error,
@@ -21,21 +21,19 @@ class UpdatePersonalDetailsState {
   });
 }
 
-class UpdatePersonalDetailsNotifier
-    extends StateNotifier<UpdatePersonalDetailsState> {
+class UpdateUserNameNotifier extends StateNotifier<UpdateUserNameState> {
   final UserUsercase userUsercase;
 
-  UpdatePersonalDetailsNotifier({
+  UpdateUserNameNotifier({
     required this.userUsercase,
-  }) : super(UpdatePersonalDetailsState());
+  }) : super(UpdateUserNameState());
 
-  Future<void> updateUserPersonalDetails(
-      UpdatePersonalDetailsEvent event) async {
-    state = UpdatePersonalDetailsState(isLoading: true);
+  Future<void> updateUsername(UpdateUserNameEvent event) async {
+    state = UpdateUserNameState(isLoading: true);
     try {
-      final result = await userUsercase.updateUserPersonalDetails(event);
+      final result = await userUsercase.updateUsername(event);
       if (result.message != "") {
-        state = UpdatePersonalDetailsState(
+        state = UpdateUserNameState(
           isLoading: false,
           isSuccess: true,
           error: "",
@@ -43,14 +41,14 @@ class UpdatePersonalDetailsNotifier
       }
     } catch (e) {
       if (e is AppException) {
-        state = UpdatePersonalDetailsState(
+        state = UpdateUserNameState(
           isLoading: false,
           isSuccess: false,
           error: e.toString(),
           errorCode: e.code,
         );
       } else {
-        state = UpdatePersonalDetailsState(
+        state = UpdateUserNameState(
           isLoading: false,
           isSuccess: false,
           error: e.toString(),
@@ -60,13 +58,13 @@ class UpdatePersonalDetailsNotifier
   }
 }
 
-final updatePersonalDetailsProvider = StateNotifierProvider<
-    UpdatePersonalDetailsNotifier, UpdatePersonalDetailsState>((ref) {
+final updateUserNameProvider =
+    StateNotifierProvider<UpdateUserNameNotifier, UpdateUserNameState>((ref) {
   final authState = ref.watch(loginProvider);
   final token = authState.auth?.token;
   final remote = UserRemoteDataSourceImpl(token: token);
   final repository = UserRepositoryImpl(remote);
-  return UpdatePersonalDetailsNotifier(
+  return UpdateUserNameNotifier(
     userUsercase: UserUsercase(repository),
   );
 });

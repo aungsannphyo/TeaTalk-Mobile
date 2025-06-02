@@ -6,7 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
 
-import '../../../domain/events/update_personal_details_event.dart';
+import '../../../domain/events/user/update_personal_details_event.dart';
+import '../../../domain/events/user/update_user_name_event.dart';
 import '../../models/common_response_model.dart';
 import "../../../exceptions/app_exception.dart";
 import "../../../domain/events/register_event.dart";
@@ -21,6 +22,7 @@ abstract class UserRemoteDataSource {
   Future<CommonResponseModel> updateUserPersonalDetails(
       UpdatePersonalDetailsEvent event);
   Future<UserResponseModel> getUser();
+  Future<CommonResponseModel> updateUsername(UpdateUserNameEvent event);
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -162,6 +164,28 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       return UserResponseModel.fromJson(data);
+    } else {
+      throw AppException("Something went wrong. Please try again.", 500);
+    }
+  }
+
+  @override
+  Future<CommonResponseModel> updateUsername(UpdateUserNameEvent event) async {
+    final response = await http.put(
+      Uri.parse('$apiUrl/users/username'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(event.toJson()),
+    );
+
+    final data = jsonDecode(response.body);
+    print("DATA $data");
+    if (response.statusCode == 200) {
+      return CommonResponseModel.fromJson(data);
+    } else if (response.statusCode == 400) {
+      throw AppException("Username is required", 400);
     } else {
       throw AppException("Something went wrong. Please try again.", 500);
     }

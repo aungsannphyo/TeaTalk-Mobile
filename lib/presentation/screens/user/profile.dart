@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../../style/text_style.dart';
 import 'widgets/profile_menu_item_widget.dart';
 import 'widgets/profile_widget.dart';
 import '../../../routes/routes_name.dart';
 import '../../../style/theme/app_color.dart';
 
-class ProfileScreen extends HookConsumerWidget {
+class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     void navigateToPersonalDetails() {
       GoRouter.of(context).pushNamed(RouteName.personalDetails);
     }
@@ -23,12 +24,7 @@ class ProfileScreen extends HookConsumerWidget {
         centerTitle: true,
         title: const Text(
           'My Profile',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            letterSpacing: 0.8,
-          ),
+          style: AppTextStyles.appBarTitle,
         ),
       ),
       body: SingleChildScrollView(
@@ -44,12 +40,10 @@ class ProfileScreen extends HookConsumerWidget {
             const SizedBox(height: 20),
 
             // Section: Personal Info
-            const Text(
+            Text(
               "Account Settings",
-              style: TextStyle(
+              style: AppTextStyles.semiBold.copyWith(
                 fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textDark,
               ),
             ),
             const SizedBox(height: 12),
@@ -71,12 +65,10 @@ class ProfileScreen extends HookConsumerWidget {
             Divider(height: 30, color: AppColors.bubbleShadow),
 
             // Section: Preferences
-            const Text(
+            Text(
               "Preferences",
-              style: TextStyle(
+              style: AppTextStyles.semiBold.copyWith(
                 fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textDark,
               ),
             ),
             const SizedBox(height: 12),

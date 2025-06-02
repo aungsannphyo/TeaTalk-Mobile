@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../style/theme/app_color.dart';
 import '../../friend/widget/avatar_widget.dart';
 
-class ProfileAvatarWidget extends HookConsumerWidget {
-  const ProfileAvatarWidget({super.key});
+class ProfileAvatarWidget extends StatelessWidget {
+  final String username;
+  final String? profileImageUrl;
+
+  const ProfileAvatarWidget({
+    super.key,
+    required this.username,
+    this.profileImageUrl,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
@@ -18,8 +24,9 @@ class ProfileAvatarWidget extends HookConsumerWidget {
             color: AppColors.primary,
             borderRadius: BorderRadius.circular(60),
           ),
-          child: const AvatarWidget(
-            username: "Charlotte King",
+          child: AvatarWidget(
+            username: username,
+            profileImage: profileImageUrl,
             radius: 50,
           ),
         ),

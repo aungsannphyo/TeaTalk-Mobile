@@ -1,4 +1,4 @@
-import '../../utils/gender.dart';
+import '../../../utils/gender.dart';
 
 class UpdatePersonalDetailsEvent {
   final Gender gender;

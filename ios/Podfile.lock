@@ -1,6 +1,4 @@
 PODS:
-  - emoji_picker_flutter (0.0.1):
-    - Flutter
   - Flutter (1.0.0)
   - image_picker_ios (0.0.1):
     - Flutter
@@ -9,14 +7,11 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
-  - emoji_picker_flutter (from `.symlinks/plugins/emoji_picker_flutter/ios`)
   - Flutter (from `Flutter`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
 
 EXTERNAL SOURCES:
-  emoji_picker_flutter:
-    :path: ".symlinks/plugins/emoji_picker_flutter/ios"
   Flutter:
     :path: Flutter
   image_picker_ios:
@@ -25,7 +20,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
 
 SPEC CHECKSUMS:
-  emoji_picker_flutter: ece213fc274bdddefb77d502d33080dc54e616cc
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   image_picker_ios: 7fe1ff8e34c1790d6fff70a32484959f563a928a
   shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7

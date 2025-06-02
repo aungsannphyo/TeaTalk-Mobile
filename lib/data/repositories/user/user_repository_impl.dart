@@ -1,7 +1,9 @@
 import "dart:io";
 
+import "package:tea_talk_mobile/domain/events/user/update_user_name_event.dart";
+
 import '../../../domain/events/register_event.dart';
-import "../../../domain/events/update_personal_details_event.dart";
+import "../../../domain/events/user/update_personal_details_event.dart";
 import "../../../domain/repositories/user/user_repository.dart";
 import "../../datasources/user/user_remote_datasource.dart";
 import "../../models/common_response_model.dart";
@@ -42,5 +44,10 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<UserResponseModel> getUser() {
     return remote.getUser();
+  }
+
+  @override
+  Future<CommonResponseModel> updateUsername(UpdateUserNameEvent event) {
+    return remote.updateUsername(event);
   }
 }

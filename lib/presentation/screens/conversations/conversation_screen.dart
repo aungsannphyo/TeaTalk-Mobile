@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tea_talk_mobile/presentation/providers/friend/friend_request_provider.dart';
 
 import '../../../data/models/conversation/chat_list_response_model.dart';
 import '../../../domain/websocket/listener/online_status_listener.dart';
@@ -12,6 +11,7 @@ import '../../../style/text_style.dart';
 import '../../drawer/app_drawer.dart';
 import '../../providers/conversation/chat_list_provider.dart';
 import "../../../style/theme/app_color.dart";
+import '../../providers/friend/friend_request_provider.dart';
 import '../../providers/user/get_user_provider.dart';
 import 'widget/conversation_item_widget.dart';
 import '../../widgets/placeholder_widget.dart';
@@ -22,7 +22,6 @@ class ConversationScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(onlineStatusListenerProvider);
-    final UserState userAsync = ref.watch(getUserProvider);
     final ChatListState conversationState = ref.watch(chatListProvider);
     final FriendRequestState friendRequestLogState =
         ref.watch(friendRequestProvider);
@@ -66,12 +65,7 @@ class ConversationScreen extends HookConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      drawer: AppDrawer(
-        username: userAsync.user != null ? userAsync.user!.username : "",
-        email: userAsync.user != null ? userAsync.user!.email : "",
-        profileImageUrl:
-            userAsync.details != null ? userAsync.details!.profileImage : "",
-      ),
+      drawer: const AppDrawer(),
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         elevation: 0,

@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tea_talk_mobile/utils/extensions.dart';
+
 import '../../style/text_style.dart';
 import '../../style/theme/app_color.dart';
+import '../providers/user/get_user_provider.dart';
 import '../screens/friend/widget/avatar_widget.dart';
 
-class AppDrawerHeader extends StatelessWidget {
-  final String username;
-  final String email;
-  final String? profileImageUrl;
-  final String initial;
-
+class AppDrawerHeader extends HookConsumerWidget {
   const AppDrawerHeader({
     super.key,
-    required this.username,
-    required this.email,
-    this.profileImageUrl,
-    required this.initial,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final UserState userState = ref.watch(getUserProvider);
+
     return DrawerHeader(
       decoration: BoxDecoration(
         color: AppColors.primary,
@@ -27,20 +24,20 @@ class AppDrawerHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AvatarWidget(
-            username: username,
-            profileImage: profileImageUrl,
+            username: userState.user!.username.toTitleCase(),
+            profileImage: userState.details!.profileImage,
             radius: 35,
           ),
           const SizedBox(height: 10),
           Text(
-            username,
+            userState.user!.username.toTitleCase(),
             style: AppTextStyles.bold.copyWith(
               fontSize: 19,
               color: Colors.white,
             ),
           ),
           Text(
-            email,
+            userState.user!.email,
             style: AppTextStyles.regular.copyWith(
               fontSize: 14,
               color: Colors.white,

@@ -4,7 +4,8 @@ import '../../../data/models/common_response_model.dart';
 import '../../../data/models/user/search_user_response_model.dart';
 import '../../../data/models/user/user_response_model.dart';
 import '../../events/register_event.dart';
-import '../../events/update_personal_details_event.dart';
+import '../../events/user/update_personal_details_event.dart';
+import '../../events/user/update_user_name_event.dart';
 import '../../repositories/user/user_repository.dart';
 
 class UserUsercase {
@@ -35,5 +36,9 @@ class UserUsercase {
 
   Future<UserResponseModel> getUser() {
     return repository.getUser();
+  }
+
+  Future<CommonResponseModel> updateUsername(UpdateUserNameEvent event) {
+    return repository.updateUsername(event);
   }
 }
